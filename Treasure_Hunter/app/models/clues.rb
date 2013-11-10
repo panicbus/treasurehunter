@@ -1,7 +1,8 @@
 class Clues < ActiveRecord::Base
-  attr_accessible :content, :location_id
+  attr_accessible :answer, :question, :location_id
 
   belongs_to :location
 
-  validates :content, presence: true
+  validates :question, presence: true
+  validates :answer, presence: true
 end
