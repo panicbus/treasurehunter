@@ -1,6 +1,18 @@
 class HuntsController < ApplicationController
 
 def index
+  @hunts = Hunt.all
+
+  respond_to do |format|
+    format.html
+    format.json { render json: @hunts }
+  end
+end
+
+def show
+  @hunt = Hunt.find(params[:id])
+
+  render json: @hunt
 end
 
 def create

@@ -5,6 +5,8 @@
 
 $ ->
 
+
+
   # Displaying the hunt information
   $('.huntView').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
@@ -38,6 +40,9 @@ $ ->
         $('.huntDisplay').prepend("<h4>Clue 5 of 10</h4><br>
           <p>My money's in that office, right? If she start giving me some bullshit about it ain't there, and we got to go someplace else and get it, I'm gonna shoot you in the head then and there. Then I'm gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I'm talking to you, motherfucker.</p><br>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
+        $('.completed').click ->
+          alert 'hi'
+
       else if currentTab.hasClass('huntMap')
         $('.huntDisplay').prepend("<div class='map'>Map</div>")
       else
@@ -48,6 +53,8 @@ $ ->
           <li><h5>Leon</h5><p>1</p></li>
           </ul>")
 
+  $('.completed').click ->
+    alert 'hi'
 
 
 
