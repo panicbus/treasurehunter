@@ -2,8 +2,20 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+getHunts = ->
+
+  call = $.ajax('/hunts.json', {
+      method: 'GET'
+    })
+
+  call.done (data) ->
+    console.log data
+    _.each data, (h) ->
+      $('.huntList ul').prepend("<li>#{h.date}</li>")
 
 $ ->
+
+  getHunts()
 
 
 

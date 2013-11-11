@@ -3,6 +3,9 @@ class HuntsController < ApplicationController
 def index
   @hunts = Hunt.all
 
+
+  p ('*') * 50
+  p @hunts
   respond_to do |format|
     format.html
     format.json { render json: @hunts }

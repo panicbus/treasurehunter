@@ -1,29 +1,31 @@
 
 <div id="container">
+<div class='huntTitle'>
+  <h2>Treasure Hunter</h2>
+</div>
 
-  <h1>The Master Hunts List</h1>
-  <h3>Your Huntmaster has made the following hunts available to play.</h3>
-  <h3>Click the title to see your start location and time.</h3>
 
-  <div id="hunts_list">
-    <%= @hunts.each do |hunt| %>
-      <a href="<%= hunt.title.id %>"><%= hunt.title %></a><br>
-                                     <%= hunt.description %><br>
-    <% end %>
+
+<!-- Index Page -->
+<div class='indexView'>
+
+  <div class='huntList'>
+    <ul>
+
+    </ul>
   </div>
 
-   <a href="/">Back to main.</a>
+</div>
 
 
+<!-- Huntmaster View Page -->
+<div class='huntcasterView display'>
+
+</div>
 
 
-
-
-
-<div class='huntView'>
-  <div class='huntTitle'>
-    <h2>Treasure Hunter</h2>
-  </div>
+<!-- Hunter View Page -->
+<div class='huntView display'>
 
   <div class='huntDisplay'>
 
