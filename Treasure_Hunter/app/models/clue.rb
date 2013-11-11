@@ -4,5 +4,4 @@ class Clue < ActiveRecord::Base
   belongs_to :location
 
   validates :question, presence: true
-  validates :answer, presence: true
 end
