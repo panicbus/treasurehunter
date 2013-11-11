@@ -1,5 +1,5 @@
 class Hunt < ActiveRecord::Base
-  attr_accessible :description, :title, :prize
+  attr_accessible :description, :title, :prize, :date
 
   has_many :locations
   has_many :hunt_locations
