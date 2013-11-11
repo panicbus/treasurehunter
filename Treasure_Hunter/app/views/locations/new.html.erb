@@ -1,0 +1,29 @@
+<h1>Create a New Hunt Location</h1>
+
+
+<p>Enter general location below, then click on map to drop a pin at the new location</p>
+
+
+<div id="location_form">
+
+  <input type = "text" id = "address" placholder="Enter address to search">
+  <input type = "button" id = "searchButton" value = "Search for this address">
+  <%= form_for @location do |f| %>
+    <%= f.label "Latitude" %>
+    <%= f.text_field :lat, :placeholder => "Latitude", :value => (number_with_precision(f.object.lat, :precision => 2) || 0) %>
+    </br>
+    <%= f.label "Longitude" %>
+     <%= f.text_field :long, :placeholder => "Longitude", :value => (number_with_precision(f.object.long, :precision => 2) || 0) %>
+    </br>
+    <%= f.submit  "Show Location" %>
+<% end %>
+
+<input type = "button" id = "currentLocButton" value = "Click here for current location">
+</div>
+
+<a href="http://www.cnn.com">Add a direction clue for this location</a></br>
+<a href="http://www.theonion.com">Add a treasure clue for this location</a>
+
+<div id = "map-canvas" style="height: 400px">
+
+</div>
