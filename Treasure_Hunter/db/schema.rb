@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20131110223555) do
     t.string   "title"
     t.text     "description"
     t.string   "prize"
+    t.string   "date"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
