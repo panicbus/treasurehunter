@@ -9,7 +9,7 @@ gem 'sqlite3'
 gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
-
+gem 'eco'
 
 group :development, :test do
   gem 'rspec-rails'
