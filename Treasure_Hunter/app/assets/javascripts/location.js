@@ -26,6 +26,7 @@ function initialize() {
     // Enter lat and long into form
     document.getElementById('location_lat').value=currentPos.ob;
     document.getElementById('location_long').value=currentPos.pb;
+    // console.log(currentPos);
     google.maps.event.addDomListener(marker, 'dragend', function() { markerMoved(marker); } );
   };
 

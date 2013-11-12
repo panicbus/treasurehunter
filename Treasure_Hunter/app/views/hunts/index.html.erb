@@ -64,3 +64,29 @@
 
   </div> <!-- end huntView -->
 </div> <!-- end container -->
+
+<div class='mapView'>
+  <h1>Create a New Hunt Location</h1>
+
+  <p>Enter an address at or near the new hunt location</p>
+
+    <input type = "text" id = "address" style = 'width: 600px' placholder="Enter address to search">
+    <input type = "button" id = "searchButton" value = "Search for this address">
+  <p>OR</p><input type = "button" id = "currentLocButton" value = "Click here for current location">
+
+  <div id="coordinates">
+
+    <form class='addLocation'>
+      <input type='text' id='location_lat' placeholder='Latitude' />
+      <input type='text' id='location_long' placeholder='Longitude' />
+      <input type='submit' />
+    </form>
+  </div>
+
+  <a href="http://www.cnn.com">Add a direction clue for this location</a></br>
+  <a href="http://www.theonion.com">Add a treasure clue for this location</a>
+
+  <div id = "map-canvas" style="height: 200px">
+
+  </div>
+</div>

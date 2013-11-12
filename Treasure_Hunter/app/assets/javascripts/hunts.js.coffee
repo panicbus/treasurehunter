@@ -68,23 +68,60 @@ $ ->
         <input type='submit' value='Save Hunt'>
         </form>")
     else
+      $('.mapView').removeClass('display')
+
+
+
+  $('.addLocation').submit ->
+    event.preventDefault()
+    lat = $('#location_lat').val()
+    long = $('#location_long').val()
+
+    locationCall = $.ajax('/locations', {
+        type: 'POST'
+        data: {
+          location: {
+            lat: lat
+            long: long
+          }
+        }
+      })
+    locationCall.done (data) ->
+      console.log data
+
+
       # if the clues tab is clicked, show the map
-      $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
+      # call = $.ajax('/locations/new', {
+      #     method: 'GET'
+      #   })
+
+      # call.done (data) ->
+      #   console.log data
+      # $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
 
     # populating the ul with potential participants
 
   $('.add_participants_modal').hasClass('display')
 
-  $('.huntMasterDetails').on 'click', '.add_participants', ->
+  $('.huntMasterView').on 'click', '.add_participants', ->
     # if currentTab.hasClass('huntMasterDetails')
-    $('.add_participants_modal').removeClass('display')
-    $('.add_participants_modal').append("<form>
+    # $('.add_participants_modal').removeClass('display')
+    # $('.add_participants_modal').append("<form>
+    #   <h4>Add a Hunter</h4>
+    #   Name: <input type='text' name='name'><br>
+    #   Favorite Color: <input type='text' name='favorite_color'><br>
+    #   <input type='submit' value='Save Hunter'>
+    #   </form>")
+    event.preventDefault()
+    $(this).removeClass('display')
+    modal_pos = $(this).parent().parent().next().next()
+    console.log modal_pos
+    modal_pos.prepend("<form>
       <h4>Add a Hunter</h4>
       Name: <input type='text' name='name'><br>
       Favorite Color: <input type='text' name='favorite_color'><br>
       <input type='submit' value='Save Hunter'>
       </form>")
-
 
 
 
