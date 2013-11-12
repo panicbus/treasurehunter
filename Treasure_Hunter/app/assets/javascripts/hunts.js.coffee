@@ -25,20 +25,20 @@ $ ->
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
     if $(this).data('role') == 'hunter'
-      $('.huntMasterView').addClass('display')
+      $('.huntmasterView').addClass('display')
       $('.huntView').removeClass('display')
     else
       $('.huntView').addClass('display')
-      $('.huntMasterView').removeClass('display')
+      $('.huntmasterView').removeClass('display')
 
   # When new hunt button is clicked it will display the huntmaster view
-  $('.addhunt').click ->
+  $('.addHunt').click ->
     $('.indexView').addClass('display')
-    $('.huntMasterView').removeClass('display')
+    $('.huntmasterView').removeClass('display')
 
   # When back button is pressed, the index page is displayed
   $('.goBack').click ->
-    $('.huntMasterView').addClass('display')
+    $('.huntmasterView').addClass('display')
     $('.indexView').removeClass('display')
 
 
@@ -70,10 +70,7 @@ $ ->
 
     # populating the ul with potential participants
   $('.huntMasterTabs').on 'click', '.add_participants', ->
-    currentTab = $(this)
-    hunter_id = $(this).parent().data('id')
 
-    call = $.ajax()
 
 
 
