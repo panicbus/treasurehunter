@@ -11,7 +11,7 @@ getHunts = ->
   call.done (data) ->
     console.log data
     _.each data, (h) ->
-      $('.huntList ul').prepend("<li data-role='#{h.role}'>
+      $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         #{h.title}<br>
         #{h.role}<br>
         #{h.date}<br>
@@ -24,12 +24,15 @@ $ ->
   # When hunt is clicked it will display the proper view, either hunter or huntmaster
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
+    test = $(this).data('id')
     if $(this).data('role') == 'hunter'
       $('.huntMasterView').addClass('display')
       $('.huntView').removeClass('display')
+      $('.huntTabs').data('id', test)
     else
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
+      $('.huntMasterTabs').data('id', test)
 
   # When new hunt button is clicked it will display the huntmaster view
   $('.addHunt').click ->
@@ -42,6 +45,8 @@ $ ->
       $('.huntMasterView').addClass('display')
     if !($('.huntView').hasClass('display'))
       $('.huntView').addClass('display')
+    if !($('.mapView').hasClass('display'))
+      $('.mapView').addClass('display')
     $('.indexView').removeClass('display')
 
 
@@ -68,7 +73,11 @@ $ ->
         <input type='submit' value='Save Hunt'>
         </form>")
     else
-      $('.mapView').removeClass('display')
+      if $('.huntMasterTabs').data('id')
+        $('.mapView').removeClass('display')
+      else
+        alert('Sorry! You need to save a hunt before you can add locations.')
+
 
 
 
@@ -86,20 +95,11 @@ $ ->
           }
         }
       })
+
     locationCall.done (data) ->
       console.log data
 
 
-      # if the clues tab is clicked, show the map
-      # call = $.ajax('/locations/new', {
-      #     method: 'GET'
-      #   })
-
-      # call.done (data) ->
-      #   console.log data
-      # $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
-
-    # populating the ul with potential participants
 
   $('.add_participants_modal').hasClass('display')
 
@@ -136,7 +136,7 @@ $ ->
 
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
-
+    console.log id
     # Make the ajax call to get the hunt information
     call = $.ajax("/hunts/#{id}", {
         method: 'GET'

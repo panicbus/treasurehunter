@@ -8,11 +8,15 @@ class HuntsController < ApplicationController
     # Cycled through the the hunt_ids to find the associated hunts, and shove into a new array, @hunts
     @hunts = []
     @user_hunts.each do |h|
-      @hunts << Hunt.find(h)
+      @hunts << Hunt.find(h.hunt_id)
     end
     # Find and add the user's roles to the hunts
     @hunts.each do |h|
-      h[:role] = HuntUser.find(h.id).role
+      @user_hunts.each do |u|
+        if h.id == u.hunt_id
+          h[:role] = u.role
+        end
+      end
     end
 
     respond_to do |format|
@@ -28,8 +32,8 @@ class HuntsController < ApplicationController
     @location_ids = HuntLocation.find_all_by_hunt_id(@hunt.id)
     @locations = []
     # Find locations based on location ids for that hunt and adding them to an array
-    @location_ids.each do |location|
-      @locations << Location.find(location.id)
+    @location_ids.each do |loc|
+      @locations << Location.find(loc.location_id)
     end
     # Finding clues for each location and adding them to the location hash
     @locations.each do |l|
