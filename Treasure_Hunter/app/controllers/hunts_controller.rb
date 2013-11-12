@@ -25,7 +25,7 @@ class HuntsController < ApplicationController
     # Find the hunt
     @hunt = Hunt.find(params[:id])
     # Find the location ids for that hunt
-    @location_ids = HuntLocation.find_all_by_hunt_id(1)
+    @location_ids = HuntLocation.find_all_by_hunt_id(@hunt.id)
     @locations = []
     # Find locations based on location ids for that hunt and adding them to an array
     @location_ids.each do |location|
@@ -35,8 +35,29 @@ class HuntsController < ApplicationController
     @locations.each do |l|
       l[:clues] = Clue.find_by_location_id(l.id)
     end
-    # Adding locations w/clues to the hunt
+    # Adding locations w/clues to the @hunt hash
     @hunt[:loc] = @locations
+
+    # Find the all the hunt_user entries with this hunt_is
+    @hunter_ids = HuntUser.find_all_by_hunt_id(@hunt.id)
+    @hunters = []
+
+    # Find all the user names and their progress from the user table that are associated with this hunt
+    @hunter_ids.each do |hi|
+      @hunter = {}
+      progress = hi.progress
+      username = User.find(hi.user_id).username
+      @hunter[:prog] = progress
+      @hunter[:name] = username
+      @hunters << @hunter
+      # Adding a current_user info key to the @hunt hash
+      if current_user.id == hi.user_id
+        @hunt[:current] = { progress: progress, name: username }
+      end
+
+    end
+    # Adding names to the @hunt hash
+    @hunt[:name] = @hunters
 
     render json: @hunt
   end
