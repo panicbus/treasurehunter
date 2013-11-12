@@ -97,17 +97,29 @@ $ ->
     call.done (data) ->
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
-      console.log data
+
+      # Setting up the participant names as a list
+      entry = "<ul>"
+      _.each data.name, (d) ->
+        entry += "<li><p>#{d}</p></li>"
+      entry += "</ul>"
+
+      # Setting up leaderboard
+      leaders = "<ul>"
+      _.each data.name, (d) ->
+        leaders += "<li><p>#{d}</p><p>2</p></li>"
+      leaders += "</ul>"
+
       # Displaying the correct information based on which tab is currently active
       if currentTab.hasClass('huntDetails')
         $('.huntDisplay').prepend("<ul class='details'>
             <li><h5>Hunt Title:  </h5><p>#{data.title}</p></li>
             <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
             <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
-            <li><h5>Start on:  </h5><p>blah</p></li>
+            <li><h5>Start on:  </h5><p>#{data.date}</p></li>
             <li><h5>Start Location:  </h5><p>blah</p></li>
-            <li><h5>Number of Clues:  </h5><p>blah</p></li>
-            <li><h5>Participants:  </h5><p>blah</p></li>
+            <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
+            <li><h5>Participants:  </h5>#{entry}</li>
           </ul>")
       else if currentTab.hasClass('huntClues')
         $('.huntDisplay').prepend("<h4>Clue 5 of 10</h4><br>
@@ -116,12 +128,7 @@ $ ->
       else if currentTab.hasClass('huntMap')
         $('.huntDisplay').prepend("<div class='map'>Map</div>")
       else
-        $('.huntDisplay').prepend("<ul class='leaders'>
-          <li><h5>Jennie</h5><p>5</p></li>
-          <li><h5>Nico</h5><p>3</p></li>
-          <li><h5>James</h5><p>3</p></li>
-          <li><h5>Leon</h5><p>1</p></li>
-          </ul>")
+        $('.huntDisplay').prepend("#{leaders}")
 
   $('.completed').click ->
     alert 'hi'
