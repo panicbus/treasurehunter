@@ -101,13 +101,13 @@ $ ->
       # Setting up the participant names as a list
       entry = "<ul>"
       _.each data.name, (d) ->
-        entry += "<li><p>#{d}</p></li>"
+        entry += "<li><p>#{d.name}</p></li>"
       entry += "</ul>"
 
       # Setting up leaderboard
       leaders = "<ul>"
       _.each data.name, (d) ->
-        leaders += "<li><p>#{d}</p><p>2</p></li>"
+        leaders += "<li><p>#{d.name}</p><p>#{d.prog}</p></li>"
       leaders += "</ul>"
 
       # Displaying the correct information based on which tab is currently active
@@ -122,16 +122,20 @@ $ ->
             <li><h5>Participants:  </h5>#{entry}</li>
           </ul>")
       else if currentTab.hasClass('huntClues')
-        $('.huntDisplay').prepend("<h4>Clue 5 of 10</h4><br>
+        $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
           <p>My money's in that office, right? If she start giving me some bullshit about it ain't there, and we got to go someplace else and get it, I'm gonna shoot you in the head then and there. Then I'm gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I'm talking to you, motherfucker.</p><br>
+          <form class='answer'>
+            <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
+            <input type='submit' />
+            </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
       else if currentTab.hasClass('huntMap')
         $('.huntDisplay').prepend("<div class='map'>Map</div>")
       else
         $('.huntDisplay').prepend("#{leaders}")
 
-  $('.completed').click ->
-    alert 'hi'
+  # $('.huntTabs').on 'click', '' ->
+  #   alert 'hi'
 
 
 
