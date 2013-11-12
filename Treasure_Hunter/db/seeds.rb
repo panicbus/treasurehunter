@@ -14,6 +14,7 @@
         {username: 'Feather', email: 'f@f.com', password: '12345678'}
       ])
 
+
     huntlocs = HuntLocation.create([
         {hunt_id: 1, location_id: 1},
         {hunt_id: 1, location_id: 2},
@@ -57,3 +58,4 @@
         {hunt_id: 2, user_id: 3, role: 'hunter', progress: 7},
         {hunt_id: 2, user_id: 1, role: 'huntmaster', progress: 2},
       ])
+
