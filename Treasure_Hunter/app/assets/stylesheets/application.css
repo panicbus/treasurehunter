@@ -12,6 +12,10 @@
  *= require_tree .
  */
 
+#container {
+  width: 40%;
+}
+
 .display {
   display: none;
 }
@@ -30,6 +34,10 @@
 
 .huntMap {
    background: lightyellow;
+}
+
+.huntLeader {
+  background: lightpink;
 }
 
 .leaders {
