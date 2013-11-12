@@ -15,3 +15,28 @@
 .display {
   display: none;
 }
+
+.huntDisplay {
+  background: lightblue;
+}
+
+.huntDetails {
+  background: lightgray;
+}
+
+.huntClues {
+   background: violet;
+}
+
+.huntMap {
+   background: lightyellow;
+}
+
+.leaders {
+   background: lightgreen;
+}
+/*
+li {
+  display: inline;
+}
+*/

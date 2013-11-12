@@ -113,6 +113,7 @@ $ ->
       # Displaying the correct information based on which tab is currently active
       if currentTab.hasClass('huntDetails')
         $('.huntDisplay').prepend("<ul class='details'>
+            <h3>Hunt Details</h3>
             <li><h5>Hunt Title:  </h5><p>#{data.title}</p></li>
             <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
             <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
