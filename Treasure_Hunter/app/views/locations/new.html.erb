@@ -14,6 +14,7 @@
     </br>
     <%= f.label "Longitude" %>
     <%= f.text_field :long, :placeholder => "Longitude", :value => (number_with_precision(f.object.long, :precision => 2) || 0) %>
+
     </br>
     <%= f.submit  "Save Location" %>
 <% end %>
