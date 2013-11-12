@@ -1,7 +1,16 @@
 class HuntsController < ApplicationController
+  # Making sure the user is signed in to view certain pages
+  before_filter :authenticate_user!, except: [:new, :create]
 
   def index
-    @hunts = Hunt.all
+    # Find all the hunt_ids the current user is associated with
+    @user_hunts = HuntUser.find_all_by_user_id(current_user.id)
+    # Cycled through the the hunt_ids to find the associated hunts, and shove into a new array, @hunts
+    @hunts = []
+    @user_hunts.each do |h|
+      @hunts << Hunt.find(h)
+    end
+    # Find and add the user's roles to the hunts
     @hunts.each do |h|
       h[:role] = HuntUser.find(h.id).role
     end
