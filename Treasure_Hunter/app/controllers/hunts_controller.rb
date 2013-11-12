@@ -67,7 +67,7 @@ class HuntsController < ApplicationController
   end
 
   def create
-    Hunt.create(params[:hunt])
+    Hunt.create(params[:participant])
     # redirect_to hunts_path
   end
 

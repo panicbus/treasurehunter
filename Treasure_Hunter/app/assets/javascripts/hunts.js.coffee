@@ -50,7 +50,6 @@ $ ->
     $('.indexView').removeClass('display')
 
 
-
     #**** Huntmaster View ****
     #display hunt info
   $('.huntMasterTabs').on 'click', '.huntMasterNav', ->
@@ -66,10 +65,10 @@ $ ->
         <h3>Create a hunt!</h3>
         Hunt Title: <input type='text' name='title'><br>
         Hunt Description: <input type='text' name='description'><br>
-        Hunt Start Date: <input type='text' name='start_date'><br>
-        Hunt Start Time: <input type='text' name='start_time'><br>
+        Hunt Start Date: <input type='date' name='start_date'><br>
+        Hunt Start Time: <input type='time' name='start_time'><br>
         <button class='add_participants'>Add Participants</button>
-        <ul></ul>
+        <ul class='hunter_list'></ul>
         <input type='submit' value='Save Hunt'>
         </form>")
     else
@@ -101,27 +100,32 @@ $ ->
 
 
 
+  # add modal for adding participants to hunt
   $('.add_participants_modal').hasClass('display')
 
+  # when button is clicked display the form to add participants
   $('.huntMasterView').on 'click', '.add_participants', ->
-    # if currentTab.hasClass('huntMasterDetails')
-    # $('.add_participants_modal').removeClass('display')
-    # $('.add_participants_modal').append("<form>
-    #   <h4>Add a Hunter</h4>
-    #   Name: <input type='text' name='name'><br>
-    #   Favorite Color: <input type='text' name='favorite_color'><br>
-    #   <input type='submit' value='Save Hunter'>
-    #   </form>")
     event.preventDefault()
     $(this).removeClass('display')
-    modal_pos = $(this).parent().parent().next().next()
-    console.log modal_pos
-    modal_pos.prepend("<form>
+    $('.add_participants_modal').append("<form id='participants'>
       <h4>Add a Hunter</h4>
-      Name: <input type='text' name='name'><br>
-      Favorite Color: <input type='text' name='favorite_color'><br>
+      Name: <input type='text' id='participant_form' name='name'><br>
+      Email address: <input type='email' name='email'><br>
+      Phone number: <input type='tel' name='usrtel'><br>
       <input type='submit' value='Save Hunter'>
       </form>")
+
+  # populate the ul in huntMasterDisplay with participants from modal form
+  $('#participants').submit ->
+    name = $('#participant_form').val()
+    _.each participants.name, (p) ->
+    participant_list += "<li><p>#{p.name}</p></li>"
+    $('hunter_list').append(participant_list)
+
+      # $.ajax("/hunts", {
+      #   method: 'POST',
+      #   data:{participant: name}
+      # }).done
 
 
 
