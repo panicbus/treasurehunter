@@ -38,6 +38,7 @@ $ ->
   $('.addHunt').click ->
     $('.indexView').addClass('display')
     $('.huntMasterView').removeClass('display')
+    $('.huntMasterTabs').removeData('id')
 
   # When back button is pressed, the index page is displayed
   $('.goBack').click ->
