@@ -59,6 +59,7 @@ $ ->
 
     # clear the tab of previous data
     $('.huntMasterDisplay').empty()
+    $('.mapView').addClass('display')
       # if Hunt Details tab is clicked, show the Create Hunt form
     if currentTab.hasClass('huntMasterDetails')
       $('.huntMasterDisplay').prepend("<form>
