@@ -16,9 +16,7 @@ function initialize() {
   navigator.geolocation.getCurrentPosition(function(position){
     currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
      map.setCenter(currentPos);
-
   });
-
 
 //adds marker to current location
   function markCurrentLocation () {
