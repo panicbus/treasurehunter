@@ -69,8 +69,18 @@ $ ->
       $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
 
     # populating the ul with potential participants
-  $('.huntMasterTabs').on 'click', '.add_participants', ->
 
+  $('.add_participants_modal').hasClass('display')
+
+  $('.huntMasterDetails').on 'click', '.add_participants', ->
+    # if currentTab.hasClass('huntMasterDetails')
+    $('.add_participants_modal').removeClass('display')
+    $('.add_participants_modal').append("<form>
+      <h4>Add a Hunter</h4>
+      Name: <input type='text' name='name'><br>
+      Favorite Color: <input type='text' name='favorite_color'><br>
+      <input type='submit' value='Save Hunter'>
+      </form>")
 
 
 
