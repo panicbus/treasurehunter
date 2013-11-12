@@ -36,6 +36,12 @@ $ ->
     $('.indexView').addClass('display')
     $('.huntMasterView').removeClass('display')
 
+  # When back button is pressed, the index page is displayed
+  $('.goBack').click ->
+    $('.huntMasterView').addClass('display')
+    $('.indexView').removeClass('display')
+
+
 
     #**** Huntmaster View ****
     #display hunt info
@@ -70,10 +76,7 @@ $ ->
     call = $.ajax()
 
 
-  # When back button is pressed, the index page is displayed
-  $('.goBack').click ->
-    $('.huntMasterView').addClass('display')
-    $('.indexView').removeClass('display')
+
 
 
 
