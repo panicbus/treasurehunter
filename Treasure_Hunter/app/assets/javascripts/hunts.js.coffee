@@ -38,7 +38,10 @@ $ ->
 
   # When back button is pressed, the index page is displayed
   $('.goBack').click ->
-    $('.huntMasterView').addClass('display')
+    if !($('.huntMasterView').hasClass('display'))
+      $('.huntMasterView').addClass('display')
+    if !($('.huntView').hasClass('display'))
+      $('.huntView').addClass('display')
     $('.indexView').removeClass('display')
 
 
