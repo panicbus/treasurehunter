@@ -32,6 +32,37 @@ $ ->
       $('.huntMasterView').removeClass('display')
 
 
+    #**** Huntmaster View ****
+    #display hunt info
+  $('.huntMasterTabs').on 'click', '.huntMasterNav', ->
+    # grab the current tab to use in the callback
+    currentTab = $(this)
+    console.log currentTab
+
+    # clear the tab of previous data
+    $('.huntMasterDisplay').empty()
+      # if Hunt Details tab is clicked, show the Create Hunt form
+    if currentTab.hasClass('huntMasterDetails')
+      $('.huntMasterDisplay').prepend("<form>
+        <h3>Create a hunt!</h3>
+        Hunt Title: <input type='text' name='title'><br>
+        Hunt Description: <input type='text' name='description'><br>
+        Hunt Start Date: <input type='text' name='start_date'><br>
+        Hunt Start Time: <input type='text' name='start_time'><br>
+        <button class='add_participants'>Add Participants</button>
+        <ul></ul>
+        <input type='submit' value='Save Hunt'>
+        </form>")
+    else
+      # if the clues tab is clicked, show the map
+      $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
+
+    # populating the ul with potential participants
+  $('.huntMasterTabs').on 'click', '.add_participants', ->
+    currentTab = $(this)
+    hunter_id = $(this).parent().data('id')
+
+    call = $.ajax()
 
 
 
