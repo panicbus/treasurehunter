@@ -25,20 +25,20 @@ $ ->
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
     if $(this).data('role') == 'hunter'
-      $('.huntmasterView').addClass('display')
+      $('.huntMasterView').addClass('display')
       $('.huntView').removeClass('display')
     else
       $('.huntView').addClass('display')
-      $('.huntmasterView').removeClass('display')
+      $('.huntMasterView').removeClass('display')
 
   # When new hunt button is clicked it will display the huntmaster view
   $('.addHunt').click ->
     $('.indexView').addClass('display')
-    $('.huntmasterView').removeClass('display')
+    $('.huntMasterView').removeClass('display')
 
   # When back button is pressed, the index page is displayed
   $('.goBack').click ->
-    $('.huntmasterView').addClass('display')
+    $('.huntMasterView').addClass('display')
     $('.indexView').removeClass('display')
 
 
