@@ -1,5 +1,5 @@
 class Hunt < ActiveRecord::Base
-  attr_accessible :description, :title, :prize, :date
+  attr_accessible :description, :title, :prize, :date, :start_location
 
   has_many :locations
   has_many :hunt_locations
@@ -7,5 +7,6 @@ class Hunt < ActiveRecord::Base
 
   validates :title, presence: true
   validates :description, presence: true
-  # validates :date, presence: true
+  validates :date, presence: true
+  validates :start_location, presence: true
 end
