@@ -11,7 +11,7 @@ getHunts = ->
   call.done (data) ->
     console.log data
     _.each data, (h) ->
-      $('.huntList ul').prepend("<li data-role='#{h.role}'>
+      $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         #{h.title}<br>
         #{h.role}<br>
         #{h.date}<br>
@@ -24,12 +24,15 @@ $ ->
   # When hunt is clicked it will display the proper view, either hunter or huntmaster
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
+    test = $(this).data('id')
     if $(this).data('role') == 'hunter'
       $('.huntMasterView').addClass('display')
       $('.huntView').removeClass('display')
+      $('.huntTabs').data('id', test)
     else
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
+      $('.huntMasterTabs').data('id', test)
 
   # When new hunt button is clicked it will display the huntmaster view
   $('.addHunt').click ->
@@ -42,6 +45,8 @@ $ ->
       $('.huntMasterView').addClass('display')
     if !($('.huntView').hasClass('display'))
       $('.huntView').addClass('display')
+    if !($('.mapView').hasClass('display'))
+      $('.mapView').addClass('display')
     $('.indexView').removeClass('display')
 
 
@@ -68,23 +73,55 @@ $ ->
         <input type='submit' value='Save Hunt'>
         </form>")
     else
-      # if the clues tab is clicked, show the map
-      $('.huntMasterDisplay').prepend("<div class='map'>Map</div>")
+      if $('.huntMasterTabs').data('id')
+        $('.mapView').removeClass('display')
+      else
+        alert('Sorry! You need to save a hunt before you can add locations.')
 
-    # populating the ul with potential participants
+
+
+
+  $('.addLocation').submit ->
+    event.preventDefault()
+    lat = $('#location_lat').val()
+    long = $('#location_long').val()
+
+    locationCall = $.ajax('/locations', {
+        type: 'POST'
+        data: {
+          location: {
+            lat: lat
+            long: long
+          }
+        }
+      })
+
+    locationCall.done (data) ->
+      console.log data
+
+
 
   $('.add_participants_modal').hasClass('display')
 
-  $('.huntMasterDetails').on 'click', '.add_participants', ->
+  $('.huntMasterView').on 'click', '.add_participants', ->
     # if currentTab.hasClass('huntMasterDetails')
-    $('.add_participants_modal').removeClass('display')
-    $('.add_participants_modal').append("<form>
+    # $('.add_participants_modal').removeClass('display')
+    # $('.add_participants_modal').append("<form>
+    #   <h4>Add a Hunter</h4>
+    #   Name: <input type='text' name='name'><br>
+    #   Favorite Color: <input type='text' name='favorite_color'><br>
+    #   <input type='submit' value='Save Hunter'>
+    #   </form>")
+    event.preventDefault()
+    $(this).removeClass('display')
+    modal_pos = $(this).parent().parent().next().next()
+    console.log modal_pos
+    modal_pos.prepend("<form>
       <h4>Add a Hunter</h4>
       Name: <input type='text' name='name'><br>
       Favorite Color: <input type='text' name='favorite_color'><br>
       <input type='submit' value='Save Hunter'>
       </form>")
-
 
 
 
@@ -99,7 +136,7 @@ $ ->
 
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
-
+    console.log id
     # Make the ajax call to get the hunt information
     call = $.ajax("/hunts/#{id}", {
         method: 'GET'

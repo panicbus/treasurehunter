@@ -11,8 +11,10 @@ end
 
 
 def create
-  Location.create(params[:location])
-  redirect_to locations_path
+  @location = Location.create(params[:location])
+  @location[:hunt] = 1
+
+  render json: @location
 end
 
 def show
