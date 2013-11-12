@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131110223555) do
+ActiveRecord::Schema.define(:version => 20131111213720) do
 
   create_table "clues", :force => true do |t|
     t.text     "question"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(:version => 20131110223555) do
     t.integer  "location_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "hunt_users", :force => true do |t|
+    t.string   "role"
+    t.integer  "hunt_id"
+    t.integer  "user_id"
+    t.string   "progress"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "hunts", :force => true do |t|

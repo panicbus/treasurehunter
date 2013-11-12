@@ -3,24 +3,42 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 getHunts = ->
-
+  #  Making the call to get all the hunts
   call = $.ajax('/hunts.json', {
       method: 'GET'
     })
-
+  # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
     console.log data
     _.each data, (h) ->
-      $('.huntList ul').prepend("<li>#{h.date}</li>")
+      $('.huntList ul').prepend("<li data-role='#{h.role}'>
+        #{h.title}<br>
+        #{h.role}<br>
+        #{h.date}<br>
+        </li>")
 
 $ ->
-
+  # Populating the index page with users hunts
   getHunts()
 
+  # When hunt is clicked it will display the proper view, either hunter or huntmaster
+  $('.huntList').on 'click', 'li', ->
+    $('.indexView').addClass('display')
+    if $(this).data('role') == 'hunter'
+      $('.huntMasterView').addClass('display')
+      $('.huntView').removeClass('display')
+    else
+      $('.huntView').addClass('display')
+      $('.huntMasterView').removeClass('display')
 
 
-  # Displaying the hunt information
-  $('.huntView').on 'click', '.huntNav', ->
+
+
+
+
+
+  # Displaying the hunter view information
+  $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
 
@@ -31,6 +49,7 @@ $ ->
     call = $.ajax("/hunts/#{id}", {
         method: 'GET'
       })
+
 
     # Display the hunt information after the ajax call is successful
     call.done (data) ->
@@ -52,9 +71,6 @@ $ ->
         $('.huntDisplay').prepend("<h4>Clue 5 of 10</h4><br>
           <p>My money's in that office, right? If she start giving me some bullshit about it ain't there, and we got to go someplace else and get it, I'm gonna shoot you in the head then and there. Then I'm gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I'm talking to you, motherfucker.</p><br>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
-        $('.completed').click ->
-          alert 'hi'
-
       else if currentTab.hasClass('huntMap')
         $('.huntDisplay').prepend("<div class='map'>Map</div>")
       else
