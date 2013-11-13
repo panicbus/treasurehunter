@@ -16,12 +16,23 @@
   width: 40%;
 }
 
-.hide {
+.display {
   display: none;
+}
+
+#map-canvas {
+width: 600px;
+height: 500px;
+}
+
+#huntMap {
+width: 600px;
+height: 500px;
 }
 
 .huntDisplay {
   background: lightblue;
+  height: 100%;
 }
 
 .huntDetails {

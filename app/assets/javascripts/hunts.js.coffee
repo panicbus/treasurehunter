@@ -17,6 +17,25 @@ getHunts = ->
         #{h.date}<br>
         </li>")
 
+# makeMap = (thisHuntData) ->
+#   document.getElementById('huntMap').innerHTML = 'hi'
+#   mapOptions =
+#     zoom: 16
+#     mapTypeId: google.maps.MapTypeId.ROADMAP
+#     center: new google.maps.LatLng(-34.397, 150.644)
+#   console.log mapOptions
+  # console.log thisHuntData.loc.length
+  # thisHuntLocs = thisHuntData.loc
+  # huntMap = new google.maps.Map(document.getElementById('huntMap'), mapOptions)
+  # i = 0
+
+  # while i < thisHuntLocs.length
+  #   huntLocation = new google.maps.Marker(
+  #     position: [ thisHuntLocs[i].lat, thisHuntLocs[i].long ]
+  #     map: huntMap
+  #   )
+  #   i++
+
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
@@ -364,19 +383,22 @@ $ ->
             </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
       else if currentTab.hasClass('huntMap')
-        $('.huntDisplay').prepend("<div class='map'>Map</div>")
+        # $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
         call = $.ajax("/hunts/#{thisHunt}", {
           method: 'GET'
         })
-      # After call is successful, the hunts are added to the hunt list on the index page
+      # After call is successful, the locations map is plotted
         call.done (data) ->
-          thisHuntData = data;
-          console.log(thisHuntData.loc[0].lat)
+          thisHuntData = data
           makeMap(thisHuntData)
       else
         $('.huntDisplay').prepend("#{leaders}")
+
+
+
+
 
 
 
