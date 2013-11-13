@@ -64,7 +64,7 @@ $ ->
     $('.mapView').addClass('display')
     # if Hunt Details tab is clicked, show the Create Hunt form or the hunt details
     if currentTab.hasClass('huntMasterDetails')
-<<<<<<< HEAD
+
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
         $('.huntMasterDisplay').prepend("<form class='createHunt'>
@@ -306,6 +306,7 @@ $ ->
     $('#location_name').val('')
     $('#clueQuestion').val('')
     $('#clueAnswer').val('')
+
 
 
 
