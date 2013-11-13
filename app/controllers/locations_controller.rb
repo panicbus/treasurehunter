@@ -1,24 +1,24 @@
 class LocationsController < ApplicationController
 
-def index
-  @locations = Location.all
-end
+def show
+  # Finding all the huntLocation entries with the current hunt id
+  @location_ids = HuntLocation.find_all_by_hunt_id(params[:id])
+  # Using the above entries to find all the locations associated with the current hunt
+  @locations = []
+  @location_ids.each do |l|
+    @locations << Location.find(l.location_id)
+  end
 
-
-def new
-  @location = Location.new
+   render json: @locations
 end
 
 
 def create
   @location = Location.create(params[:location])
-  @location[:hunt] = 1
-
   render json: @location
 end
 
-def show
-end
+
 
 def destroy
   Location.delete(params[:id])
