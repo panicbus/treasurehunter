@@ -44,8 +44,8 @@
       ])
 
     hunts = Hunt.create([
-        {title: 'SOMA Hunt', description: 'Starts at GA and includes AT&T Park', prize: 'Willie Mays glove', date: 'Dec 1'},
-        {title: 'North Beach Hunt', description: 'Includes Columbus St', prize: 'Sign at Grant & Green', date: 'Dec 15'},
+        {title: 'SOMA Hunt', description: 'Starts at GA and includes AT&T Park', prize: 'Willie Mays glove', date: 'Dec 1, ', start_location: 'new york'},
+        {title: 'North Beach Hunt', description: 'Includes Columbus St', prize: 'Sign at Grant & Green', date: 'Dec 15', start_location: 'GA'},
       ])
 
     hunt_users = HuntUser.create([
