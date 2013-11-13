@@ -18,10 +18,10 @@ getHunts = ->
         </li>")
 
 $ ->
-  # Populating the index page with users hunts
+  # Populating the index page with user-specific hunts
   getHunts()
 
-  # When hunt is clicked it will display the proper view, either hunter or huntmaster
+  # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
     hunt_id = $(this).data('id')
@@ -34,7 +34,7 @@ $ ->
       $('.huntMasterView').removeClass('display')
       $('.huntMasterTabs').data('id', hunt_id)
 
-  # When new hunt button is clicked it will display the huntmaster view
+  # When "Add hunt" button is clicked it will display the huntmaster view (hunt details and locations)
   $('.addHunt').click ->
     $('.indexView').addClass('display')
     $('.huntMasterView').removeClass('display')
@@ -42,7 +42,7 @@ $ ->
     $('.huntMasterDisplay').empty()
 
 
-  # When back button is pressed, the index page is displayed
+  # When "back" button is pressed, the index page is displayed
   $('.goBack').click ->
     if !($('.huntMasterView').hasClass('display'))
       $('.huntMasterView').addClass('display')
@@ -64,6 +64,7 @@ $ ->
     $('.mapView').addClass('display')
     # if Hunt Details tab is clicked, show the Create Hunt form or the hunt details
     if currentTab.hasClass('huntMasterDetails')
+<<<<<<< HEAD
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
         $('.huntMasterDisplay').prepend("<form class='createHunt'>
