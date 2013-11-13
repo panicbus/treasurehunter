@@ -168,7 +168,7 @@ $ ->
                         role: 'hunter'
                       }
                 # Making an ajax call to save participant entries to the db
-                huntUserCall = $.ajax('/hunt_users', {
+                huntUserCall = $.ajax("/hunt_users", {
                     method: 'POST'
                     data: {
                       hunt_user: hunt_user
@@ -240,15 +240,20 @@ $ ->
               <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
               <li><h5>Participants:  </h5>#{entry}</li>
             </ul>")
-    # If hunt locations is clicked, the map or an alert will show
-    else
+    # If add locations is clicked, the map or an alert will show
+    else if currentTab.hasClass('huntMasterClues')
       # If there is an current hunt id
       if $('.huntMasterTabs').data('id')
         $('.mapView').removeClass('display')
       # If there isnt a hunt id
       else
         alert('Sorry! You need to save a hunt before you can add locations.')
-
+    # If hunt locations is clicked
+    else
+      $('.huntMasterDisplay').empty()
+      if !($('.mapView').hasClass('display'))
+        $('.mapView').addClass('display')
+      # getLocations()
 
 
   # Adding a location to a hunt
