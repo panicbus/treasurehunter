@@ -335,6 +335,7 @@ $ ->
 
 
 
+
   # Displaying the hunter view information
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
