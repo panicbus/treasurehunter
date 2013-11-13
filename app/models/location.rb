@@ -1,5 +1,5 @@
 class Location < ActiveRecord::Base
-  attr_accessible :lat, :long, :loc_order
+  attr_accessible :lat, :long
 
   has_many :clues
   has_many :hunt_locations
