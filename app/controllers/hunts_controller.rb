@@ -37,7 +37,7 @@ class HuntsController < ApplicationController
     end
     # Finding clues for each location and adding them to the location hash
     @locations.each do |l|
-      l[:clues] = Clue.find_by_location_id(l.id)
+      l[:clues] = Clue.find_all_by_location_id(l.id)
     end
     # Adding locations w/clues to the @hunt hash
     @hunt[:loc] = @locations

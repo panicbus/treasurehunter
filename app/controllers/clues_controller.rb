@@ -4,8 +4,8 @@ class CluesController < ApplicationController
   end
 
   def create
-    Clue.create(params[:clue])
-    redirect_to clues_path
+    @clue = Clue.create(params[:clueby])
+    render json: @clue
   end
 
   def destroy
