@@ -236,6 +236,9 @@ $ ->
     # Grabbing the form values
     lat = $('#location_lat').val()
     long = $('#location_long').val()
+    name = $('#location_name').val()
+    question = $('#clueQuestion').val()
+    answer = $('#clueAnswer').val()
 
     # Grabbing the current hunt id
     id = $('.huntMasterTabs').data('id')
@@ -255,19 +258,54 @@ $ ->
             location: {
               lat: lat
               long: long
+              name: name
             }
           }
         })
-      # After a successful save, the id of the location is sent back, and an ajax call is made to save the hunt_id, loc_id, and loc_order to the huntLocation db
-      locationCall.done (data) ->
-        hunt_loc = {hunt_id: id, location_id: data.id , loc_order: nextLoc}
-
+      # After a successful save, the id of the location is sent back
+      locationCall.done (loc_data) ->
+        # Hunt info object is created
+        hunt_loc = {hunt_id: id, location_id: loc_data.id , loc_order: nextLoc}
+        # Ajax call is made to save the hunt_id, loc_id, and loc_order to the huntLocation db
         huntLocCall = $.ajax("/hunt_locations", {
             type: 'POST',
             data: {
               hunt_loc: hunt_loc
             }
           })
+
+        huntLocCall.done (hunt_loc_data) ->
+
+        # Creating the clue info object
+        clueInfo = {question: question, location_id: loc_data.id, answer: answer}
+        # Ajax call is made to save the clue to the db
+        clueCall = $.ajax('/clues', {
+            method: 'POST',
+            data: {
+              clueby: clueInfo
+            }
+          })
+
+        clueCall.done (clue_data) ->
+          entry = "</li data-id='#{loc_data.id}'>
+                    <p>#{loc_data.name}</p>
+                    <ul class='clues'>
+                      <p class='newClue'>Add a clue</p>
+                      <li data-id='#{clue_data.id}' data-order='1'>
+                        <p>#{clue_data.question}</p>
+                        <p>#{clue_data.answer}</p>
+                      </li>
+                    </ul>
+                  </li>"
+          $('#coordinates ul').prepend(entry)
+
+
+    $('#location_lat').val('')
+    $('#location_long').val('')
+    $('#location_name').val('')
+    $('#clueQuestion').val('')
+    $('#clueAnswer').val('')
+
 
 
 
@@ -310,7 +348,7 @@ $ ->
             <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
             <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
             <li><h5>Start on:  </h5><p>#{data.date}</p></li>
-            <li><h5>Start Location:  </h5><p>#{data.start_location}/p></li>
+            <li><h5>Start Location:  </h5><p>#{data.start_location}</p></li>
             <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
             <li><h5>Participants:  </h5>#{entry}</li>
           </ul>")

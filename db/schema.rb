@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131111213720) do
+ActiveRecord::Schema.define(:version => 20131113190553) do
 
   create_table "clues", :force => true do |t|
     t.text     "question"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20131111213720) do
     t.float    "long"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "name"
   end
 
   create_table "users", :force => true do |t|

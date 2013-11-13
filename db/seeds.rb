@@ -16,15 +16,15 @@
 
 
     huntlocs = HuntLocation.create([
-        {hunt_id: 1, location_id: 1},
-        {hunt_id: 1, location_id: 2},
-        {hunt_id: 1, location_id: 3},
-        {hunt_id: 1, location_id: 4},
-        {hunt_id: 2, location_id: 1},
-        {hunt_id: 2, location_id: 2},
-        {hunt_id: 2, location_id: 3},
-        {hunt_id: 2, location_id: 4},
-        {hunt_id: 2, location_id: 5}
+        {hunt_id: 1, location_id: 1, loc_order: 1},
+        {hunt_id: 1, location_id: 2, loc_order: 2},
+        {hunt_id: 1, location_id: 3, loc_order: 3},
+        {hunt_id: 1, location_id: 4, loc_order: 4},
+        {hunt_id: 2, location_id: 1, loc_order: 1},
+        {hunt_id: 2, location_id: 2, loc_order: 2},
+        {hunt_id: 2, location_id: 3, loc_order: 3},
+        {hunt_id: 2, location_id: 4, loc_order: 4},
+        {hunt_id: 2, location_id: 5, loc_order: 5}
       ])
 
     clues = Clue.create([
@@ -36,11 +36,11 @@
       ])
 
     locations = Location.create([
-        {lat: 37.7798756, long:-122.39492960000001},
-        {lat: 37.800766757533154, long: -122.40900583291017},
-        {lat:37.79398456172312 , long: -122.47973032021486},
-        {lat: 37.73916158196152, long: -122.50032968544923},
-        {lat: 37.69570860158703, long: -122.40763254189454},
+        {lat: 37.7798756, long:-122.39492960000001, name: 'fun'},
+        {lat: 37.800766757533154, long: -122.40900583291017, name: 'chili'},
+        {lat:37.79398456172312 , long: -122.47973032021486, name: 'funk'},
+        {lat: 37.73916158196152, long: -122.50032968544923, name: 'eat'},
+        {lat: 37.69570860158703, long: -122.40763254189454, name: 'monkey'}
       ])
 
     hunts = Hunt.create([

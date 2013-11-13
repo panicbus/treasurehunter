@@ -37,7 +37,7 @@ class HuntsController < ApplicationController
     end
     # Finding clues for each location and adding them to the location hash
     @locations.each do |l|
-      l[:clues] = Clue.find_by_location_id(l.id)
+      l[:clues] = Clue.find_all_by_location_id(l.id)
     end
     # Adding locations w/clues to the @hunt hash
     @hunt[:loc] = @locations
@@ -51,9 +51,11 @@ class HuntsController < ApplicationController
       @hunter = {}
       progress = hi.progress
       username = User.find(hi.user_id).username
-      @hunter[:prog] = progress
-      @hunter[:name] = username
-      @hunters << @hunter
+      if hi.role == 'hunter'
+        @hunter[:prog] = progress
+        @hunter[:name] = username
+        @hunters << @hunter
+      end
       # Adding a current_user info key to the @hunt hash
       if current_user.id == hi.user_id
         @hunt[:current] = { progress: progress, name: username }
