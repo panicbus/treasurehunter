@@ -269,6 +269,8 @@ $ ->
             }
           })
 
+        huntLocCall.done (data) ->
+
 
 
   # Displaying the hunter view information
