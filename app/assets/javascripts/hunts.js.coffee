@@ -24,15 +24,15 @@ $ ->
   # When hunt is clicked it will display the proper view, either hunter or huntmaster
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
-    test = $(this).data('id')
+    hunt_id = $(this).data('id')
     if $(this).data('role') == 'hunter'
       $('.huntMasterView').addClass('display')
       $('.huntView').removeClass('display')
-      $('.huntTabs').data('id', test)
+      $('.huntTabs').data('id', hunt_id)
     else
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
-      $('.huntMasterTabs').data('id', test)
+      $('.huntMasterTabs').data('id', hunt_id)
 
   # When new hunt button is clicked it will display the huntmaster view
   $('.addHunt').click ->
@@ -166,6 +166,33 @@ $ ->
                     hunt_user: creater
                   }
               })
+            # Removing the create hunt form
+            $('.createHunt').remove()
+            # Appending the newly created hunt with details
+            # Creating a list of the participants
+            entry = "<ul>"
+            _.each players, (p) ->
+              entry += "<li><p>#{p.textContent}</p></li>"
+            entry += "</ul>"
+            $('.huntMasterDisplay').prepend("<ul class='details'>
+              <h3>Hunt Details</h3>
+              <li><h5>Hunt Title:  </h5><p>#{data.title}</p></li>
+              <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
+              <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
+              <li><h5>Start on:  </h5><p>#{data.date}</p></li>
+              <li><h5>Start Location:  </h5><p>#{data.start_location}</p></li>
+              <li><h5>Number of Clues:  </h5><p>0</p></li>
+              <li><h5>Participants:  </h5>#{entry}</li>
+            </ul>")
+            # Adding the newly created hunt_id to the huntmasterTab for referencing
+            hunt_id = data.id
+            $('.huntMasterTabs').data('id', hunt_id)
+            # Add new hunt to the hunts list on the index page
+            $('.huntList ul').prepend("<li data-role='huntmaster' data-id='#{data.id}'>
+              #{data.title}<br>
+              huntMaster<br>
+              #{data.date}<br>
+              </li>")
 
       # If there is a current hunt id
       else
