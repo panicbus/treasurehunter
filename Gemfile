@@ -9,6 +9,8 @@ gem 'sqlite3'
 gem 'devise'
 gem 'omniauth'
 gem 'eco'
+gem 'pg'
+gem 'taps'
 
 group :development, :test do
   gem 'rspec-rails'
