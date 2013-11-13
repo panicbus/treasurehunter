@@ -66,12 +66,14 @@ $ ->
     if currentTab.hasClass('huntMasterDetails')
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
-        $('.huntMasterDisplay').prepend("<form>
+        $('.huntMasterDisplay').prepend("<form class='createHunt'>
           <h3>Create a hunt!</h3>
-          Hunt Title: <input type='text' name='title'><br>
-          Hunt Description: <input type='text' name='description'><br>
-          Hunt Start Date: <input type='date' name='start_date'><br>
-          Hunt Start Time: <input type='time' name='start_time'><br>
+          Title: <input type='text' id='huntTitle'><br>
+          Description: <input type='text' id='huntDescription'><br>
+          Start Date: <input type='date' id='startDate'><br>
+          Start Time: <input type='time' id='startTime'><br>
+          Start Location: <input type='text' id='startLocation'><br>
+          Prize: <input type='text' id='huntPrize'><br>
           <button class='add_participants'>Add Participants</button>
           <ul class='hunter_list'></ul>
           <input type='submit' value='Save Hunt'>
@@ -101,6 +103,70 @@ $ ->
             event.preventDefault()
             $('#participants').remove()
             $('.add_participants').show()
+
+        $('.createHunt').submit ->
+          event.preventDefault()
+          # Grabbing form values
+          title = $('#huntTitle').val()
+          start_location = $('#startLocation').val()
+          start_time = $('#startTime').val()
+          start_date = $('#startDate').val()
+          description = $('#huntDescription').val()
+          prize = $('#huntPrize').val()
+          players = $('.hunter_list li')
+
+          # Creating an object to pass into the create hunt ajax call
+          hunt = {
+            title: title,
+            description: description,
+            prize: prize,
+            start_location: start_location,
+            date: start_date + start_time
+          }
+          # Ajax call to save the hunt
+          call = $.ajax('/hunts', {
+              method: 'POST',
+              data: {
+                hunt: hunt
+              }
+            })
+
+          call.done (data) ->
+            _.each players, (p) ->
+              # Ajax call to get the user id that corresponds to the partipants username
+              userCall = $.ajax("/user/#{p.textContent}", {
+                  method: 'GET'
+                })
+              # After a successful call, use this user id and the hunt id to save to huntUser db
+              userCall.done (user) ->
+                # Creating object with participant info
+                hunt_user = {
+                        hunt_id: data.id,
+                        user_id: user.id,
+                        progress: '1',
+                        role: 'hunter'
+                      }
+                # Making an ajax call to save participant entries to the db
+                huntUserCall = $.ajax('/hunt_users', {
+                    method: 'POST'
+                    data: {
+                      hunt_user: hunt_user
+                    }
+                  })
+            # Creating an object with current user info
+            creater = {
+                  hunt_id: data.id,
+                  user_id: data.current_user,
+                  role: 'huntmaster'
+                }
+            # Ajax call to save the current user as huntmaster in the hunt user db
+            createrCall = $.ajax('/hunt_users', {
+                method: 'POST',
+                data: {
+                    hunt_user: creater
+                  }
+              })
+
       # If there is a current hunt id
       else
         # Grabbing the current hunt id
@@ -122,7 +188,7 @@ $ ->
               <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
               <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
               <li><h5>Start on:  </h5><p>#{data.date}</p></li>
-              <li><h5>Start Location:  </h5><p>blah</p></li>
+              <li><h5>Start Location:  </h5><p>#{data.start_location}</p></li>
               <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
               <li><h5>Participants:  </h5>#{entry}</li>
             </ul>")
@@ -217,7 +283,7 @@ $ ->
             <li><h5>Hunt Description:  </h5><p>#{data.description}</p></li>
             <li><h5>Hunt Prize:  </h5><p>#{data.prize}</p></li>
             <li><h5>Start on:  </h5><p>#{data.date}</p></li>
-            <li><h5>Start Location:  </h5><p>blah</p></li>
+            <li><h5>Start Location:  </h5><p>#{data.start_location}/p></li>
             <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
             <li><h5>Participants:  </h5>#{entry}</li>
           </ul>")

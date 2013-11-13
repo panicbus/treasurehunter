@@ -67,8 +67,9 @@ class HuntsController < ApplicationController
   end
 
   def create
-    Hunt.create(params[:participant])
-    # redirect_to hunts_path
+    @hunt = Hunt.create(params[:hunt])
+    @hunt[:current_user] = current_user.id
+    render json: @hunt
   end
 
   def destroy
