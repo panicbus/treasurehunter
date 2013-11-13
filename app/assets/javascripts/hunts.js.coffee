@@ -58,7 +58,7 @@ $ ->
   $('.huntMasterTabs').on 'click', '.huntMasterNav', ->
     # grab the current tab to use in the callback
     currentTab = $(this)
-    console.log currentTab
+    # console.log currentTab
 
     # clear the tab of previous data
     $('.huntMasterDisplay').empty()
@@ -88,19 +88,36 @@ $ ->
     event.preventDefault()
     lat = $('#location_lat').val()
     long = $('#location_long').val()
-
-    locationCall = $.ajax('/locations', {
-        type: 'POST'
-        data: {
-          location: {
-            lat: lat
-            long: long
-          }
-        }
+    id = $('.huntMasterTabs').data('id')
+    # Stores the number of locations
+    nextLoc = ''
+    # Ajax call to find the numbe of locations associated with the current hunt
+    call = $.ajax("/locations/#{id}", {
+        method: 'GET'
       })
+    # After a successful it sets the nextLoc data equal to the next location number
+    call.done (data) ->
+      nextLoc = data.length + 1
+      # Ajax call to save the location to the location db
+      locationCall = $.ajax('/locations', {
+          type: 'POST'
+          data: {
+            location: {
+              lat: lat
+              long: long
+            }
+          }
+        })
+      # After a successful save, the id of the location is sent back, and an ajax call is made to save the hunt_id, loc_id, and loc_order to the huntLocation db
+      locationCall.done (data) ->
+        hunt_loc = {hunt_id: id, location_id: data.id , loc_order: nextLoc}
 
-    locationCall.done (data) ->
-      console.log data
+        huntLocCall = $.ajax("/hunt_locations", {
+            type: 'POST',
+            data: {
+              hunt_loc: hunt_loc
+            }
+          })
 
 
 

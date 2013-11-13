@@ -1,12 +1,14 @@
 class LocationsController < ApplicationController
 
-def index
-  @locations = Location.all
-end
+def show
+  @location_ids = HuntLocation.find_all_by_hunt_id(params[:id])
+  @locations = []
 
+  @location_ids.each do |l|
+    @locations << Location.find(l.location_id)
+  end
 
-def new
-  @location = Location.new
+   render json: @locations
 end
 
 
@@ -17,8 +19,7 @@ def create
   render json: @location
 end
 
-def show
-end
+
 
 def destroy
   Location.delete(params[:id])

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131112040706) do
+ActiveRecord::Schema.define(:version => 20131111213720) do
 
   create_table "clues", :force => true do |t|
     t.text     "question"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(:version => 20131112040706) do
   create_table "hunt_locations", :force => true do |t|
     t.integer  "hunt_id"
     t.integer  "location_id"
+    t.integer  "loc_order"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
@@ -52,7 +53,6 @@ ActiveRecord::Schema.define(:version => 20131112040706) do
     t.float    "long"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "loc_order"
   end
 
   create_table "users", :force => true do |t|
