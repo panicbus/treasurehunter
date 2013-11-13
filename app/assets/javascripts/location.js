@@ -25,6 +25,27 @@ function makeMap(thisHuntData){
     }
 };
 
+// function makeMap(thisHuntData){
+//   var mapOptions = {
+//     zoom: 16,
+//     mapTypeId: google.maps.MapTypeId.ROADMAP
+//   };
+
+
+    var markerArray = [];
+
+
+//   var huntMap = new google.maps.Map(document.getElementById('map'), mapOptions)
+//   for (var i = 0; i < da.length; i++)
+//     {
+//       var huntLocation = new google.maps.Marker
+//       ({
+//         position: markerArray[i],
+//         map: huntMap
+//       });
+// }
+
+
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
 function initialize() {
   var mapOptions = {
