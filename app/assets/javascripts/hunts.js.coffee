@@ -41,6 +41,7 @@ $ ->
     $('.huntMasterTabs').removeData('id')
     $('.huntMasterDisplay').empty()
 
+
   # When back button is pressed, the index page is displayed
   $('.goBack').click ->
     if !($('.huntMasterView').hasClass('display'))
