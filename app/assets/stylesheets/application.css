@@ -39,6 +39,14 @@
 .huntLeader, .leaders {
   background: lightpink;
 }
+
+.huntTabs:hover {
+  cursor: pointer;
+}
+
+li:hover {
+  cursor: pointer;
+}
 /*
 .add_participants_modal {
     left: 0px;

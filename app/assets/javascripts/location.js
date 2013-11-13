@@ -1,7 +1,28 @@
-//Define global variables
+// Define global variables
 var map;
 var currentPos;
 var marker;
+
+// function makeMap(thisHuntData){
+//   var mapOptions = {
+//     zoom: 16,
+//     mapTypeId: google.maps.MapTypeId.ROADMAP
+//   };
+
+
+    var markerArray = [];
+
+
+//   var huntMap = new google.maps.Map(document.getElementById('map'), mapOptions)
+//   for (var i = 0; i < da.length; i++)
+//     {
+//       var huntLocation = new google.maps.Marker
+//       ({
+//         position: markerArray[i],
+//         map: huntMap
+//       });
+// }
+
 
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
 function initialize() {
@@ -15,19 +36,26 @@ function initialize() {
      map.setCenter(currentPos);
   });
 
+ google.maps.event.addDomListener(currentLocButton, 'click', markCurrentLocation);
+ google.maps.event.addDomListener(searchButton, 'click', codeAddress);
+
 //adds marker to current location
   function markCurrentLocation () {
-    marker = new google.maps.Marker({
-        position: currentPos,
-        map: map,
-        draggable: true,
-        title: 'This is your current location'
+    document.getElementById('address').value='';
+    navigator.geolocation.getCurrentPosition(function(position){
+      currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      map.setCenter(currentPos);
+      document.getElementById('location_lat').value=currentPos.ob;
+      document.getElementById('location_long').value=currentPos.pb;
+        marker = new google.maps.Marker({
+            position: currentPos,
+            map: map,
+            draggable: true,
+            title: 'This is your current location'
+        });
+      google.maps.event.addDomListener(marker, 'dragend', markerMoved(marker));
     });
-    // Enter lat and long into form
-    document.getElementById('location_lat').value=currentPos.ob;
-    document.getElementById('location_long').value=currentPos.pb;
 
-    google.maps.event.addDomListener(marker, 'dragend', function() { markerMoved(marker); } );
   };
 
 //plots map and marker showing user-entered address
@@ -51,7 +79,7 @@ function initialize() {
       console.log(currentPos);
       document.getElementById('location_lat').value=currentPos.ob;
       document.getElementById('location_long').value=currentPos.pb;
-      google.maps.event.addDomListener(marker, 'dragend', function() { markerMoved(marker); } );
+      google.maps.event.addDomListener(marker, 'dragend',markerMoved(marker));
     });
   }
 
@@ -61,8 +89,7 @@ function initialize() {
     document.getElementById('location_lat').value=movedMarker.position.ob;
     document.getElementById('location_long').value=movedMarker.position.pb;
   }
- google.maps.event.addDomListener(currentLocButton, 'click', markCurrentLocation);
- google.maps.event.addDomListener(searchButton, 'click', codeAddress);
+
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

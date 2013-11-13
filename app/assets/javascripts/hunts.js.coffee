@@ -22,6 +22,7 @@ $ ->
   getHunts()
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
+  # NOTE 'display' actually means 'hide'
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
     hunt_id = $(this).data('id')
@@ -42,7 +43,7 @@ $ ->
     $('.huntMasterDisplay').empty()
 
 
-  # When "back" button is pressed, the index page is displayed
+  # When "back" button is pressed, the index page is displayed.  NOTE 'display' actually means 'hide'
   $('.goBack').click ->
     if !($('.huntMasterView').hasClass('display'))
       $('.huntMasterView').addClass('display')
@@ -249,6 +250,7 @@ $ ->
     call = $.ajax("/locations/#{id}", {
         method: 'GET'
       })
+
     # After a successful it sets the nextLoc data equal to the next location number
     call.done (data) ->
       nextLoc = data.length + 1
@@ -310,7 +312,6 @@ $ ->
 
 
 
-
   # Displaying the hunter view information
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
@@ -364,6 +365,16 @@ $ ->
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
       else if currentTab.hasClass('huntMap')
         $('.huntDisplay').prepend("<div class='map'>Map</div>")
+        #  Making the call to get all the locations for the specific hunt id
+        thisHunt = $('.huntTabs').data('id')
+        call = $.ajax("/hunts/#{thisHunt}", {
+          method: 'GET'
+        })
+      # After call is successful, the hunts are added to the hunt list on the index page
+        call.done (data) ->
+          thisHuntData = data;
+          console.log(thisHuntData.loc[0].lat)
+          makeMap(thisHuntData)
       else
         $('.huntDisplay').prepend("#{leaders}")
 
