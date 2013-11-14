@@ -17,57 +17,39 @@ getHunts = ->
         #{h.date}<br>
         </li>")
 
+# Populates the huntmasters hunt location view
 getLocations = (id) ->
+  # Getting all the locations for the hunt
   call = $.ajax("/locations/#{id}.json", {
       method: 'GET'
     })
-
+  # Cycling through the results after a successful call and prepending the locations to the list
   call.done (data) ->
+    # Cycling through the list of locs
     _.each data, (locs) ->
-      entry = '<ul class="clueList"><p class="addAClue">Add Clue</p>'
+      clue = ''
+      hint = ''
+      answer = ''
+      # Assigning the hint, clue, and answer variables
       _.each locs.clues, (c) ->
-        entry += "<li>
-          <p>#{c.question}</p>
-          <p>#{c.answer}</p>
-          </li>"
-      entry += '</ul>'
+        if c.answer == 'null'
+          hint = c.question
+        else
+          clue = c.question
+          answer = c.answer
+      # Adding the loc to the list with its clues
       $('.huntMasterDisplay').prepend(
           "<li class='showClues' data-id='#{locs.id}'>
             <h5>#{locs.name}</h5>
-            #{entry}
+            <ul class='clueList display'>
+              <p>Clue: #{clue}</p>
+              <p>Hint: #{hint}</p>
+              <p>answer: #{answer}</p>
+            </ul>
           </li>"
         )
-    $('.addAClue').click ->
-      $(this).hide()
-      $(this).parent().prepend('<form class="submitClue">
-          <input type="text" id="question" placeholder="Enter a clue question..." />
-          <input type="text" id="answer" placeholder="Enter a clue answer..." />
-          <input type="submit" />
-        </form')
 
-      $('.submitClue').submit ->
-        event.preventDefault()
-        question = $('#question').val()
-        answer = $('#answer').val()
-        id = $(this).parent().parent().data('id')
-        clue = {question: question, answer: answer, location_id: id}
-        console.log question
-        call = $.ajax('/clues', {
-            method: 'POST',
-            data: {
-              clue: clue
-            }
-          })
-        call.done (data) ->
-
-        $('.clueList').append(
-          "<li>
-            <p>#{question}</p>
-            <p>#{answer}</p>
-          </li>")
-        $('.addAClue').show()
-        $(this).remove()
-
+    # Toggling the showing of the clues for each loc
     $('.showClues').click ->
       if ($(this).children().last().hasClass('display'))
         $(this).children().last().removeClass('display')
@@ -312,6 +294,7 @@ $ ->
     name = $('#location_name').val()
     question = $('#clueQuestion').val()
     answer = $('#clueAnswer').val()
+    hint = $('clueHint').val()
 
     # Grabbing the current hunt id
     id = $('.huntMasterTabs').data('id')
@@ -353,7 +336,7 @@ $ ->
 
         # Creating the clue info object
         clueInfo = {question: question, location_id: loc_data.id, answer: answer}
-        # Ajax call is made to save the clue to the db
+        # Ajax call is made to save the clue and answer to the db
         clueCall = $.ajax('/clues', {
             method: 'POST',
             data: {
@@ -362,10 +345,20 @@ $ ->
           })
 
         clueCall.done (clue_data) ->
+        # Ajax call is made to save the hint to the db, with a null placeholder for the answer
+        hintInfo = {question: question, location_id: loc_data.id, answer: 'null'}
+
+        clueCall = $.ajax('/clues', {
+            method: 'POST',
+            data: {
+              clue: hintInfo
+            }
+          })
+        # Notifing the huntmaster that the clue was saved
+        clueCall.done (clue_data) ->
           $('#coordinates ul').empty()
           $('#coordinates ul').prepend("<p>Location: #{loc_data.name} was saved successfully!</p>")
-
-
+    # Clearing the form values
     $('#location_lat').val('')
     $('#location_long').val('')
     $('#location_name').val('')
