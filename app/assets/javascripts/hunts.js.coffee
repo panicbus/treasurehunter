@@ -390,7 +390,7 @@ $ ->
       $('.huntDisplay').empty()
       if !($('.mapDisplay').hasClass('display'))
         $('.mapDisplay').addClass('display')
-
+      console.log data
       # Setting up the participant names as a list
       entry = "<ul>"
       _.each data.name, (d) ->
@@ -430,6 +430,7 @@ $ ->
           $(this).remove()
 
       else if currentTab.hasClass('huntClues')
+        # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
         currentClues = _.find data.loc, (l) ->
           if l.order == prog
@@ -444,7 +445,7 @@ $ ->
             currentClue = c.question
           else
             currentHint = c.question
-
+        # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
           <p>#{currentClue}</p><br>
           <form class='answer'>
@@ -452,7 +453,7 @@ $ ->
             <input type='submit' />
           </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
-
+        # When answer is submitted, checking to see if hunter is correct
         $('.answer').submit ->
           event.preventDefault()
           ans = $('#answer').val()
@@ -460,6 +461,34 @@ $ ->
           # if ans = the correct answer, progress needs to be updated to the db and the next clue needs to be revealed
           if ans == currentAnswer
             console.log true
+            prog += 1
+            call = $.ajax("/hunt_users/#{id}", {
+              method: 'PUT',
+              data: {
+                progress: "#{prog}"
+              }
+            })
+
+            call.done (new_data) ->
+
+            currentClues = _.find data.loc, (l) ->
+              if l.order == prog
+                return l
+            currentAnswer = ''
+            currentHint = ''
+            currentClue = ''
+            _.find currentClues.clues, (c) ->
+              if c.answer != 'null'
+                console.log c.answer
+                currentAnswer = c.answer
+                currentClue = c.question
+              else
+                currentHint = c.question
+            console.log currentClue
+            $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
+            $('.huntDisplay p').text("#{currentClue}")
+            $('#answer').val('')
+
 
       else if currentTab.hasClass('huntMap')
 
