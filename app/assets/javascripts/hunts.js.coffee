@@ -64,6 +64,13 @@ options = {
 
 # Declaring the current coordinate variables
 crd = {}
+currentLat = 0
+currentLong = 0
+
+getDistance = (currentLat, currentLong, crd) ->
+  R = 6371
+  d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
+
 success = (pos) ->
   crd = pos.coords
   console.log crd
@@ -71,23 +78,23 @@ success = (pos) ->
   console.log('Latitude : ' + crd.latitude)
   console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
+  dist = getDistance(currentLat, currentLong, crd)
+  if dist < 1000 # 0.009144
+    $('.answer').removeClass('display')
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
-
+# Setting a timer to check the positon every 15 secs
+checkLocation = setInterval getPosition, 15000
 
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
+  # getPosition()
 
-
-  # Setting a timer to check the positon every 15 secs
-  checkLocation = setInterval getPosition, 15000
-  # Checking the user's current location
-  # checkLocation
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
   # NOTE 'display' actually means 'hide'
@@ -412,11 +419,17 @@ $ ->
 
     # Display the hunt information after the ajax call is successful
     call.done (data) ->
+      myDate = new Date()
+      huntDate = new Date("#{data.date}")
+      if huntDate < myDate && "#{data.current.progress}" >= 1
+        # Checking the user's current location
+        checkLocation
+
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
       if !($('.mapDisplay').hasClass('display'))
         $('.mapDisplay').addClass('display')
-      console.log data
+      # console.log data
       # Setting up the participant names as a list
       entry = "<ul>"
       _.each data.name, (d) ->
@@ -453,32 +466,35 @@ $ ->
                 progress: '1'
               }
             })
+          call.done (start_data) ->
+            checkLocation
           $(this).remove()
+
 
       else if currentTab.hasClass('huntClues')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
+
         currentClues = _.find data.loc, (l) ->
           if l.order == prog
+            currentLat = l.lat
+            currentLong = l.long
             return l
+
         currentAnswer = ''
         currentHint = ''
         currentClue = ''
+
         _.find currentClues.clues, (c) ->
           if c.answer != 'null'
-            console.log c.answer
+            # console.log c.answer
             currentAnswer = c.answer
             currentClue = c.question
           else
             currentHint = c.question
         # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
-          <p>#{currentClue}</p><br>
-          <form class='answer'>
-            <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
-            <input type='submit' />
-          </form>
-          <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
+          <p>#{currentClue}</p><br>")
         # When answer is submitted, checking to see if hunter is correct
         $('.answer').submit ->
           event.preventDefault()
@@ -510,7 +526,7 @@ $ ->
                 currentClue = c.question
               else
                 currentHint = c.question
-            console.log currentClue
+            # console.log currentClue
             $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
             $('.huntDisplay p').text("#{currentClue}")
             $('#answer').val('')
