@@ -61,7 +61,7 @@ options = {
   timeout: 5000,
   maximumAge: 0
 }
-# Declaring the current coordinate variables
+
 crd = {}
 success = (pos) ->
   crd = pos.coords
@@ -86,8 +86,6 @@ $ ->
   # Setting a timer to check the positon every 15 secs
   checkLocation = setInterval getPosition, 15000
   # Checking the user's current location
-  # checkLocation
-
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
   # NOTE 'display' actually means 'hide'
@@ -400,6 +398,8 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
+    console.log crd
+
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
