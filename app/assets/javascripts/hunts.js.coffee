@@ -299,6 +299,7 @@ $ ->
             }
           }
         })
+
       # After a successful save, the id of the location is sent back
       locationCall.done (loc_data) ->
         # Hunt info object is created
@@ -333,6 +334,7 @@ $ ->
     $('#location_name').val('')
     $('#clueQuestion').val('')
     $('#clueAnswer').val('')
+
 
 
 
