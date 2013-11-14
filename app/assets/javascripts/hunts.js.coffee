@@ -55,15 +55,40 @@ getLocations = (id) ->
         $(this).children().last().removeClass('display')
       else
         $(this).children().last().addClass('display')
+# Sets options for the position search
+options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+}
+crd = {}
+success = (pos) ->
+  crd = pos.coords
+  console.log crd
+  console.log('Your current position is:')
+  console.log('Latitude : ' + crd.latitude)
+  console.log('Longitude: ' + crd.longitude)
+  console.log('More or less ' + crd.accuracy + ' meters.')
+
+error = (err) ->
+  console.warn('ERROR(' + err.code + '): ' + err.message)
+# Checks the user's current position
+getPosition = ->
+  navigator.geolocation.getCurrentPosition(success, error, options)
 
 
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
 
+
+  # Setting a timer to check the positon every 15 secs
+  checkLocation = setInterval getPosition, 15000
+  # Checking the user's current location
+  checkLocation
+
+
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
-
-
   # NOTE 'display' actually means 'hide'
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
@@ -374,7 +399,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-
+    console.log crd
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
@@ -491,8 +516,6 @@ $ ->
 
 
       else if currentTab.hasClass('huntMap')
-
-        # $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
         call = $.ajax("/hunts/#{thisHunt}", {
@@ -503,6 +526,7 @@ $ ->
         call.done (data) ->
           thisHuntData = data
           makeMap(thisHuntData)
+          $('.mapDisplay').removeClass('display')
       else
         $('.huntDisplay').prepend("#{leaders}")
 
