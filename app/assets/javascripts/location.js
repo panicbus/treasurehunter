@@ -131,13 +131,13 @@ function initialize() {
     );
   };
 
-  setGeolocation();
+  // setGeolocation();
 
-  window.setInterval( function () {
-          test = setGeolocation();
-          console.log(test);
-      },
-      15000 //check every 15 seconds
-  );
+  // window.setInterval( function () {
+  //         test = setGeolocation();
+  //         console.log(test);
+  //     },
+  //     15000 //check every 15 seconds
+  // );
 
 google.maps.event.addDomListener(window, 'load', initialize);
