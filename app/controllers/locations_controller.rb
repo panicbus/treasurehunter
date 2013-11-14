@@ -13,7 +13,11 @@ class LocationsController < ApplicationController
       @locations << Location.find(l.location_id)
     end
 
-     render json: @locations
+    @locations.each do |l|
+      l[:clues] = Clue.find_all_by_location_id(l.id)
+    end
+
+    render json: @locations
   end
 
 
