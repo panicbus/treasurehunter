@@ -1,6 +1,7 @@
 TreasureHunter::Application.routes.draw do
 
   post "hunt_locations", to: 'hunt_locations#create'
+  put "hunt_users/:id", to: 'hunt_users#update'
 
   post "hunt_users", to: "hunt_users#create"
   post "hunt_users/:id/confirm", to: "hunt_users#confirm_participation"

@@ -33,7 +33,9 @@ class HuntsController < ApplicationController
     @locations = []
     # Find locations based on location ids for that hunt and adding them to an array
     @location_ids.each do |loc|
-      @locations << Location.find(loc.location_id)
+      location = Location.find(loc.location_id)
+      location[:order] = loc.loc_order
+      @locations << location
     end
     # Finding clues for each location and adding them to the location hash
     @locations.each do |l|

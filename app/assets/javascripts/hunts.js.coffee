@@ -9,7 +9,7 @@ getHunts = ->
     })
   # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
-    console.log data
+    # console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         #{h.title}<br>
@@ -170,7 +170,7 @@ $ ->
             description: description,
             prize: prize,
             start_location: start_location,
-            date: start_date + start_time
+            date: start_date + ' ' + start_time
           }
           # Ajax call to save the hunt
           call = $.ajax('/hunts', {
@@ -377,7 +377,7 @@ $ ->
 
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
-    console.log id
+    # console.log id
     # Make the ajax call to get the hunt information
     call = $.ajax("/hunts/#{id}", {
         method: 'GET'
@@ -415,14 +415,52 @@ $ ->
             <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
             <li><h5>Participants:  </h5>#{entry}</li>
           </ul>")
+        myDate = new Date()
+        huntDate = new Date("#{data.date}")
+        if huntDate < myDate && "#{data.current.progress}" < 1
+          $('.huntDisplay').append('<button class="start">Start</button>')
+
+        $('.start').click ->
+          call = $.ajax("/hunt_users/#{id}", {
+              method: 'PUT',
+              data: {
+                progress: '1'
+              }
+            })
+          $(this).remove()
+
       else if currentTab.hasClass('huntClues')
+        prog = parseInt(data.current.progress)
+        currentClues = _.find data.loc, (l) ->
+          if l.order == prog
+            return l
+        currentAnswer = ''
+        currentHint = ''
+        currentClue = ''
+        _.find currentClues.clues, (c) ->
+          if c.answer != 'null'
+            console.log c.answer
+            currentAnswer = c.answer
+            currentClue = c.question
+          else
+            currentHint = c.question
+
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
-          <p>My money's in that office, right? If she start giving me some bullshit about it ain't there, and we got to go someplace else and get it, I'm gonna shoot you in the head then and there. Then I'm gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look at me when I'm talking to you, motherfucker.</p><br>
+          <p>#{currentClue}</p><br>
           <form class='answer'>
             <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
             <input type='submit' />
-            </form>
+          </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
+
+        $('.answer').submit ->
+          event.preventDefault()
+          ans = $('#answer').val()
+
+          # if ans = the correct answer, progress needs to be updated to the db and the next clue needs to be revealed
+          if ans == currentAnswer
+            console.log true
+
       else if currentTab.hasClass('huntMap')
 
         # $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
@@ -438,6 +476,7 @@ $ ->
           makeMap(thisHuntData)
       else
         $('.huntDisplay').prepend("#{leaders}")
+
 
 
 
