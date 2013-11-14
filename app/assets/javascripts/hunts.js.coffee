@@ -65,6 +65,13 @@ options = {
   maximumAge: 0
 }
 crd = {}
+currentLat = 0
+currentLong = 0
+
+getDistance = (currentLat, currentLong, crd) ->
+  R = 6371
+  d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
+
 success = (pos) ->
   crd = pos.coords
   console.log crd
@@ -72,6 +79,9 @@ success = (pos) ->
   console.log('Latitude : ' + crd.latitude)
   console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
+  dist = getDistance(currentLat, currentLong, crd)
+  if dist < 1000 # 0.009144
+    $('.answer').removeClass('display')
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
@@ -157,11 +167,6 @@ $ ->
   getHunts()
   # getPosition()
 
-
-  # Setting a timer to check the positon every 15 secs
-  checkLocation = setInterval getPosition, 15000
-  # Checking the user's current location
-  checkLocation
 
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
