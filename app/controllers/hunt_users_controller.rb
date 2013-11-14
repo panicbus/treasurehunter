@@ -35,4 +35,3 @@ class HuntUsersController < ApplicationController
     end
   end
 end
-
