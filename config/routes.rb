@@ -1,10 +1,13 @@
 TreasureHunter::Application.routes.draw do
 
-  post "hunt_users", to: 'hunt_users#create'
+  post "hunt_locations", to: 'hunt_locations#create'
+
+  post "hunt_users", to: "hunt_users#create"
+  post "hunt_users/:id/confirm", to: "hunt_users#confirm_participation"
+
+  get "hunt_users/:id/:hunt_id/store_hunter", to: "hunt_users#store_hunter"
 
   get "user/:username", to: 'users#show'
-
-  post "hunt_locations", to: 'hunt_locations#create'
 
   devise_for :users
 
