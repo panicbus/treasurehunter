@@ -1,0 +1,21 @@
+<div class='email-heading'>
+  <h1>Hi there <%= @current_user.username %>!</h1>
+</div>
+
+<div class='email-body'>
+  <div class-'email-primary-message'>
+    <h3>You are invited to join <%= @hunt.title %> at TreasureHunter! Here are the details:</h3>
+  </div>
+  <p>Description: <%= @hunt.description %></p>
+  <p>Date: <%= @hunt.date %></p>
+  <p>Start Location: <%= @hunt.start_location %></p>
+  <p>Prize: <%= @hunt.prize %></p>
+</div>
+
+<div class='email-subheading'>
+  <h2>Please confirm by choosing a link below.</h2>
+</div>
+
+<div class='email-links'>
+  <%= link_to 'Accept Invitation', "http://localhost:3000/hunt_users/#{@current_user.id}/#{@hunt.id}/store_hunter" %>
+</div>

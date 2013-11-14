@@ -178,7 +178,7 @@ $ ->
                         role: 'hunter'
                       }
                 # Making an ajax call to save participant entries to the db
-                huntUserCall = $.ajax("/hunt_users", {
+                huntUserCall = $.ajax("/hunt_users/#{user.id}/confirm", {
                     method: 'POST'
                     data: {
                       hunt_user: hunt_user

@@ -1,8 +1,9 @@
 class UserMailer < ActionMailer::Base
   default from: "treasurehunterrailsapp@gmail.com"
 
-  def test_email(current_user)
+  def confirm_add_to_hunt(current_user, hunt)
     @current_user = current_user
-    mail(to: @current_user.email, subject: 'Test message')
+    @hunt = hunt
+    mail(to: @current_user.email, subject: 'TreasureHunter: You are invited to a hunting party!')
   end
 end
