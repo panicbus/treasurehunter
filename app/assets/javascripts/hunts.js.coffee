@@ -67,7 +67,6 @@ success = (pos) ->
   # console.log('Your current position is:')
   # console.log('Latitude : ' + crd.latitude)
   # console.log('Longitude: ' + crd.longitude)
-<<<<<<< HEAD
   console.log('More or less ' + crd.accuracy + ' meters.')
   dist = getDistance(currentLat, currentLong, crd)
   if dist < 1000 # 0.009144
