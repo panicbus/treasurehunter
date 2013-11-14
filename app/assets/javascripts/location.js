@@ -8,6 +8,7 @@ var JLcenter;
 var JLmapTypeId;
 var latitude, longitude, accuracy;
 var windowContent;
+var markerArray;
 var infowindow;
 
 //makeMap uses json data for hunt to plot locations and show clue in infowindow
@@ -21,7 +22,6 @@ function makeMap(thisHuntData){
       mapTypeId: JLmapTypeId,
       center: JLcenter
     };
-
   JLMap = new google.maps.Map(document.getElementById('huntMap'), JLmapOptions);
     for (var i = 0; i < thisHuntData.loc.length; i++){
         var marker = new google.maps.Marker({
@@ -41,6 +41,8 @@ function makeMap(thisHuntData){
             infowindow.open(JLMap,this);
           });
     }
+console.log(windowContent);
+console.log(i);
 };
 
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
@@ -95,7 +97,6 @@ function initialize() {
           alert('Geocode was not successful for the following reason: ' + status);
       }
       // Enter lat and long into form
-
       document.getElementById('location_lat').value=currentPos.ob;
       document.getElementById('location_long').value=currentPos.pb;
       google.maps.event.addDomListener(marker, 'dragend',markerMoved);
