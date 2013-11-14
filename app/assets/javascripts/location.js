@@ -10,10 +10,19 @@ var windowContent;
 var markerArray;
 var infowindow;
 
-//makeMap uses json data for hunt to plot locations and show clue in infowindow
-function makeMap(thisHuntData){
+
+//makeMap uses json data for hunt to plot locations and show clues in infowindows
+function makeMap(thisHuntData, role, prog){
   windowContent = [];
   markerArray = [];
+  var maxShowMarker;
+  function setMaxShowMarker (){
+    if (role==="hunter"){
+      maxShowMarker = prog-1;
+    }
+    else maxShowMarker = thisHuntData.loc.length;
+  };
+  setMaxShowMarker();
   JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat,thisHuntData.loc[0].long);
   JLmapTypeId = google.maps.MapTypeId.ROADMAP
     JLmapOptions = {
@@ -22,14 +31,26 @@ function makeMap(thisHuntData){
       center: JLcenter
     };
   JLMap = new google.maps.Map(document.getElementById('huntMap'), JLmapOptions);
-    for (var i = 0; i < thisHuntData.loc.length; i++){
+    for (var i = 0; i < maxShowMarker; i++){
+
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(thisHuntData.loc[i].lat,thisHuntData.loc[i].long),
           map: JLMap,
         });
         markerArray[i]=marker;
         marker.myIndex = i;
-          windowContent[i] = thisHuntData.loc[i].clues[0].question;
+
+        //fill in content window with hunt details for huntmaster
+          var contentString = '<div id="content">'+
+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+      'sandstone rock formation in the southern part of the '+
+      'Northern Territory, central Australia.</p>'+
+      '</div>';
+        windowContent[i] = contentString;
+          // windowContent[i] = thisHuntData.loc[i].clues[0].question;
+
             google.maps.event.addListener(marker, 'click', function() {
               if(infowindow) {
                   infowindow.close();
@@ -40,20 +61,18 @@ function makeMap(thisHuntData){
             infowindow.open(JLMap,this);
           });
     }
-console.log(windowContent);
-console.log(i);
 };
 
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
 function initialize() {
+ navigator.geolocation.getCurrentPosition(function(position){
+    currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
   var mapOptions = {
     zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-  navigator.geolocation.getCurrentPosition(function(position){
-    currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-     map.setCenter(currentPos);
+  map = new google.maps.Map(document.getElementById('map-foo'), mapOptions);
+  map.setCenter(currentPos);
   });
 
  google.maps.event.addDomListener(currentLocButton, 'click', markCurrentLocation);
@@ -95,18 +114,17 @@ function initialize() {
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
       }
-      // Enter lat and long into form
+      // Enter lat and long into new clue marker form
       document.getElementById('location_lat').value=currentPos.ob;
       document.getElementById('location_long').value=currentPos.pb;
       google.maps.event.addDomListener(marker, 'dragend',markerMoved);
     });
   }
-
+//update co-ordinates for new clue marker if marker moved (before saved to db)
   function markerMoved(){
     document.getElementById('location_lat').value=marker.position.ob;
     document.getElementById('location_long').value=marker.position.pb;
   };
 
 }
-
 google.maps.event.addDomListener(window, 'load', initialize);

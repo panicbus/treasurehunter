@@ -17,13 +17,15 @@ getHunts = ->
         #{h.date}<br>
         </li>")
 
-# Populates the huntmasters hunt location view
+
 getLocations = (id) ->
-  # Getting all the locations for the hunt
-  call = $.ajax("/locations/#{id}.json", {
+# Populates the huntmasters hunt location view
+  # thisHunt = $('.huntTabs').data('id')
+  call = $.ajax("/hunts/#{id}", {
       method: 'GET'
     })
-  # Cycling through the results after a successful call and prepending the locations to the list
+
+# After call is successful, the locations map is plotted
   call.done (data) ->
     # Cycling through the list of locs
     _.each data, (locs) ->
@@ -536,17 +538,21 @@ $ ->
 
 
       else if currentTab.hasClass('huntMap')
+        $('.huntDisplay').removeClass('display')
+        $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
+        prog = parseInt(data.current.progress)
         call = $.ajax("/hunts/#{thisHunt}", {
           method: 'GET'
         })
-
       # After call is successful, the locations map is plotted
         call.done (data) ->
           thisHuntData = data
-          makeMap(thisHuntData)
-          $('.mapDisplay').removeClass('display')
+          role = "hunter"
+          prog = prog
+          makeMap(thisHuntData, role, prog)
+          $('.huntDisplay').removeClass('display')
       else
         $('.huntDisplay').prepend("#{leaders}")
 
