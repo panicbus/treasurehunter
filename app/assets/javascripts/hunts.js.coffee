@@ -17,24 +17,27 @@ getHunts = ->
         #{h.date}<br>
         </li>")
 
-# makeMap = (thisHuntData) ->
-#   document.getElementById('huntMap').innerHTML = 'hi'
-#   mapOptions =
-#     zoom: 16
-#     mapTypeId: google.maps.MapTypeId.ROADMAP
-#     center: new google.maps.LatLng(-34.397, 150.644)
-#   console.log mapOptions
-  # console.log thisHuntData.loc.length
-  # thisHuntLocs = thisHuntData.loc
-  # huntMap = new google.maps.Map(document.getElementById('huntMap'), mapOptions)
-  # i = 0
+getLocations = (id) ->
+  call = $.ajax("/locations/#{id}.json", {
+      method: 'GET'
+    })
 
-  # while i < thisHuntLocs.length
-  #   huntLocation = new google.maps.Marker(
-  #     position: [ thisHuntLocs[i].lat, thisHuntLocs[i].long ]
-  #     map: huntMap
-  #   )
-  #   i++
+  call.done (data) ->
+    console.log data
+    _.each data, (locs) ->
+      entry = "<ul class='clueList'>"
+      _.each locs.clues, (c) ->
+        entry += "<li>
+          <p>#{c.question}</p>
+          <p>#{c.answer}</p>
+          </li>"
+      entry += '<p class="addAClue">Add Clue</p></ul>'
+      $('.huntMasterDisplay').prepend(
+          "<li>
+            <h5>#{locs.name}</h5>
+            #{entry}
+          </li>"
+        )
 
 $ ->
   # Populating the index page with user-specific hunts
@@ -70,9 +73,12 @@ $ ->
       $('.huntView').addClass('display')
     if !($('.mapView').hasClass('display'))
       $('.mapView').addClass('display')
+    if !($('.mapDisplay').hasClass('display'))
+      $('.mapDisplay').addClass('display')
     $('.indexView').removeClass('display')
     $('.huntMasterDisplay').empty()
     $('.huntDisplay').empty()
+    $('#coordinates ul').empty()
 
   #**** Huntmaster View ****
   #display hunt info
@@ -82,6 +88,7 @@ $ ->
     # clear the tab of previous data
     $('.huntMasterDisplay').empty()
     $('.mapView').addClass('display')
+    $('#coordinates ul').empty()
     # if Hunt Details tab is clicked, show the Create Hunt form or the hunt details
     if currentTab.hasClass('huntMasterDetails')
 
@@ -168,7 +175,7 @@ $ ->
                         role: 'hunter'
                       }
                 # Making an ajax call to save participant entries to the db
-                huntUserCall = $.ajax('/hunt_users', {
+                huntUserCall = $.ajax("/hunt_users", {
                     method: 'POST'
                     data: {
                       hunt_user: hunt_user
@@ -240,15 +247,21 @@ $ ->
               <li><h5>Number of Clues:  </h5><p>#{data.loc.length}</p></li>
               <li><h5>Participants:  </h5>#{entry}</li>
             </ul>")
-    # If hunt locations is clicked, the map or an alert will show
-    else
+    # If add locations is clicked, the map or an alert will show
+    else if currentTab.hasClass('huntMasterClues')
       # If there is an current hunt id
       if $('.huntMasterTabs').data('id')
         $('.mapView').removeClass('display')
       # If there isnt a hunt id
       else
         alert('Sorry! You need to save a hunt before you can add locations.')
-
+    # If hunt locations is clicked
+    else
+      $('.huntMasterDisplay').empty()
+      if !($('.mapView').hasClass('display'))
+        $('.mapView').addClass('display')
+      id = $('.huntMasterTabs').data('id')
+      getLocations(id)
 
 
   # Adding a location to a hunt
@@ -309,17 +322,8 @@ $ ->
           })
 
         clueCall.done (clue_data) ->
-          entry = "</li data-id='#{loc_data.id}'>
-                    <p>#{loc_data.name}</p>
-                    <ul class='clues'>
-                      <p class='newClue'>Add a clue</p>
-                      <li data-id='#{clue_data.id}' data-order='1'>
-                        <p>#{clue_data.question}</p>
-                        <p>#{clue_data.answer}</p>
-                      </li>
-                    </ul>
-                  </li>"
-          $('#coordinates ul').prepend(entry)
+          $('#coordinates ul').empty()
+          $('#coordinates ul').prepend("<p>Location: #{loc_data.name} was saved successfully!</p>")
 
 
     $('#location_lat').val('')
@@ -349,6 +353,8 @@ $ ->
     call.done (data) ->
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
+      if !($('.mapDisplay').hasClass('display'))
+        $('.mapDisplay').addClass('display')
 
       # Setting up the participant names as a list
       entry = "<ul>"
@@ -383,7 +389,8 @@ $ ->
             </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
       else if currentTab.hasClass('huntMap')
-        # $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
+        # Displays the map
+        $('.mapDisplay').removeClass('display')
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
         call = $.ajax("/hunts/#{thisHunt}", {
