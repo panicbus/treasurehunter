@@ -45,6 +45,7 @@ $ ->
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
 
+
   # NOTE 'display' actually means 'hide'
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
@@ -340,7 +341,6 @@ $ ->
 
 
 
-
   # Displaying the hunter view information
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
@@ -395,13 +395,14 @@ $ ->
             </form>
           <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
       else if currentTab.hasClass('huntMap')
-        # Displays the map
-        $('.mapDisplay').removeClass('display')
+
+        # $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
         call = $.ajax("/hunts/#{thisHunt}", {
           method: 'GET'
         })
+
       # After call is successful, the locations map is plotted
         call.done (data) ->
           thisHuntData = data
