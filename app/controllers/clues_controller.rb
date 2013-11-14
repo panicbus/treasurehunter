@@ -4,7 +4,7 @@ class CluesController < ApplicationController
   end
 
   def create
-    @clue = Clue.create(params[:clueby])
+    @clue = Clue.create(params[:clue])
     render json: @clue
   end
 

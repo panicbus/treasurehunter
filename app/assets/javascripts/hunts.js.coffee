@@ -23,21 +23,57 @@ getLocations = (id) ->
     })
 
   call.done (data) ->
-    console.log data
     _.each data, (locs) ->
-      entry = "<ul class='clueList'>"
+      entry = '<ul class="clueList"><p class="addAClue">Add Clue</p>'
       _.each locs.clues, (c) ->
         entry += "<li>
           <p>#{c.question}</p>
           <p>#{c.answer}</p>
           </li>"
-      entry += '<p class="addAClue">Add Clue</p></ul>'
+      entry += '</ul>'
       $('.huntMasterDisplay').prepend(
-          "<li>
+          "<li class='showClues' data-id='#{locs.id}'>
             <h5>#{locs.name}</h5>
             #{entry}
           </li>"
         )
+    $('.addAClue').click ->
+      $(this).hide()
+      $(this).parent().prepend('<form class="submitClue">
+          <input type="text" id="question" placeholder="Enter a clue question..." />
+          <input type="text" id="answer" placeholder="Enter a clue answer..." />
+          <input type="submit" />
+        </form')
+
+      $('.submitClue').submit ->
+        event.preventDefault()
+        question = $('#question').val()
+        answer = $('#answer').val()
+        id = $(this).parent().parent().data('id')
+        clue = {question: question, answer: answer, location_id: id}
+        console.log question
+        call = $.ajax('/clues', {
+            method: 'POST',
+            data: {
+              clue: clue
+            }
+          })
+        call.done (data) ->
+
+        $('.clueList').append(
+          "<li>
+            <p>#{question}</p>
+            <p>#{answer}</p>
+          </li>")
+        $('.addAClue').show()
+        $(this).remove()
+
+    $('.showClues').click ->
+      if ($(this).children().last().hasClass('display'))
+        $(this).children().last().removeClass('display')
+      else
+        $(this).children().last().addClass('display')
+
 
 $ ->
   # Populating the index page with user-specific hunts
@@ -321,7 +357,7 @@ $ ->
         clueCall = $.ajax('/clues', {
             method: 'POST',
             data: {
-              clueby: clueInfo
+              clue: clueInfo
             }
           })
 
