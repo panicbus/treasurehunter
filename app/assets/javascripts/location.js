@@ -25,45 +25,6 @@ function makeMap(thisHuntData){
     }
 };
 
-function makeMap(thisHuntData){
-  JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat,thisHuntData.loc[0].long);
-  JLmapTypeId = google.maps.MapTypeId.ROADMAP
-    JLmapOptions = {
-      zoom: 12,
-      mapTypeId: JLmapTypeId,
-      center: JLcenter
-    };
-
-  JLMap = new google.maps.Map(document.getElementById('huntMap'), JLmapOptions);
-    for (var i = 0; i < thisHuntData.loc.length; i++){
-        var huntLocation = new google.maps.Marker({
-          position: new google.maps.LatLng(thisHuntData.loc[i].lat,thisHuntData.loc[i].long),
-          map: JLMap
-        });
-    }
-};
-
-// function makeMap(thisHuntData){
-//   var mapOptions = {
-//     zoom: 16,
-//     mapTypeId: google.maps.MapTypeId.ROADMAP
-//   };
-
-
-    var markerArray = [];
-
-
-//   var huntMap = new google.maps.Map(document.getElementById('map'), mapOptions)
-//   for (var i = 0; i < da.length; i++)
-//     {
-//       var huntLocation = new google.maps.Marker
-//       ({
-//         position: markerArray[i],
-//         map: huntMap
-//       });
-// }
-
-
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
 function initialize() {
   var mapOptions = {
