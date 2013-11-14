@@ -6,7 +6,6 @@ var JLmapOptions;
 var JLMap;
 var JLcenter;
 var JLmapTypeId;
-var latitude, longitude, accuracy;
 var windowContent;
 var markerArray;
 var infowindow;
@@ -109,35 +108,5 @@ function initialize() {
   };
 
 }
-  // sets the device's geolocation and check on regular intervals
-  function setGeolocation() {
-    // watchPosition will regularly check geolocation
-    var geolocation = window.navigator.geolocation.watchPosition(
-        function ( position ) {
-            latitude = position.coords.latitude;  // and stores lat/long to print
-            longitude = position.coords.longitude;
-            // accuracy = position.coords.accuracy;
-        },
-        function () {
-            maximumAge: 250, // determines how long to keep location cache in miliseconds
-            enableHighAccuracy: true
-        }
-    );
-
-    window.setTimeout( function () {
-            window.navigator.geolocation.clearWatch( geolocation )
-        },
-        (1000 * 60 * 20) // determines when to stop checking for location, in this case after 20 minute
-    );
-  };
-
-  // setGeolocation();
-
-  // window.setInterval( function () {
-  //         test = setGeolocation();
-  //         console.log(test);
-  //     },
-  //     15000 //check every 15 seconds
-  // );
 
 google.maps.event.addDomListener(window, 'load', initialize);
