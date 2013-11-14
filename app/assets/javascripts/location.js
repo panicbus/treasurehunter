@@ -105,7 +105,7 @@ function initialize() {
             longitude = position.coords.longitude;
             accuracy = position.coords.accuracy;
         },
-        function (), {
+        function () {
             maximumAge: 250, // determines how long to keep location cache in miliseconds
             enableHighAccuracy: true
         }
