@@ -4,10 +4,13 @@ class SendTextsController < ApplicationController
   end
 
   def make_message
-    @user_phone_number = params[:user_phone_number]
-
-    @phone_number = params[:phone_number]
-
+    p params[:phone_number]
+    phone_number = params[:phone_number]
+    # respond_to do |format|
+    #   format
+    # end
+    render text: 'Ok'
+>>>>>>> working on text messages
   end
 
 end

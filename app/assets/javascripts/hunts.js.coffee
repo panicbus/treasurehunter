@@ -138,7 +138,7 @@ options = {
 crd = {}
 currentLat = 0
 currentLong = 0
-
+status = false
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
   d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
@@ -153,6 +153,14 @@ success = (pos) ->
   dist = getDistance(currentLat, currentLong, crd)
   if dist < 1000 # 0.009144
     $('.answer').removeClass('display')
+    # phone_number = {phone_number: '4154076529', body: 'test'}
+    if status == false
+      textcall = $.ajax("/send_texts/", {
+          method: 'POST',
+          data: {
+            phone_number: "+14158893434"
+          }
+        })
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
