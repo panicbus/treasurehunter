@@ -19,10 +19,10 @@ class HuntUsersController < ApplicationController
     if user_signed_in?
       redirect_to hunts_path
     else
-      redirect_to new_user_session_path
+        redirect_to new_user_session_path
+      end
     end
   end
-end
 
   def update
     @hunt_user = HuntUser.where(:hunt_id => params[:id], :user_id => current_user.id)

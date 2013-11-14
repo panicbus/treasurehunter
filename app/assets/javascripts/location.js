@@ -103,7 +103,7 @@ function initialize() {
         function ( position ) {
             latitude = position.coords.latitude;  // and stores lat/long to print
             longitude = position.coords.longitude;
-            accuracy = position.coords.accuracy;
+            // accuracy = position.coords.accuracy;
         },
         function () {
             maximumAge: 250, // determines how long to keep location cache in miliseconds
@@ -121,10 +121,10 @@ function initialize() {
   setGeolocation();
 
   window.setInterval( function () {
-          setGeolocation();
+          test = setGeolocation();
+          console.log(test);
       },
       15000 //check every 15 seconds
   );
-
 
 google.maps.event.addDomListener(window, 'load', initialize);
