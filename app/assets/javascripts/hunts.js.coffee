@@ -400,7 +400,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-
+    console.log crd
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
