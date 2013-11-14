@@ -7,8 +7,13 @@ var JLMap;
 var JLcenter;
 var JLmapTypeId;
 var latitude, longitude, accuracy;
+var windowContent;
+var infowindow;
 
+//makeMap uses json data for hunt to plot locations and show clue in infowindow
 function makeMap(thisHuntData){
+  windowContent = [];
+  markerArray = [];
   JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat,thisHuntData.loc[0].long);
   JLmapTypeId = google.maps.MapTypeId.ROADMAP
     JLmapOptions = {
@@ -19,10 +24,22 @@ function makeMap(thisHuntData){
 
   JLMap = new google.maps.Map(document.getElementById('huntMap'), JLmapOptions);
     for (var i = 0; i < thisHuntData.loc.length; i++){
-        var huntLocation = new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: new google.maps.LatLng(thisHuntData.loc[i].lat,thisHuntData.loc[i].long),
-          map: JLMap
+          map: JLMap,
         });
+        markerArray[i]=marker;
+        marker.myIndex = i;
+          windowContent[i] = thisHuntData.loc[i].clues[0].question;
+            google.maps.event.addListener(marker, 'click', function() {
+              if(infowindow) {
+                  infowindow.close();
+              }
+            infowindow = new google.maps.InfoWindow({
+              content: windowContent[this.myIndex]
+              });
+            infowindow.open(JLMap,this);
+          });
     }
 };
 
@@ -53,9 +70,9 @@ function initialize() {
             position: currentPos,
             map: map,
             draggable: true,
-            title: 'This is your current location'
+            title: 'This is your current location',
         });
-      google.maps.event.addDomListener(marker, 'dragend', markerMoved(marker));
+      google.maps.event.addDomListener(marker, 'dragend', markerMoved);
     });
 
   };
@@ -78,22 +95,17 @@ function initialize() {
           alert('Geocode was not successful for the following reason: ' + status);
       }
       // Enter lat and long into form
-      console.log('from codeAddress is currentPos');
-      console.log(currentPos);
+
       document.getElementById('location_lat').value=currentPos.ob;
       document.getElementById('location_long').value=currentPos.pb;
-      google.maps.event.addDomListener(marker, 'dragend',markerMoved(marker));
+      google.maps.event.addDomListener(marker, 'dragend',markerMoved);
     });
   }
 
-  function markerMoved(movedMarker){
-    movedMarker.title = movedMarker.position;
-    // Enter lat and long into form
-    console.log('from markerMoved is position.ob');
-    console.log(movedMarker.position.ob);
-    document.getElementById('location_lat').value=movedMarker.position.ob;
-    document.getElementById('location_long').value=movedMarker.position.pb;
-  }
+  function markerMoved(){
+    document.getElementById('location_lat').value=marker.position.ob;
+    document.getElementById('location_long').value=marker.position.pb;
+  };
 
 }
   // sets the device's geolocation and check on regular intervals
