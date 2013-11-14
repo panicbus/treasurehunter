@@ -63,6 +63,7 @@ options = {
 }
 
 # Declaring the current coordinate variables
+
 crd = {}
 success = (pos) ->
   crd = pos.coords
@@ -82,7 +83,6 @@ getPosition = ->
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
-
 
   # Setting a timer to check the positon every 15 secs
   checkLocation = setInterval getPosition, 15000
@@ -400,7 +400,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-
+    console.log crd
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
