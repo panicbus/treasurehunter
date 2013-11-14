@@ -44,6 +44,7 @@ $ ->
   getHunts()
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
+
   # NOTE 'display' actually means 'hide'
   $('.huntList').on 'click', 'li', ->
     $('.indexView').addClass('display')
@@ -91,6 +92,7 @@ $ ->
     $('#coordinates ul').empty()
     # if Hunt Details tab is clicked, show the Create Hunt form or the hunt details
     if currentTab.hasClass('huntMasterDetails')
+
 
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
