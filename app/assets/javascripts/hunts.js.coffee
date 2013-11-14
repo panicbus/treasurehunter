@@ -27,36 +27,41 @@ getLocations = (id) ->
 
 # After call is successful, the locations map is plotted
   call.done (data) ->
-    # Cycling through the list of locs
-    _.each data, (locs) ->
-      clue = ''
-      hint = ''
-      answer = ''
-      # Assigning the hint, clue, and answer variables
-      _.each locs.clues, (c) ->
-        if c.answer == 'null'
-          hint = c.question
-        else
-          clue = c.question
-          answer = c.answer
-      # Adding the loc to the list with its clues
-      $('.huntMasterDisplay').prepend(
-          "<li class='showClues' data-id='#{locs.id}'>
-            <h5>#{locs.name}</h5>
-            <ul class='clueList display'>
-              <p>Clue: #{clue}</p>
-              <p>Hint: #{hint}</p>
-              <p>answer: #{answer}</p>
-            </ul>
-          </li>"
-        )
+    thisHuntData = data
+    role = "huntmaster"
+    $('.huntMasterDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
+    $('.huntMasterDisplay').removeClass('display')
+    makeMap(thisHuntData, role)
+#     # Cycling through the list of locs
+#     _.each data, (locs) ->
+#       clue = ''
+#       hint = ''
+#       answer = ''
+#       # Assigning the hint, clue, and answer variables
+#       _.each locs.clues, (c) ->
+#         if c.answer == 'null'
+#           hint = c.question
+#         else
+#           clue = c.question
+#           answer = c.answer
+#       # Adding the loc to the list with its clues
+#       $('.huntMasterDisplay').prepend(
+#           "<li class='showClues' data-id='#{locs.id}'>
+#             <h5>#{locs.name}</h5>
+#             <ul class='clueList display'>
+#               <p>Clue: #{clue}</p>
+#               <p>Hint: #{hint}</p>
+#               <p>answer: #{answer}</p>
+#             </ul>
+#           </li>"
+#         )
 
-    # Toggling the showing of the clues for each loc
-    $('.showClues').click ->
-      if ($(this).children().last().hasClass('display'))
-        $(this).children().last().removeClass('display')
-      else
-        $(this).children().last().addClass('display')
+#     # Toggling the showing of the clues for each loc
+#     $('.showClues').click ->
+#       if ($(this).children().last().hasClass('display'))
+#         $(this).children().last().removeClass('display')
+#       else
+#         $(this).children().last().addClass('display')
 # Sets options for the position search
 options = {
   enableHighAccuracy: true,
