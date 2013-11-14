@@ -503,6 +503,7 @@ $ ->
         call.done (data) ->
           thisHuntData = data
           makeMap(thisHuntData)
+          $('.mapDisplay').removeClass('display')
       else
         $('.huntDisplay').prepend("#{leaders}")
 
