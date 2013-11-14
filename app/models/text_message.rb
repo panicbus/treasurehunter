@@ -15,7 +15,7 @@ class TextMessage < ActiveRecord::Base
     account = client.account
     message = account.sms.messages.create({
       :from => "+1#{twilio_phone_number}",
-      :to => phone_number,
+      :to => '+14158893434',
       :body => "You're getting warm! You're less than 100 feet away!"
       })
       puts "Sent message."
