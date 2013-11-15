@@ -60,7 +60,6 @@ getDistance = (currentLat, currentLong, crd) ->
   R = 6371
   d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
 
-<<<<<<< HEAD
 # On a successful position check the current coordinates are stored and if distance is within the bounds of the clue location a text is sent to the user. also status is set to true to prevent texts from continually being sent
 success = (pos) ->
   crd = pos.coords

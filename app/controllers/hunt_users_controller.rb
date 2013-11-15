@@ -19,8 +19,7 @@ class HuntUsersController < ApplicationController
     if signed_in?(user)
       redirect_to hunts_path
     else
-        redirect_to new_user_session_path
-
+      redirect_to new_user_session_path
     end
   end
 
