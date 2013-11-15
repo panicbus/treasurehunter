@@ -99,6 +99,10 @@ $ ->
   getHunts()
   # getPosition()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb85fd76e3004d185f797b259c086f194836040d
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
   # NOTE 'display' actually means 'hide'
@@ -416,7 +420,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-    console.log crd
+
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
