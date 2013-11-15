@@ -9,6 +9,6 @@ class User < ActiveRecord::Base
   # Deleted duplicate attr_accessible line for Treasure_Hunter
   attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :provider, :uid, :name, :phone_number
 
-  validate :username, uniqueness: true
-  validate :phone_number, presence: true
+  validates :username, uniqueness: true, presence: true
+  validates :phone_number, presence: true, numericality: { only_integer: true }, length: { is: 10 }
 end

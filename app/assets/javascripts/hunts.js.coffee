@@ -85,8 +85,6 @@ error = (err) ->
 # Checks the user's current position
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
-# Setting a timer to check the positon every 15 secs
-checkLocation = setInterval getPosition, 15000
 
 # Storing the location coordinates for the current clue location, as well as its associated clues
 clueLocation = (data, prog) ->
@@ -230,10 +228,12 @@ $ ->
             _.each players, (p) ->
               # Ajax call to get the user id that corresponds to the partipants username
               userCall = $.ajax("/user/#{p.textContent}", {
-                  method: 'GET'
+                  method: 'GET',
                 })
               # After a successful call, use this user id and the hunt id to save to huntUser db
               userCall.done (user) ->
+                if user == null
+                  alert "Your hunt has been saved, but #{p.textContent} is not a user and cannot be added."
                 # Creating object with participant info
                 hunt_user = {
                         hunt_id: data.id,
