@@ -32,37 +32,7 @@ getLocations = (id) ->
     $('.huntMasterDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
     $('.huntMasterDisplay').removeClass('display')
     makeMap(thisHuntData, role)
-#     # Cycling through the list of locs
-#     _.each data, (locs) ->
-#       clue = ''
-#       hint = ''
-#       answer = ''
-#       # Assigning the hint, clue, and answer variables
-#       _.each locs.clues, (c) ->
-#         if c.answer == 'null'
-#           hint = c.question
-#         else
-#           clue = c.question
-#           answer = c.answer
-#       # Adding the loc to the list with its clues
-#       $('.huntMasterDisplay').prepend(
-#           "<li class='showClues' data-id='#{locs.id}'>
-#             <h5>#{locs.name}</h5>
-#             <ul class='clueList display'>
-#               <p>Clue: #{clue}</p>
-#               <p>Hint: #{hint}</p>
-#               <p>answer: #{answer}</p>
-#             </ul>
-#           </li>"
-#         )
 
-#     # Toggling the showing of the clues for each loc
-#     $('.showClues').click ->
-#       if ($(this).children().last().hasClass('display'))
-#         $(this).children().last().removeClass('display')
-#       else
-#         $(this).children().last().addClass('display')
-# Sets options for the position search
 options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -73,6 +43,7 @@ options = {
 crd = {}
 currentLat = 0
 currentLong = 0
+currentHint = ''
 status = false
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -80,21 +51,21 @@ getDistance = (currentLat, currentLong, crd) ->
 
 success = (pos) ->
   crd = pos.coords
-  console.log crd
-  console.log('Your current position is:')
-  console.log('Latitude : ' + crd.latitude)
-  console.log('Longitude: ' + crd.longitude)
+  # console.log crd
+  # console.log('Your current position is:')
+  # console.log('Latitude : ' + crd.latitude)
+  # console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
   dist = getDistance(currentLat, currentLong, crd)
   if dist < 1000 # 0.009144
     $('.answer').removeClass('display')
     # phone_number = {phone_number: '4154076529', body: 'test'}
+    # console.log currentHint
+    console.log status
     if status == false
-      textcall = $.ajax("/send_texts/", {
-          method: 'POST',
-          data: {
-            phone_number: "+14158893434"
-          }
+      status = true
+      textcall = $.ajax("/send_texts/+14154076529/#{currentHint}", {
+          method: 'GET'
         })
 
 error = (err) ->
@@ -489,24 +460,23 @@ $ ->
       else if currentTab.hasClass('huntClues')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
-
-        currentClues = _.find data.loc, (l) ->
+        currentClues = ''
+        _.find data.loc, (l) ->
           if l.order == prog
             currentLat = l.lat
             currentLong = l.long
-            return l
-
+            currentClues = l
         currentAnswer = ''
-        currentHint = ''
         currentClue = ''
 
-        _.find currentClues.clues, (c) ->
+        _.each currentClues.clues, (c) ->
           if c.answer != 'null'
-            # console.log c.answer
             currentAnswer = c.answer
             currentClue = c.question
           else
             currentHint = c.question
+
+        console.log currentHint
         # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
           <p>#{currentClue}</p><br>")
@@ -517,34 +487,37 @@ $ ->
 
           # if ans = the correct answer, progress needs to be updated to the db and the next clue needs to be revealed
           if ans == currentAnswer
-            console.log true
-            prog += 1
-            call = $.ajax("/hunt_users/#{id}", {
-              method: 'PUT',
-              data: {
-                progress: "#{prog}"
-              }
-            })
+            # console.log true
+            if prog == data.loc.length
+              clearInterval(checkLocation)
+            else
+              prog += 1
+              call = $.ajax("/hunt_users/#{id}", {
+                method: 'PUT',
+                data: {
+                  progress: "#{prog}"
+                }
+              })
 
-            call.done (new_data) ->
+              call.done (new_data) ->
+              _.find data.loc, (l) ->
+                if l.order == prog
+                  currentLat = l.lat
+                  currentLong = l.long
+                  currentClues = l
+              currentAnswer = ''
+              currentClue = ''
 
-            currentClues = _.find data.loc, (l) ->
-              if l.order == prog
-                return l
-            currentAnswer = ''
-            currentHint = ''
-            currentClue = ''
-            _.find currentClues.clues, (c) ->
-              if c.answer != 'null'
-                console.log c.answer
-                currentAnswer = c.answer
-                currentClue = c.question
-              else
-                currentHint = c.question
-            # console.log currentClue
-            $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
-            $('.huntDisplay p').text("#{currentClue}")
-            $('#answer').val('')
+              _.each currentClues.clues, (c) ->
+                if c.answer != 'null'
+                  currentAnswer = c.answer
+                  currentClue = c.question
+                else
+                  currentHint = c.question
+              status = false
+              $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
+              $('.huntDisplay p').text("#{currentClue}")
+              $('#answer').val('')
 
 
       else if currentTab.hasClass('huntMap')
