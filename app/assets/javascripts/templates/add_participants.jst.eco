@@ -1,0 +1,6 @@
+<form id='participants'>
+  <h4>Add a Hunter</h4>
+  Name: <input type='text' id='participant_form' name='name'><br>
+  <button class='addParticipants'>Add Participant</button>
+  <button class='done'>Done</button>
+</form>
