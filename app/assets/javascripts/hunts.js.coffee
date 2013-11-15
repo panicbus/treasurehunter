@@ -168,8 +168,6 @@ $ ->
         entry = JST['templates/new_hunt']({})
         $('.huntMasterDisplay').prepend(entry)
 
-
-
         # when button is clicked display the form to add participants
         $('.add_participants').click ->
           event.preventDefault()
@@ -271,7 +269,6 @@ $ ->
             # Add new hunt to the hunts list on the index page
             entry = JST['templates/newly_created_hunt']({ data: data })
             $('.huntList ul').prepend(entry)
-
       # If there is a current hunt id
       else
         # Grabbing the current hunt id
