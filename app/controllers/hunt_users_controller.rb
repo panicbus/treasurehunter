@@ -16,7 +16,7 @@ class HuntUsersController < ApplicationController
     user = User.find(params[:id])
     hunt = Hunt.find(params[:hunt_id])
     hunt_user = HuntUser.create(role: 'hunter', progress: 0, hunt_id: hunt.id, user_id: user.id)
-    if user_signed_in?
+    if signed_in?(user)
       redirect_to hunts_path
     else
         redirect_to new_user_session_path
@@ -36,4 +36,3 @@ class HuntUsersController < ApplicationController
     render text: 'ok'
   end
 end
-

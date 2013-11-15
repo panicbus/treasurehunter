@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
 
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkBTlajoNoxJY4quJt-fLmySLVcMaAYic&sensor=false"></script>
-
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <link href='http://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
@@ -15,6 +15,7 @@
 <div class="authent">
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
+
 
   <!-- Added the block below for Treasure_Hunter devise -->
   <%# user is logged in, show log out link %>

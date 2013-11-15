@@ -9,13 +9,16 @@ getHunts = ->
     })
   # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
-    # console.log data
+    console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
-        #{h.title}<br>
-        #{h.role}<br>
-        #{h.date}<br>
+        <strong>Title</strong>: #{h.title}<br>
+        <strong>Role</strong>: #{h.role}<br>
+        <strong>Start</strong>: #{h.date}<br>
+        <br>
         </li>")
+    $('.huntList ul').prepend("<h3>Your hunts:</h3><br>")
+
 
 
 getLocations = (id) ->
@@ -27,20 +30,22 @@ getLocations = (id) ->
 
 # After call is successful, the locations map is plotted
   call.done (data) ->
+
     thisHuntData = data
     role = "huntmaster"
     $('.huntMasterDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
     $('.huntMasterDisplay').removeClass('display')
     makeMap(thisHuntData, role)
 
+# Sets options for the position search
 options = {
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 0
 }
 
-###### Declaring variables
-# Current coordinates
+
+# Declaring the current coordinate variables
 crd = {}
 currentLat = 0
 currentLong = 0
@@ -62,15 +67,15 @@ success = (pos) ->
   # console.log('Your current position is:')
   # console.log('Latitude : ' + crd.latitude)
   # console.log('Longitude: ' + crd.longitude)
-  # console.log('More or less ' + crd.accuracy + ' meters.')
+<<<<<<< HEAD
+  console.log('More or less ' + crd.accuracy + ' meters.')
   dist = getDistance(currentLat, currentLong, crd)
-  # Case when hunter is within the bounding box
-  if dist < 100000 # 0.009144
+  if dist < 1000 # 0.009144
     $('.answer').removeClass('display')
-    # Sends a text to the user if they are within the bounding box and they havent received it yet
-    # console.log status
+    # phone_number = {phone_number: '4154076529', body: 'test'}
+    # console.log currentHint
+    console.log status
     if status == false
-      # Change status to true to prevent future texts from being sent
       status = true
       textcall = $.ajax("/send_texts/+14154076529/#{currentHint}", {
           method: 'GET'
@@ -81,7 +86,8 @@ error = (err) ->
 # Checks the user's current position
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
-
+# Setting a timer to check the positon every 15 secs
+checkLocation = setInterval getPosition, 15000
 
 # Storing the location coordinates for the current clue location, as well as its associated clues
 clueLocation = (data, prog) ->
@@ -111,6 +117,7 @@ createParticipant = (data) ->
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
+  # getPosition()
 
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
@@ -290,6 +297,7 @@ $ ->
       # If there is an current hunt id
       if $('.huntMasterTabs').data('id')
         $('.mapView').removeClass('display')
+        initialize()
       # If there isnt a hunt id
       else
         alert('Sorry! You need to save a hunt before you can add locations.')
@@ -391,7 +399,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-
+    console.log crd
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
 

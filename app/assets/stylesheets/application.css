@@ -12,7 +12,8 @@
  *= require_tree .
  */
 
-
+    html {height: 100%}
+    body {height: 100%; margin: 10px; padding: 10px}
 
 header {
   background: rgb(242,222,72); /* Old browsers */
@@ -89,12 +90,12 @@ body {
 }
 
 #map-foo {
-width: 300px;
-height: 300px;
+width: 1160px;
+height: 500px;
 }
 
 #huntMap {
-width: 600px;
+width: 1160px;
 height: 500px;
 }
 
@@ -153,6 +154,10 @@ height: 500px;
 
 .huntListParts {
   border: 2px solid black;
+}
+
+li {
+  list-style: none;
 }
 
 li:hover {

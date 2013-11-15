@@ -1,6 +1,6 @@
 class HuntsController < ApplicationController
   # Making sure the user is signed in to view certain pages
-  before_filter :authenticate_user!, except: [:new, :create]
+  before_filter :authenticate_user!, except: [:new, :create, :decline]
 
   def index
     # Find all the hunt_ids the current user is associated with
@@ -80,6 +80,9 @@ class HuntsController < ApplicationController
   def destroy
     Hunt.destroy(params[:id])
     redirect_to hunts_path
+  end
+
+  def decline
   end
 
 end

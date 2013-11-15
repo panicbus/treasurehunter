@@ -11,6 +11,8 @@ TreasureHunter::Application.routes.draw do
 
   get "user/:username", to: 'users#show'
 
+  get '/decline', to: 'hunts#decline'
+
   devise_for :users
 
   resources :users, except: [:show]
