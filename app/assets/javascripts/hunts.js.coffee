@@ -12,10 +12,12 @@ getHunts = ->
     # console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
-        #{h.title}<br>
-        #{h.role}<br>
-        #{h.date}<br>
+        <strong>Title</strong>: #{h.title}<br>
+        <strong>Role</strong>: #{h.role}<br>
+        <strong>Start</strong>: #{h.date}<br>
+        <br>
         </li>")
+    $('.huntList ul').prepend("<h3>Your hunts:</h3><br>")
 
 
 getLocations = (id) ->
@@ -159,7 +161,7 @@ $ ->
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
         $('.huntMasterDisplay').prepend("<form class='createHunt'>
-          <h3>Create a hunt!</h3>
+          <h3>New Hunt Details:</h3>
           Title: <input type='text' id='huntTitle'><br>
           Description: <input type='text' id='huntDescription'><br>
           Start Date: <input type='date' id='startDate'><br>
