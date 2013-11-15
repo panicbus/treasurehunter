@@ -12,7 +12,8 @@
  *= require_tree .
  */
 
-
+    html {height: 100%}
+    body {height: 100%; margin: 10px; padding: 10px}
 
 header {
   background-color: gold;
@@ -49,12 +50,12 @@ body {
 }
 
 #map-foo {
-width: 300px;
-height: 300px;
+width: 800px;
+height: 500px;
 }
 
 #huntMap {
-width: 600px;
+width: 800px;
 height: 500px;
 }
 

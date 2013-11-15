@@ -28,66 +28,66 @@ getLocations = (id) ->
     })
   # Cycling through the results after a successful call and prepending the locations to the list
   call.done (data) ->
-    # Cycling through the list of locs
-    _.each data, (locs) ->
-      clue = ''
-      hint = ''
-      answer = ''
-      # Assigning the hint, clue, and answer variables
-      _.each locs.clues, (c) ->
-        if c.answer == 'null'
-          hint = c.question
-        else
-          clue = c.question
-          answer = c.answer
-      # Adding the loc to the list with its clues
-      $('.huntMasterDisplay').prepend(
-          "<li class='showClues' data-id='#{locs.id}'>
-            <h5>#{locs.name}</h5>
-            <ul class='clueList display'>
-              <p>Clue: #{clue}</p>
-              <p>Hint: #{hint}</p>
-              <p>answer: #{answer}</p>
-            </ul>
-          </li>"
-        )
+    # # Cycling through the list of locs
+    # _.each data, (locs) ->
+    #   clue = ''
+    #   hint = ''
+    #   answer = ''
+    #   # Assigning the hint, clue, and answer variables
+    #   _.each locs.clues, (c) ->
+    #     if c.answer == 'null'
+    #       hint = c.question
+    #     else
+    #       clue = c.question
+    #       answer = c.answer
+    #   # Adding the loc to the list with its clues
+    #   $('.huntMasterDisplay').prepend(
+    #       "<li class='showClues' data-id='#{locs.id}'>
+    #         <h5>#{locs.name}</h5>
+    #         <ul class='clueList display'>
+    #           <p>Clue: #{clue}</p>
+    #           <p>Hint: #{hint}</p>
+    #           <p>answer: #{answer}</p>
+    #         </ul>
+    #       </li>"
+    #     )
 
-    # Toggling the showing of the clues for each loc
-    $('.showClues').click ->
-      if ($(this).children().last().hasClass('display'))
-        $(this).children().last().removeClass('display')
-      else
-        $(this).children().last().addClass('display')
-# Sets options for the position search
-options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-}
-crd = {}
-currentLat = 0
-currentLong = 0
+    # # Toggling the showing of the clues for each loc
+    # $('.showClues').click ->
+    #   if ($(this).children().last().hasClass('display'))
+    #     $(this).children().last().removeClass('display')
+    #   else
+    #     $(this).children().last().addClass('display')
+# # Sets options for the position search
+# options = {
+#   enableHighAccuracy: true,
+#   timeout: 5000,
+#   maximumAge: 0
+# }
+# crd = {}
+# currentLat = 0
+# currentLong = 0
 
-getDistance = (currentLat, currentLong, crd) ->
-  R = 6371
-  d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
+# getDistance = (currentLat, currentLong, crd) ->
+#   R = 6371
+#   d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
 
-success = (pos) ->
-  crd = pos.coords
-  console.log crd
-  console.log('Your current position is:')
-  console.log('Latitude : ' + crd.latitude)
-  console.log('Longitude: ' + crd.longitude)
-  console.log('More or less ' + crd.accuracy + ' meters.')
-  dist = getDistance(currentLat, currentLong, crd)
-  if dist < 1000 # 0.009144
-    $('.answer').removeClass('display')
+# success = (pos) ->
+#   crd = pos.coords
+#   console.log crd
+#   console.log('Your current position is:')
+#   console.log('Latitude : ' + crd.latitude)
+#   console.log('Longitude: ' + crd.longitude)
+#   console.log('More or less ' + crd.accuracy + ' meters.')
+#   dist = getDistance(currentLat, currentLong, crd)
+#   if dist < 1000 # 0.009144
+#     $('.answer').removeClass('display')
 
-error = (err) ->
-  console.warn('ERROR(' + err.code + '): ' + err.message)
-# Checks the user's current position
-getPosition = ->
-  navigator.geolocation.getCurrentPosition(success, error, options)
+# error = (err) ->
+#   console.warn('ERROR(' + err.code + '): ' + err.message)
+# # Checks the user's current position
+# getPosition = ->
+#   navigator.geolocation.getCurrentPosition(success, error, options)
 
 # After call is successful, the locations map is plotted
   call.done (data) ->
