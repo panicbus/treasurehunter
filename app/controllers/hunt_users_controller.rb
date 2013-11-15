@@ -8,7 +8,7 @@ class HuntUsersController < ApplicationController
     user = User.find(pending_hunter['user_id'])
     hunt = Hunt.find(pending_hunter['hunt_id'])
     UserMailer.confirm_add_to_hunt(user, hunt).deliver
-
+    render text: 'ok'
     # need a redirect to the huntmaster's show page
   end
 
@@ -19,7 +19,8 @@ class HuntUsersController < ApplicationController
     if signed_in?(user)
       redirect_to hunts_path
     else
-      redirect_to new_user_session_path
+        redirect_to new_user_session_path
+
     end
   end
 
