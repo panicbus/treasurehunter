@@ -7,5 +7,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   # Deleted duplicate attr_accessible line for Treasure_Hunter
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :provider, :uid, :name
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :username, :provider, :uid, :name, :phone_number
+
+  validate :username, uniqueness: true
+  validate :phone_number, presence: true
 end

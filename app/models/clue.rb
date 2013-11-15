@@ -5,4 +5,5 @@ class Clue < ActiveRecord::Base
 
   validates :question, presence: true
   validates :answer, presence: true
+  validates :location_id, presence: true
 end

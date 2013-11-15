@@ -8,7 +8,7 @@ class HuntUsersController < ApplicationController
     user = User.find(pending_hunter['user_id'])
     hunt = Hunt.find(pending_hunter['hunt_id'])
     UserMailer.confirm_add_to_hunt(user, hunt).deliver
-
+    render text: 'ok'
     # need a redirect to the huntmaster's show page
   end
 
@@ -20,7 +20,7 @@ class HuntUsersController < ApplicationController
       redirect_to hunts_path
     else
         redirect_to new_user_session_path
-      end
+
     end
   end
 
@@ -30,9 +30,10 @@ class HuntUsersController < ApplicationController
     @hunt_user.each do |hu|
       hu.update_attributes(progress: params[:progress])
     end
-    respond_to do |format|
-      format
-    end
+    # respond_to do |format|
+    #   format
+    # end
+    render text: 'ok'
   end
 end
 

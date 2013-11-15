@@ -1,5 +1,5 @@
 TreasureHunter::Application.routes.draw do
-
+  get 'send_texts/:phone_number/:body', to: 'send_texts#index'
 
   post "hunt_locations", to: 'hunt_locations#create'
   put "hunt_users/:id", to: 'hunt_users#update'
