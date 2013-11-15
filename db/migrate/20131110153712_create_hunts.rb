@@ -6,6 +6,7 @@ class CreateHunts < ActiveRecord::Migration
       t.string :prize
       t.string :date
       t.string :start_location
+      t.string :end
 
       t.timestamps
     end

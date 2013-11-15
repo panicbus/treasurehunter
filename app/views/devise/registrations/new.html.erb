@@ -9,7 +9,10 @@
 
  <!-- Removed autofocus from email for Treasure_Hunter -->
   <div><%= f.label :email %><br />
-  <%= f.email_field :email%></div>
+  <%= f.email_field :email %></div>
+
+  <div><%= f.label :phone %><br />
+  <%= f.phone_field :phone_number, maxlength: '10' %></div>
 
   <div><%= f.label :password %><br />
   <%= f.password_field :password %></div>

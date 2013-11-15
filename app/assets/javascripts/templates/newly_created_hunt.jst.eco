@@ -1,0 +1,5 @@
+<li data-role='huntmaster' data-id='<%= @data.id %>'>
+  <p><%= @data.title %></p>
+  <p>huntMaster</p>
+  <p><%= @data.date %><p>
+</li>

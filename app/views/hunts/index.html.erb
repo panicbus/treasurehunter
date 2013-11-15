@@ -1,19 +1,14 @@
 <div id="container">
-  <div class='huntTitle'>
+<!--   <div class='huntTitle'>
     <h2>Treasure Hunter</h2>
-  </div> <!-- end huntTitle -->
-
-
-
-
+  </div>
+ -->
 
   <!-- Index Page -->
 
-
-
   <div class='indexView'>
 
-      <button class='addHunt'>+</button>
+      <button id='hm_gateway' class='addHunt'>Huntmaster Gateway</button>
 
       <div class='huntList'>
         <ul>
@@ -26,7 +21,7 @@
   <!-- Huntmaster View Page -->
   <div class='huntMasterView display'>
 
-    <button class='goBack'>Back</button>
+    <button class='goBack'>Back to the Hunts List</button>
 
     <div class='huntMasterDisplay'>
 
@@ -36,18 +31,19 @@
       <h2>Create a New Hunt Location</h2>
       <p>Enter an address at or near the new hunt location</p>
 
-      <input type = "text" id = "address" style = 'width: 600px' placholder="Enter address to search">
-      <input type = "button" id = "searchButton" value = "Search for this address">
-      <input type = "button" id = "currentLocButton" value = "Click here for current location">
+      <input type="text" id="address" class="resizedTextbox" style='width: 600px' placholder="Enter address to search">
+      <input type="button" id="searchButton" class="resizedTextbox" value="Search for this address">
+      <p>OR</p>
+      <input type="button" id="currentLocButton" class="resizedTextbox" value = "Click here for current location">
 
       <div id="coordinates">
         <form class='addLocation'>
-          <input type='text' id='location_lat' placeholder='Latitude' />
-          <input type='text' id='location_long' placeholder='Longitude' />
-          <input type='text' id='location_name' placeholder='Location name' />
-          <input type='text' id='clueQuestion' placeholder='Add a location clue...' />
-          <input type='text' id='clueAnswer' placeholder='Add an answer...' />
-          <input type='text' id='clueHint' placeholder='Add a proximity hint...' />
+          <input type='text' id='location_lat' class="resizedTextbox" placeholder='Latitude' />
+          <input type='text' id='location_long' class="resizedTextbox" placeholder='Longitude' />
+          <input type='text' id='location_name' class="resizedTextbox" placeholder='Location name' />
+          <input type='text' id='clueQuestion' class="resizedTextbox" placeholder='Add a location clue...' />
+          <input type='text' id='clueAnswer' class="resizedTextbox" placeholder='Add an answer...' />
+          <input type='text' id='clueHint' class="resizedTextbox" placeholder='Add a proximity hint...' />
           <input type='submit' />
         </form>
       </div> <!-- end coordinates -->

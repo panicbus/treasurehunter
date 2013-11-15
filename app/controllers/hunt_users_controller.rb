@@ -30,8 +30,9 @@ class HuntUsersController < ApplicationController
     @hunt_user.each do |hu|
       hu.update_attributes(progress: params[:progress])
     end
-    respond_to do |format|
-      format
-    end
+    # respond_to do |format|
+    #   format
+    # end
+    render text: 'ok'
   end
 end

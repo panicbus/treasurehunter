@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TreasureHunter</title>
+  <title>Treasure Hunter</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
 
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBkBTlajoNoxJY4quJt-fLmySLVcMaAYic&sensor=false"></script>
@@ -9,13 +9,9 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
   <link href='http://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 </head>
 <header>
-Treasure Hunter
-</header>
-<body>
-
-<!-- Added flash messages for Treasure_Hunter -->
 <div class="authent">
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
@@ -29,8 +25,16 @@ Treasure Hunter
     <% else %>
       <%= link_to 'Sign In', new_user_session_path %> |
       <%= link_to 'Register Now!', new_user_registration_path %>
-    <% end %>
+    <% end %><br>
+    <a style="float: right; margin-top: 10px" href="#">Game Play</a>
 </div>
+<img style="height: 80px; width: auto; float: left; padding: 10px 10px 0 6px" src="http://www.depts.ttu.edu/honors/compass/ipurush_Compass.png"><p class='huntTitle'><span style="font-size: 50px">T</span>reasure <span style="font-size: 50px">H</span>unter <br>
+<p class="subtitle">An urban navigation and clue game.</p>
+
+</header>
+<body>
+
+<!-- Added flash messages for Treasure_Hunter -->
 <%= yield %>
 
 </body>

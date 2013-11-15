@@ -23,7 +23,11 @@ function makeMap(thisHuntData, role, prog){
     else maxShowMarker = thisHuntData.loc.length;
   };
   setMaxShowMarker();
+<<<<<<< HEAD
   JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat, thisHuntData.loc[0].long);
+=======
+  JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat,thisHuntData.loc[0].long);
+>>>>>>> 278c53c94162c3fc69b9f3ee2126c0b222637a48
   JLmapTypeId = google.maps.MapTypeId.ROADMAP
     JLmapOptions = {
       zoom: 12,
@@ -41,9 +45,21 @@ function makeMap(thisHuntData, role, prog){
         marker.myIndex = i;
 
         //fill in content window with hunt details for huntmaster
+<<<<<<< HEAD
           var contentString ='<div> Clue number ' + thisHuntData.loc[i].clues[0].id + '</br> Clue: ' + thisHuntData.loc[i].clues[0].question + ' </br> Answer: ' + thisHuntData.loc[i].clues[0].answer + '</div>';
 
           windowContent[i] = contentString;
+=======
+          var contentString = '<div id="content">'+
+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+      'sandstone rock formation in the southern part of the '+
+      'Northern Territory, central Australia.</p>'+
+      '</div>';
+        windowContent[i] = contentString;
+          // windowContent[i] = thisHuntData.loc[i].clues[0].question;
+>>>>>>> 278c53c94162c3fc69b9f3ee2126c0b222637a48
 
             google.maps.event.addListener(marker, 'click', function() {
               if(infowindow) {
@@ -65,7 +81,10 @@ function initialize() {
     zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
+<<<<<<< HEAD
   alert(position.coords.latitude);
+=======
+>>>>>>> 278c53c94162c3fc69b9f3ee2126c0b222637a48
   map = new google.maps.Map(document.getElementById('map-foo'), mapOptions);
   map.setCenter(currentPos);
   });
@@ -124,3 +143,4 @@ function initialize() {
 }
 
 // google.maps.event.addDomListener(window, 'load', initialize);
+

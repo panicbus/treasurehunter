@@ -52,15 +52,16 @@ class HuntsController < ApplicationController
     @hunter_ids.each do |hi|
       @hunter = {}
       progress = hi.progress
-      username = User.find(hi.user_id).username
+      user = User.find(hi.user_id)
       if hi.role == 'hunter'
         @hunter[:prog] = progress
-        @hunter[:name] = username
+        @hunter[:name] = user.username
+        @hunter[:phone] = user.phone_number
         @hunters << @hunter
       end
       # Adding a current_user info key to the @hunt hash
       if current_user.id == hi.user_id
-        @hunt[:current] = { progress: progress, name: username }
+        @hunt[:current] = { progress: progress, name: user.username, phone: user.phone_number }
       end
 
     end
