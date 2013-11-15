@@ -4,7 +4,7 @@ class SendTextsController < ApplicationController
   end
 
   def make_message
-    @phone_number = params[:phone_number]
+    @user_phone_number = params[:user_phone_number]
 
   end
 

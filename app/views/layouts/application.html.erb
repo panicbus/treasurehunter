@@ -8,23 +8,28 @@
 
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <link href='http://fonts.googleapis.com/css?family=Finger+Paint' rel='stylesheet' type='text/css'>
 </head>
+<header>
+Treasure Hunter
+</header>
 <body>
 
 <!-- Added flash messages for Treasure_Hunter -->
- <p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
+<div class="authent">
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
 
-<!-- Added the block below for Treasure_Hunter devise -->
-<%# user is logged in, show log out link %>
-  <% if current_user.present? %>
-    <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
-  <%# user is not logged in, show signup and login links %>
-  <% else %>
-    <%= link_to 'Sign In', new_user_session_path %> |
-    <%= link_to 'Register Now!', new_user_registration_path %>
-  <% end %>
-
+  <!-- Added the block below for Treasure_Hunter devise -->
+  <%# user is logged in, show log out link %>
+    <% if current_user.present? %>
+      <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
+    <%# user is not logged in, show signup and login links %>
+    <% else %>
+      <%= link_to 'Sign In', new_user_session_path %> |
+      <%= link_to 'Register Now!', new_user_registration_path %>
+    <% end %>
+</div>
 <%= yield %>
 
 </body>
