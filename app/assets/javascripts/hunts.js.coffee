@@ -359,6 +359,7 @@ $ ->
       # If there is an current hunt id
       if $('.huntMasterTabs').data('id')
         $('.mapView').removeClass('display')
+        initialize()
       # If there isnt a hunt id
       else
         alert('Sorry! You need to save a hunt before you can add locations.')

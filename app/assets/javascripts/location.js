@@ -65,6 +65,7 @@ function initialize() {
     zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
+  alert(position.coords.latitude);
   map = new google.maps.Map(document.getElementById('map-foo'), mapOptions);
   map.setCenter(currentPos);
   });
@@ -122,4 +123,4 @@ function initialize() {
 
 }
 
-google.maps.event.addDomListener(window, 'load', initialize);
+// google.maps.event.addDomListener(window, 'load', initialize);
