@@ -43,6 +43,9 @@ crd = {}
 currentLat = 0
 currentLong = 0
 currentHint = ''
+currentClues = ''
+currentAnswer = ''
+currentClue = ''
 status = false
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -74,6 +77,21 @@ getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
 # Setting a timer to check the positon every 15 secs
 checkLocation = setInterval getPosition, 15000
+
+clueLocation = (data, prog) ->
+  _.find data.loc, (l) ->
+    if l.order == prog
+      currentLat = l.lat
+      currentLong = l.long
+      currentClues = l
+
+getCluesInfo = (current) ->
+  _.each current, (c) ->
+    if c.answer != 'null'
+      currentAnswer = c.answer
+      currentClue = c.question
+    else
+      currentHint = c.question
 
 $ ->
   # Populating the index page with user-specific hunts
@@ -140,6 +158,8 @@ $ ->
           Description: <input type='text' id='huntDescription'><br>
           Start Date: <input type='date' id='startDate'><br>
           Start Time: <input type='time' id='startTime'><br>
+          End Date: <input type='date' id='endDate'><br>
+          End Time: <input type='time' id='endTime'><br>
           Start Location: <input type='text' id='startLocation'><br>
           Prize: <input type='text' id='huntPrize'><br>
           <button class='add_participants'>Add Participants</button>
@@ -179,6 +199,8 @@ $ ->
           start_location = $('#startLocation').val()
           start_time = $('#startTime').val()
           start_date = $('#startDate').val()
+          end_time = $('#endTime').val()
+          end_date = $('#endDate').val()
           description = $('#huntDescription').val()
           prize = $('#huntPrize').val()
           players = $('.hunter_list li')
@@ -190,6 +212,7 @@ $ ->
             prize: prize,
             start_location: start_location,
             date: start_date + ' ' + start_time
+            end: end_date + ' ' + end_time
           }
           # Ajax call to save the hunt
           call = $.ajax('/hunts', {
@@ -397,18 +420,14 @@ $ ->
     id = $(this).parent().data('id')
     # console.log id
     # Make the ajax call to get the hunt information
-    call = $.ajax("/hunts/#{id}", {
-        method: 'GET'
-      })
-
-
     # Display the hunt information after the ajax call is successful
-    call.done (data) ->
+    $.get("/hunts/#{id}").done (data) ->
+      console.log data
       myDate = new Date()
       huntDate = new Date("#{data.date}")
-      if huntDate < myDate && "#{data.current.progress}" >= 1
-        # Checking the user's current location
-        checkLocation
+      # if huntDate < myDate && "#{data.current.progress}" >= 1
+      #   # Checking the user's current location
+      #   checkLocation
 
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
@@ -459,23 +478,17 @@ $ ->
       else if currentTab.hasClass('huntClues')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
-        currentClues = ''
-        _.find data.loc, (l) ->
-          if l.order == prog
-            currentLat = l.lat
-            currentLong = l.long
-            currentClues = l
-        currentAnswer = ''
-        currentClue = ''
 
-        _.each currentClues.clues, (c) ->
-          if c.answer != 'null'
-            currentAnswer = c.answer
-            currentClue = c.question
-          else
-            currentHint = c.question
+        clueLocation(data, prog)
+        # console.log currentLat
+        # console.log currentLong
+        # console.log currentClues
 
-        console.log currentHint
+        getCluesInfo(currentClues.clues)
+        # console.log currentAnswer
+        # console.log currentClue
+        # console.log currentHint
+
         # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
           <p>#{currentClue}</p><br>")
@@ -499,20 +512,9 @@ $ ->
               })
 
               call.done (new_data) ->
-              _.find data.loc, (l) ->
-                if l.order == prog
-                  currentLat = l.lat
-                  currentLong = l.long
-                  currentClues = l
-              currentAnswer = ''
-              currentClue = ''
+              clueLocation(data, prog)
 
-              _.each currentClues.clues, (c) ->
-                if c.answer != 'null'
-                  currentAnswer = c.answer
-                  currentClue = c.question
-                else
-                  currentHint = c.question
+              getCluesInfo(currentClues.clues)
               status = false
               $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
               $('.huntDisplay p').text("#{currentClue}")
