@@ -12,49 +12,58 @@ getHunts = ->
     # console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
-        #{h.title}<br>
-        #{h.role}<br>
-        #{h.date}<br>
+        <strong>Title</strong>: #{h.title}<br>
+        <strong>Role</strong>: #{h.role}<br>
+        <strong>Start</strong>: #{h.date}<br>
+        <br>
         </li>")
+    $('.huntList ul').prepend("<h3>Your hunts:</h3><br>")
 
-# Populates the huntmasters hunt location view
+
 getLocations = (id) ->
-  # Getting all the locations for the hunt
-  call = $.ajax("/locations/#{id}.json", {
+# Populates the huntmasters hunt location view
+  # thisHunt = $('.huntTabs').data('id')
+  call = $.ajax("/hunts/#{id}", {
       method: 'GET'
     })
-  # Cycling through the results after a successful call and prepending the locations to the list
-  call.done (data) ->
-    # Cycling through the list of locs
-    _.each data, (locs) ->
-      clue = ''
-      hint = ''
-      answer = ''
-      # Assigning the hint, clue, and answer variables
-      _.each locs.clues, (c) ->
-        if c.answer == 'null'
-          hint = c.question
-        else
-          clue = c.question
-          answer = c.answer
-      # Adding the loc to the list with its clues
-      $('.huntMasterDisplay').prepend(
-          "<li class='showClues' data-id='#{locs.id}'>
-            <h5>#{locs.name}</h5>
-            <ul class='clueList display'>
-              <p>Clue: #{clue}</p>
-              <p>Hint: #{hint}</p>
-              <p>answer: #{answer}</p>
-            </ul>
-          </li>"
-        )
 
-    # Toggling the showing of the clues for each loc
-    $('.showClues').click ->
-      if ($(this).children().last().hasClass('display'))
-        $(this).children().last().removeClass('display')
-      else
-        $(this).children().last().addClass('display')
+# After call is successful, the locations map is plotted
+  call.done (data) ->
+    thisHuntData = data
+    role = "huntmaster"
+    $('.huntMasterDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
+    $('.huntMasterDisplay').removeClass('display')
+    makeMap(thisHuntData, role)
+#     # Cycling through the list of locs
+#     _.each data, (locs) ->
+#       clue = ''
+#       hint = ''
+#       answer = ''
+#       # Assigning the hint, clue, and answer variables
+#       _.each locs.clues, (c) ->
+#         if c.answer == 'null'
+#           hint = c.question
+#         else
+#           clue = c.question
+#           answer = c.answer
+#       # Adding the loc to the list with its clues
+#       $('.huntMasterDisplay').prepend(
+#           "<li class='showClues' data-id='#{locs.id}'>
+#             <h5>#{locs.name}</h5>
+#             <ul class='clueList display'>
+#               <p>Clue: #{clue}</p>
+#               <p>Hint: #{hint}</p>
+#               <p>answer: #{answer}</p>
+#             </ul>
+#           </li>"
+#         )
+
+#     # Toggling the showing of the clues for each loc
+#     $('.showClues').click ->
+#       if ($(this).children().last().hasClass('display'))
+#         $(this).children().last().removeClass('display')
+#       else
+#         $(this).children().last().addClass('display')
 # Sets options for the position search
 options = {
   enableHighAccuracy: true,
@@ -63,7 +72,15 @@ options = {
 }
 
 # Declaring the current coordinate variables
+
 crd = {}
+currentLat = 0
+currentLong = 0
+
+getDistance = (currentLat, currentLong, crd) ->
+  R = 6371
+  d = Math.acos(Math.sin(currentLat)*Math.sin(crd.latitude) + Math.cos(currentLat)*Math.cos(crd.latitude) * Math.cos(crd.longitude-currentLong)) * R
+
 success = (pos) ->
   crd = pos.coords
   console.log crd
@@ -71,23 +88,25 @@ success = (pos) ->
   console.log('Latitude : ' + crd.latitude)
   console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
+  dist = getDistance(currentLat, currentLong, crd)
+  if dist < 1000 # 0.009144
+    $('.answer').removeClass('display')
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
-
+# Setting a timer to check the positon every 15 secs
+checkLocation = setInterval getPosition, 15000
 
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
+  # getPosition()
 
 
-  # Setting a timer to check the positon every 15 secs
-  checkLocation = setInterval getPosition, 15000
-  # Checking the user's current location
-  # checkLocation
+
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
   # NOTE 'display' actually means 'hide'
@@ -142,7 +161,7 @@ $ ->
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
         $('.huntMasterDisplay').prepend("<form class='createHunt'>
-          <h3>Create a hunt!</h3>
+          <h3>New Hunt Details:</h3>
           Title: <input type='text' id='huntTitle'><br>
           Description: <input type='text' id='huntDescription'><br>
           Start Date: <input type='date' id='startDate'><br>
@@ -400,7 +419,7 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-
+    console.log crd
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
     # console.log id
@@ -412,11 +431,17 @@ $ ->
 
     # Display the hunt information after the ajax call is successful
     call.done (data) ->
+      myDate = new Date()
+      huntDate = new Date("#{data.date}")
+      if huntDate < myDate && "#{data.current.progress}" >= 1
+        # Checking the user's current location
+        checkLocation
+
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
       if !($('.mapDisplay').hasClass('display'))
         $('.mapDisplay').addClass('display')
-      console.log data
+      # console.log data
       # Setting up the participant names as a list
       entry = "<ul>"
       _.each data.name, (d) ->
@@ -453,32 +478,35 @@ $ ->
                 progress: '1'
               }
             })
+          call.done (start_data) ->
+            checkLocation
           $(this).remove()
+
 
       else if currentTab.hasClass('huntClues')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
+
         currentClues = _.find data.loc, (l) ->
           if l.order == prog
+            currentLat = l.lat
+            currentLong = l.long
             return l
+
         currentAnswer = ''
         currentHint = ''
         currentClue = ''
+
         _.find currentClues.clues, (c) ->
           if c.answer != 'null'
-            console.log c.answer
+            # console.log c.answer
             currentAnswer = c.answer
             currentClue = c.question
           else
             currentHint = c.question
         # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
-          <p>#{currentClue}</p><br>
-          <form class='answer'>
-            <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
-            <input type='submit' />
-          </form>
-          <h3 class='completed' data-info='#{data.title}'>Completed Clues</h3>")
+          <p>#{currentClue}</p><br>")
         # When answer is submitted, checking to see if hunter is correct
         $('.answer').submit ->
           event.preventDefault()
@@ -510,24 +538,28 @@ $ ->
                 currentClue = c.question
               else
                 currentHint = c.question
-            console.log currentClue
+            # console.log currentClue
             $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
             $('.huntDisplay p').text("#{currentClue}")
             $('#answer').val('')
 
 
       else if currentTab.hasClass('huntMap')
+        $('.huntDisplay').removeClass('display')
+        $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
         thisHunt = $('.huntTabs').data('id')
+        prog = parseInt(data.current.progress)
         call = $.ajax("/hunts/#{thisHunt}", {
           method: 'GET'
         })
-
       # After call is successful, the locations map is plotted
         call.done (data) ->
           thisHuntData = data
-          makeMap(thisHuntData)
-          $('.mapDisplay').removeClass('display')
+          role = "hunter"
+          prog = prog
+          makeMap(thisHuntData, role, prog)
+          $('.huntDisplay').removeClass('display')
       else
         $('.huntDisplay').prepend("#{leaders}")
 

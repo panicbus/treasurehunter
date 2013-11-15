@@ -48,9 +48,9 @@ body {
   display: none;
 }
 
-#map-canvas {
-width: 600px;
-height: 500px;
+#map-foo {
+width: 300px;
+height: 300px;
 }
 
 #huntMap {
@@ -107,6 +107,10 @@ height: 500px;
   /*background: lightpink;*/
 }
 
+
+li {
+  list-style: none;
+}
 
 li:hover {
   cursor: pointer;

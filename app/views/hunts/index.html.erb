@@ -33,13 +33,11 @@
     </div> <!-- end huntMasterDisplay -->
 
     <div class='mapView display'>
-      <h1>Create a New Hunt Location</h1>
-
+      <h2>Create a New Hunt Location</h2>
       <p>Enter an address at or near the new hunt location</p>
 
       <input type = "text" id = "address" style = 'width: 600px' placholder="Enter address to search">
       <input type = "button" id = "searchButton" value = "Search for this address">
-      <p>OR</p>
       <input type = "button" id = "currentLocButton" value = "Click here for current location">
 
       <div id="coordinates">
@@ -52,20 +50,16 @@
           <input type='text' id='clueHint' placeholder='Add a proximity hint...' />
           <input type='submit' />
         </form>
-        <ul>
-
-        </ul>
       </div> <!-- end coordinates -->
 
-      <div id = "map-canvas" style="height: 200px">
-
+      <div id = "map-foo">
       </div> <!-- end map-canvas -->
 
     </div>
 
     <nav>
       <ul class='huntMasterTabs'>
-        <li class='huntMasterDetails huntMasterNav'><p>Hunt Details</p></li>
+        <li class='huntMasterDetails huntMasterNav'><p>Add a new Hunt</p></li>
         <li class='huntMasterClues huntMasterNav'><p>Add Locations</p></li>
         <li class='huntMasterLocations huntMasterNav'><p>Hunt Locations</p></li>
       </ul>
@@ -82,6 +76,11 @@
     <div class='huntDisplay'>
 
     </div> <!-- end huntDisplay -->
+    <form class='answer display'>
+      <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
+      <input type='submit' />
+    </form>
+    <h3 class='completed display' data-info='#{data.title}'>Completed Clues</h3>
 
     <div class="map mapDisplay display" id="huntMap"></div>
     <nav>
