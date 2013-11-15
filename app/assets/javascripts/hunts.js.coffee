@@ -81,8 +81,7 @@ error = (err) ->
 # Checks the user's current position
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
-# Setting a timer to check the positon every 15 secs
-checkLocation = setInterval getPosition, 15000
+
 
 # Storing the location coordinates for the current clue location, as well as its associated clues
 clueLocation = (data, prog) ->
@@ -112,7 +111,6 @@ createParticipant = (data) ->
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
-  # getPosition()
 
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
@@ -214,7 +212,7 @@ $ ->
             prize: prize,
             start_location: start_location,
             date: start_date + ' ' + start_time
-            # end: end_date + ' ' + end_time
+            end: end_date + ' ' + end_time
           }
           # Ajax call to save the hunt
           call = $.ajax('/hunts', {
@@ -236,7 +234,7 @@ $ ->
                 hunt_user = {
                         hunt_id: data.id,
                         user_id: user.id,
-                        progress: '1',
+                        progress: '0',
                         role: 'hunter'
                       }
                 # Making an ajax call to save participant entries to the db
@@ -263,7 +261,7 @@ $ ->
             $('.createHunt').remove()
 
             # Creating hunt details list and displaying it
-            newEntry = JST['templates/hunt_master_display']({ data: data })
+            newEntry = JST['templates/hunt_master_display']({ data: data, clue: 0 })
             $('.huntMasterDisplay').prepend(newEntry)
             # Adding participant list
             $('.part').append(createParticipant(data))
@@ -285,7 +283,7 @@ $ ->
         # After the ajax call is complete, appending the details to huntMasterDisplay tab
         call.done (data) ->
           # Creating hunt details list and displaying it
-          newEntry = JST['templates/hunt_master_display']({ data: data })
+          newEntry = JST['templates/hunt_master_display']({ data: data, clue: 0 })
           $('.huntMasterDisplay').prepend(newEntry)
           # Adding participant list
           $('.part').append(createParticipant(data))
@@ -408,7 +406,8 @@ $ ->
       huntDate = new Date("#{data.date}")
       if huntDate < myDate && "#{data.current.progress}" >= 1
         # Checking the user's current location
-        checkLocation
+        # Setting a timer to check the positon every 15 secs
+        checkLocation = setInterval getPosition, 15000
 
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
@@ -447,7 +446,8 @@ $ ->
               }
             })
           call.done (start_data) ->
-            checkLocation
+            # Setting a timer to check the positon every 15 secs
+            checkLocation = setInterval getPosition, 15000
           $(this).remove()
 
 

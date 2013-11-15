@@ -7,4 +7,5 @@ class HuntUser < ActiveRecord::Base
   validate :hunt_id, presence: true
   validate :user_id, presence: true
   validate :role, presence: true
+  validate :progress, presence: true
 end
