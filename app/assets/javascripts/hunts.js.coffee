@@ -9,7 +9,7 @@ getHunts = ->
     })
   # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
-    # console.log data
+    console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         <strong>Title</strong>: #{h.title}<br>
@@ -97,6 +97,7 @@ getPosition = ->
     $('.huntMasterDisplay').removeClass('display')
     makeMap(thisHuntData, role)
 
+# Sets options for the position search
 options = {
   enableHighAccuracy: true,
   timeout: 5000,

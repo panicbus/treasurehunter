@@ -41,15 +41,9 @@ function makeMap(thisHuntData, role, prog){
         marker.myIndex = i;
 
         //fill in content window with hunt details for huntmaster
-          var contentString = '<div id="content">'+
+          var contentString ='<div> Clue number ' + thisHuntData.loc[i].clues[0].id + '</br> Clue: ' + thisHuntData.loc[i].clues[0].question + ' </br> Answer: ' + thisHuntData.loc[i].clues[0].answer + '</div>';
 
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-      'sandstone rock formation in the southern part of the '+
-      'Northern Territory, central Australia.</p>'+
-      '</div>';
-        windowContent[i] = contentString;
-          // windowContent[i] = thisHuntData.loc[i].clues[0].question;
+          windowContent[i] = contentString;
 
             google.maps.event.addListener(marker, 'click', function() {
               if(infowindow) {
