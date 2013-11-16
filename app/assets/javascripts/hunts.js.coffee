@@ -98,7 +98,7 @@ success = (pos) ->
       }
     })
   else
-    if dist < 100000 # 0.009144
+    if dist < 0.009144 # 100000
 
       if status == false
         console.log currentHint
@@ -136,6 +136,7 @@ getCluesInfo = (current) ->
 
 # Creating a participant list
 createParticipant = (data) ->
+  console.log data.name
   if data.name.length > 0
     entry = "<ul>"
     _.each data.name, (d) ->
@@ -220,6 +221,12 @@ $ ->
     $('.huntMasterDisplay').empty()
     entry = JST['templates/new_hunt']({})
     $('.huntMasterDisplay').prepend(entry)
+    allUsers = []
+    $.ajax('/users', {
+        method: 'GET'
+      }).done (data) ->
+        allUsers = data
+
 
     # when button is clicked display the form to add participants
     $('.add_participants').click ->
@@ -231,15 +238,29 @@ $ ->
       # populate the hunter_list in the create form
       $('.addParticipants').click ->
         event.preventDefault()
+        # console.log allUsers
         # Grab the form value
-        name = $('#participant_form').val()
-        # Add name to the list
-        $('.hunter_list').append("<li><p>#{name}</p></li>")
-        # Clear the form value
-        $('#participant_form').val('')
+        $('.errors').empty()
+        newPlayer = $('#participant_form').val()
+        us = false
+
+        _.each allUsers, (u) ->
+          if newPlayer == u.username
+            us = true
+
+        if us == false
+          $('.errors').append('<p>Not a valid user. Please try a new name.</p>')
+          return
+        else
+          $('.errors').empty()
+          # Add name to the list
+          $('.hunter_list').append("<li><p>#{newPlayer}</p></li>")
+          # Clear the form value
+          $('#participant_form').val('')
       # When done, the add participant form is removed and the add participant button is revealed
       $('.done').click ->
         event.preventDefault()
+        $('.errors').remove()
         $('#participants').remove()
         $('.add_participants').show()
 
@@ -292,12 +313,12 @@ $ ->
         description = $('#huntDescription').val()
       else
         errors.push 'Please enter a description.'
+      players = $('.hunter_list li')
       if errors
         _.each errors, (e) ->
           $('.errors').prepend("<li>#{e}</li>")
-        return
       prize = $('#huntPrize').val()
-      players = $('.hunter_list li')
+
 
 
 
@@ -362,7 +383,7 @@ $ ->
         newEntry = JST['templates/hunt_master_display']({ data: data, clue: 0 })
         $('.huntMasterDisplay').prepend(newEntry)
         # Adding participant list
-        $('.part').append(createParticipant(data))
+        $('.part').append("<li>None</li>")
         # Adding the newly created hunt_id to the huntmasterTab for referencing
         hunt_id = data.id
         $('.huntMasterTabs').data('id', hunt_id)
@@ -484,7 +505,6 @@ $ ->
           if errors
             _.each errors, (e) ->
               $('.errors').prepend("<li>#{e}</li>")
-            return
           prize = $('#huntPrize').val()
           players = $('.hunter_list li')
           # Creating an object to pass into the create hunt ajax call
