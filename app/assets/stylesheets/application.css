@@ -108,6 +108,7 @@ body {
 }
 
 .huntList h3 {
+  clear: both;
   padding-left: 25px;
 }
 
@@ -275,6 +276,10 @@ li:hover {
   width: 80%;
   height: 60%;
   margin-bottom: 100px;
+<<<<<<< HEAD
+=======
+  /*background-color: blue;*/
+>>>>>>> more styling changes pt 3
 }
 
 .bottomSpacer {
