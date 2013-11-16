@@ -69,8 +69,8 @@ TreasureHunter::Application.configure do
   address:              'smtp.sendgrid.net',
   port:                  587,
   domain:               'heorku.com',
-  user_name:             ENV['TREASUREHUNTER_EMAIL'],
-  password:              ENV['TREASUREHUNTER_PASSWORD'],
+  user_name:             ENV['SENDGRID_USERNAME'],
+  password:              ENV['SENDGRID_PASSWORD'],
   authentication:       'plain',
   enable_starttls_auto: true }
 end
