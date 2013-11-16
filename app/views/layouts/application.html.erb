@@ -20,12 +20,14 @@
   <!-- Added the block below for Treasure_Hunter devise -->
   <%# user is logged in, show log out link %>
     <% if current_user.present? %>
+      <p>Welcome, <%= current_user.username %>.</p>
       <%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %>
     <%# user is not logged in, show signup and login links %>
     <% else %>
       <%= link_to 'Sign In', new_user_session_path %> |
       <%= link_to 'Register Now!', new_user_registration_path %>
     <% end %><br>
+
     <a style="float: right; margin-top: 10px" href="#">Game Play</a>
 </div>
 <img style="height: 80px; width: auto; float: left; padding: 10px 10px 0 6px" src="http://www.depts.ttu.edu/honors/compass/ipurush_Compass.png"><p class='huntTitle'><span style="font-size: 50px">T</span>reasure <span style="font-size: 50px">H</span>unter <br>
