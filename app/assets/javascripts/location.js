@@ -64,12 +64,14 @@ function makeMap(thisHuntData, role, prog){
             infowindow.open(JLMap,this);
             });
 
-            // google.maps.event.addDomListener(window, "resize", function() {
-           // var center = JLMap.getCenter();
-             // google.maps.event.trigger(JLMap, "resize");
-             // JLMap.setCenter(JLcenter);
-            // });
+
     }
+    google.maps.event.addDomListener(window, "resize", function() {
+           // var center = JLMap.getCenter();
+             google.maps.event.trigger(JLMap, "resize");
+             JLMap.setCenter(JLcenter);
+             console.log('resized');
+            });
 };
 
 //function initialize plots map showing current location, and contains functions markCurrentLocation and codeAddress
@@ -89,11 +91,11 @@ function initialize() {
 
  google.maps.event.addDomListener(currentLocButton, 'click', markCurrentLocation);
  google.maps.event.addDomListener(searchButton, 'click', codeAddress);
- // google.maps.event.addDomListener(window, "resize", function() {
-           // var center = map.getCenter();
-             // google.maps.event.trigger(map, "resize");
-             // map.setCenter(center);
-           // });
+ google.maps.event.addDomListener(window, "resize", function() {
+           var center = map.getCenter();
+             google.maps.event.trigger(map, "resize");
+             map.setCenter(center);
+           });
 
 //adds marker to current location
   function markCurrentLocation () {
