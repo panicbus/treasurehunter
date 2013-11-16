@@ -22,12 +22,13 @@
   <div class='huntMasterView display'>
 
     <button class='goBack'>Back to the Hunts List</button>
-
+    <!-- Show location details in separate div -->
+    <div class = 'selectedClue' id = 'clickedLocInfo'></div>
     <div class='huntMasterDisplay'>
 
     </div> <!-- end huntMasterDisplay -->
 
-    <div class='mapView display'>
+    <!-- <div class='mapView display'> -->
       <h2>Create a New Hunt Location</h2>
       <p>Enter an address at or near the new hunt location</p>
 
@@ -50,9 +51,9 @@
       </div> <!-- end coordinates -->
 <div class = "outerMapFoo">
       <div id = "map-foo">
-      </div> <!-- end map-canvas -->
-</div class= "outerMapFoo">
-    </div>
+      </div>
+</div>
+    <!-- </div> -->
 
     <nav>
       <ul class='huntMasterTabs'>
@@ -73,6 +74,9 @@
     <div class='huntDisplay'>
 
     </div> <!-- end huntDisplay -->
+    <!-- Show location details in separate div -->
+    <div class = 'selectedClue' id = 'clickedLocInfo'></div>
+
     <div class='answerDiv'></div>
     <h3 class='completed display' data-info='#{data.title}'>Completed Clues</h3>
 
@@ -86,5 +90,5 @@
       </ul>
     </nav>
 
-  </div> <!-- end huntView -->
+  </div> <!-- end huntView display-->
 </div> <!-- end container -->

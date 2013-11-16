@@ -153,13 +153,13 @@ $ ->
           # Checking the user's current location
           # Setting a timer to check the positon every 15 secs
           checkLocation = setInterval getPosition, 5000
-    else
+    else # if huntmaster role
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
       $('.huntMasterTabs').data('id', hunt_id)
       # Make the ajax call to get the hunt information
       # Display the hunt information after the ajax call is successful
-      $.get("/hunts/#{id}").done (data) ->
+      $.get("/hunts/#{hunt_id}").done (data) ->
         myDate = new Date()
         huntDate = new Date("#{data.date}")
         currentNumber = data.current.phone
@@ -363,7 +363,7 @@ $ ->
     id = $('.huntMasterTabs').data('id')
     # Stores the number of locations
     nextLoc = ''
-    # Ajax call to find the numbe of locations associated with the current hunt
+    # Ajax call to find the number of locations associated with the current hunt
     call = $.ajax("/locations/#{id}", {
         method: 'GET'
       })
