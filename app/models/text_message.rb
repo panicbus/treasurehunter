@@ -1,7 +1,6 @@
 class TextMessage < ActiveRecord::Base
   attr_accessible :user_phone_number
 
-<<<<<<< HEAD
   def make_message(phone_number)
 
     account_sid = 'AC372b83858a96e1035d41c48ca368fa17'
@@ -22,6 +21,4 @@ class TextMessage < ActiveRecord::Base
       puts "Sent message."
   end
 
-=======
->>>>>>> 278c53c94162c3fc69b9f3ee2126c0b222637a48
 end
