@@ -22,11 +22,11 @@ class LocationsController < ApplicationController
 
 
   def create
-    p ('*') * 50
-    p params[:location][:name] && params[:location][:lat] && params[:location][:long]
-    if params[:location][:name] && params[:location][:lat] && params[:location][:long]
+    # p ('*') * 50
+    # p params[:location][:name] && params[:location][:lat] && params[:location][:long]
+    # if params[:location][:name] && params[:location][:lat] && params[:location][:long]
       @location = Location.create(params[:location])
-    end
+    # end
     render json: @location
   end
 

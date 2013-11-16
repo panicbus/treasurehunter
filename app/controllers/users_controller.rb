@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   def index
     @users = User.all
+    @users.each do |u|
+      if current_user.id == u.id
+        u[:current] = true
+      end
+    end
     render json: @users
   end
 
