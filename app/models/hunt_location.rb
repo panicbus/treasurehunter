@@ -3,4 +3,8 @@ class HuntLocation < ActiveRecord::Base
 
   belongs_to :hunt
   belongs_to :location
+
+  validates :location_id, presence: true
+  validates :loc_order, presence: true
+  validates :hunt_id, presence: true
 end

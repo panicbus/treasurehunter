@@ -268,6 +268,16 @@ li:hover {
   background-color: blue;
 }
 
+.bottomSpacer {
+  width: 100%;
+  height: 150px;
+}
+
+.bottomSpacer {
+  width: 100%;
+  height: 150px;
+}
+
 li {
   list-style-type: none;
 }
