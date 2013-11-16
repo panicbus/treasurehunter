@@ -98,6 +98,7 @@ error = (err) ->
 getPosition = ->
   navigator.geolocation.getCurrentPosition(success, error, options)
 
+
 # Storing the location coordinates for the current clue location, as well as its associated clues
 clueLocation = (data, prog) ->
   _.find data.loc, (l) ->
@@ -356,7 +357,7 @@ $ ->
     name = $('#location_name').val()
     question = $('#clueQuestion').val()
     answer = $('#clueAnswer').val()
-    hint = $('clueHint').val()
+    hint = $('#clueHint').val()
 
     # Grabbing the current hunt id
     id = $('.huntMasterTabs').data('id')
@@ -426,6 +427,7 @@ $ ->
     $('#location_name').val('')
     $('#clueQuestion').val('')
     $('#clueAnswer').val('')
+    $('#clueHint').val('')
 
 
 
