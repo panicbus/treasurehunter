@@ -6,13 +6,4 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-    users = User.create([
-        {username: 'James', email: 'jamestreasurehunter@gmail.com', password: '12345678'},
-        {username: 'Jennie', email: 'j@gmail.com', password: '12345678'},
-        {username: 'Leon', email: 'leontreasurehunter@gmail.com', password: '12345678'}
-      ])
-
-    hunt_users = HuntUser.create([
-
-      ])
 
