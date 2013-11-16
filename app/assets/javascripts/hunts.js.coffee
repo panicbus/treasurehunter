@@ -70,15 +70,17 @@ success = (pos) ->
   # console.log('Your current position is:')
   # console.log('Latitude : ' + crd.latitude)
   # console.log('Longitude: ' + crd.longitude)
-  console.log('More or less ' + crd.accuracy + ' meters.')
+  # console.log('More or less ' + crd.accuracy + ' meters.')
+
   dist = getDistance(currentLat, currentLong, crd)
-  console.log huntInfo
+  console.log status
   myDate = new Date()
   finish = new Date("#{huntInfo.end}")
-  console.log finish
-  console.log myDate
+  # console.log finish
+  # console.log myDate
+
   if myDate > finish
-    console.log true
+    # console.log true
     clearInterval checkLocation
     body = "Sorry! Game time has expired and no one won. Thanks for playing!"
     _.each huntInfo.name, (d) ->
@@ -98,17 +100,19 @@ success = (pos) ->
       }
     })
   else
-    if dist < 0.009144 # 100000
+    if dist <  0.059144 # 100000
 
       if status == false
         console.log currentHint
         form = JST['templates/answer_form']({})
         $('.answerDiv').append(form)
-        status = true
         textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
             method: 'GET'
           })
 
+      status = true
+    if $('.huntClues').hasClass('active')
+      $('.answer').removeClass('display')
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
@@ -145,6 +149,8 @@ createParticipant = (data) ->
     return entry
   else
     return 'None'
+
+
 
 $ ->
   # Populating the index page with user-specific hunts
@@ -418,6 +424,8 @@ $ ->
       $('.mapDisplay').addClass('display')
     if !($('.answerDiv').hasClass('display'))
       $('.answerDiv').addClass('display')
+    $('.huntNav').removeClass('active')
+    $('.huntMasterNav').removeClass('active')
     $('.indexView').removeClass('display')
     $('.huntMasterDisplay').empty()
     $('.huntDisplay').empty()
@@ -430,6 +438,8 @@ $ ->
   #display hunt info
   $('.huntMasterTabs').on 'click', '.huntMasterNav', ->
 
+
+    $('.huntMasterDetails').addClass('active')
     # grab the current tab to use in the callback
     currentTab = $(this)
     # clear the tab of previous data
@@ -443,6 +453,7 @@ $ ->
 
       # If starting a new hunt, a create form will be displayed
       if !($('.huntMasterTabs').data('id'))
+        $(this).addClass('active')
         entry = JST['templates/new_hunt']({})
         $('.huntMasterDisplay').prepend(entry)
 
@@ -592,6 +603,8 @@ $ ->
             $('.huntList ul').prepend(entry)
       # If there is a current hunt id
       else
+        $('.huntMasterNav').removeClass('active')
+        $(this).addClass('active')
         # Grabbing the current hunt id
         id = $('.huntMasterTabs').data('id')
         # Do an ajax call to get the hunt details
@@ -608,6 +621,8 @@ $ ->
 
     # If add locations is clicked, the map or an alert will show
     else if currentTab.hasClass('huntMasterClues')
+      $('.huntMasterNav').removeClass('active')
+      $(this).addClass('active')
       # If there is an current hunt id
       if $('.huntMasterTabs').data('id')
         $('.mapView').removeClass('display')
@@ -617,6 +632,8 @@ $ ->
         $('.huntMasterDisplay').append('<h3>Sorry! You need to save a hunt before you can add locations.</h3>')
     # If hunt locations is clicked
     else
+      $('.huntMasterNav').removeClass('active')
+      $(this).addClass('active')
       if $('.huntMasterTabs').data('id')
         $('.huntMasterDisplay').empty()
         if !($('.mapView').hasClass('display'))
@@ -723,6 +740,8 @@ $ ->
 
   # Displaying the hunter view information
   $('.huntTabs').on 'click', '.huntNav', ->
+
+    $('.huntDetails').addClass('active')
     # Grab the current tab to use in the callback function
     currentTab = $(this)
     if !($('.answer').hasClass('display'))
@@ -755,6 +774,8 @@ $ ->
 
       # Displaying the correct information based on which tab is currently active
       if currentTab.hasClass('huntDetails')
+        $('.huntNav').removeClass('active')
+        currentTab.addClass('active')
         newEntry = JST['templates/hunt_master_display']({ data: data, clue: data.loc.length })
         $('.huntDisplay').prepend(newEntry)
         # Adding participant list
@@ -778,6 +799,8 @@ $ ->
 
 
       else if currentTab.hasClass('huntClues')
+        $('.huntNav').removeClass('active')
+        currentTab.addClass('active')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
 
@@ -841,6 +864,8 @@ $ ->
 
 
       else if currentTab.hasClass('huntMap')
+        $('.huntNav').removeClass('active')
+        currentTab.addClass('active')
         $('.huntDisplay').removeClass('display')
         $('.huntDisplay').prepend("<div class='map' id='huntMap'>Map</div>")
         #  Making the call to get all the locations for the specific hunt id
@@ -857,6 +882,8 @@ $ ->
           makeMap(thisHuntData, role, prog)
           $('.huntDisplay').removeClass('display')
       else
+        $('.huntNav').removeClass('active')
+        currentTab.addClass('active')
         $('.huntDisplay').prepend("#{leaders}")
 
 
