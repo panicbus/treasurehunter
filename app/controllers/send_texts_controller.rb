@@ -24,6 +24,7 @@ class SendTextsController < ApplicationController
       puts "Sent message."
 
     render text: 'ok'
+
   end
 
 end
