@@ -39,12 +39,15 @@ function makeMap(thisHuntData, role, prog){
 
 
   //END OF CODE TO PLOT MAP
+        var treasure = 'map_treasure.png';
+         var star = 'star_red_24.png';
+         // var marker;
+        var selectedMarker;
     for (var i = 0; i < maxShowMarker; i++){
-        var image2 = 'star_red_24.png';
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(thisHuntData.loc[i].lat,thisHuntData.loc[i].long),
           map: JLMap,
-          // icon: image2
+          icon: treasure
         });
         markerArray[i]=marker;
         marker.myIndex = i;
@@ -55,13 +58,22 @@ function makeMap(thisHuntData, role, prog){
           windowContent[i] = contentString;
 
             google.maps.event.addListener(marker, 'click', function() {
+
+                  this.setIcon(star);
+                  for (var i=0; i<maxShowMarker; i++){
+                    if (this != markerArray[i]) {
+                        markerArray[i].setIcon(treasure)
+                    }
+                  }
+              document.getElementById('clickedLocInfo').innerHTML = windowContent[this.myIndex];
+              // };
               // if(infowindow) {
               //     infowindow.close();
               // }
-              infowindow = new google.maps.InfoWindow({
-              content: windowContent[this.myIndex]
-              });
-            infowindow.open(JLMap,this);
+            //   infowindow = new google.maps.InfoWindow({
+            //   content: windowContent[this.myIndex]
+            //   });
+            // infowindow.open(JLMap,this);
             });
 
 
@@ -110,7 +122,7 @@ function initialize() {
             map: map,
             draggable: true,
             title: 'This is your current location',
-            // icon: image
+            icon: image
         });
       google.maps.event.addDomListener(marker, 'dragend', markerMoved);
     });

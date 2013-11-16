@@ -138,20 +138,14 @@ body {
 }
 
 
-.outerMapFoo {
-  position: relative;
-  top: 30%;
+.outerMapAddLoc{
+  /*position: relative;*/
+  width: 100%;
+  background-color: green;
 }
 
-#map-foo {
-  /*left: 50%;
-  top: 50%;*/
-
-/*  margin-left: -25%;
-  margin-top: -25%;*/
- /*transform: translate(-50%, -50%);*/
-
-  width: 1160px;
+#map-AddLoc {
+  width: 100%;
   height: 300px;
 }
 
@@ -159,12 +153,7 @@ body {
 /*position: absolute;*/
 /*margin-left: auto;
 margin-right: auto;*/
-  top: 30%;
-/*  margin-left: -25%;
-  margin-top: -25%;*/
- /*transform: translate(-25%, -25%);*/
-  /*width: 1140px;*/
-  width: 80%;
+  width: 100%;
   height: 300px;
 }
 
@@ -273,8 +262,8 @@ li:hover {
   padding: 10px;
   /*margin-top: 11px;*/
   /*background: linear-gradient(#A3A3A3, #EDEDED);*/
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 60%;
   margin-bottom: 100px;
   background-color: blue;
 }
