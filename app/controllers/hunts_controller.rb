@@ -57,11 +57,12 @@ class HuntsController < ApplicationController
         @hunter[:prog] = progress
         @hunter[:name] = user.username
         @hunter[:phone] = user.phone_number
+        @hunter[:game_status] = hi.game_status
         @hunters << @hunter
       end
       # Adding a current_user info key to the @hunt hash
       if current_user.id == hi.user_id
-        @hunt[:current] = { progress: progress, name: user.username, phone: user.phone_number }
+        @hunt[:current] = { progress: progress, name: user.username, phone: user.phone_number, game_status: hi.game_status }
       end
 
     end
