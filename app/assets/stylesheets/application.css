@@ -171,7 +171,6 @@ margin-right: auto;*/
 .huntDisplay {
   height: 100%;
   width: 100%;
-  background-color: blue;
 }
 
 .huntTabs, .huntMasterTabs {
@@ -276,7 +275,6 @@ li:hover {
   width: 80%;
   height: 60%;
   margin-bottom: 100px;
-  background-color: blue;
 }
 
 .bottomSpacer {
