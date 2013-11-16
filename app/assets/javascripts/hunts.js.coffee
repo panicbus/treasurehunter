@@ -9,7 +9,7 @@ getHunts = ->
     })
   # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
-    console.log data
+    # console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         <strong>Title</strong>: #{h.title}<br>
@@ -57,7 +57,7 @@ currentNumber = ''
 status = false
 checkLocation = ''
 huntInfo = ''
-
+count = 1
 # Function for checking the hunters distance from the clue location
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -71,14 +71,14 @@ success = (pos) ->
   # console.log('Latitude : ' + crd.latitude)
   # console.log('Longitude: ' + crd.longitude)
   # console.log('More or less ' + crd.accuracy + ' meters.')
-
+  if count == 10
+    alert '10'
   dist = getDistance(currentLat, currentLong, crd)
-  console.log status
+  # console.log status
   myDate = new Date()
   finish = new Date("#{huntInfo.end}")
   # console.log finish
   # console.log myDate
-
   if myDate > finish
     # console.log true
     clearInterval checkLocation
@@ -100,20 +100,21 @@ success = (pos) ->
       }
     })
   else
-    if dist <  0.059144 # 100000
+    if dist < 1 # 0.059144 # 100000
 
       if status == false
-        console.log currentHint
+        # console.log currentHint
         form = JST['templates/answer_form']({})
         $('.answerDiv').append(form)
         textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
             method: 'GET'
           })
 
+
       status = true
     if $('.huntClues').hasClass('active')
       $('.answer').removeClass('display')
-
+  count += 1
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
@@ -140,7 +141,7 @@ getCluesInfo = (current) ->
 
 # Creating a participant list
 createParticipant = (data) ->
-  console.log data.name
+  # console.log data.name
   if data.name.length > 0
     entry = "<ul>"
     _.each data.name, (d) ->
@@ -259,8 +260,8 @@ $ ->
         cu = ''
 
         _.each allUsers, (u) ->
-          console.log newPlayer
-          console.log u.username
+          # console.log newPlayer
+          # console.log u.username
           if newPlayer == u.username
 
             us = true
@@ -309,8 +310,8 @@ $ ->
       if start_time && start_date
         newStart = new Date(start_time + ' ' + start_date)
         now = new Date()
-        console.log now
-        console.log newStart
+        # console.log now
+        # console.log newStart
         if newStart < now
           errors.push 'Please enter a future start date and time.'
       if $('#endTime').val()
@@ -503,8 +504,8 @@ $ ->
           if start_time && start_date
             newStart = new Date(start_time + ' ' + start_date)
             now = new Date()
-            console.log now
-            console.log newStart
+            # console.log now
+            # console.log newStart
             if newStart < now
               errors.push 'Please enter a future start date and time.'
           if $('#endTime').val()
@@ -653,8 +654,8 @@ $ ->
     question = $('#clueQuestion').val()
     answer = $('#clueAnswer').val()
     hint = $('#clueHint').val()
-    console.log lat
-    console.log long
+    # console.log lat
+    # console.log long
     # if all the felds arent filled in, an error is flashed
     if !(lat && long && name && question && answer && hint)
       $('#coordinates ul').empty()
@@ -673,8 +674,8 @@ $ ->
     call.done (data) ->
       nextLoc = data.length + 1
       # Ajax call to save the location to the location db
-      console.log lat
-      console.log long
+      # console.log lat
+      # console.log long
       locationCall = $.ajax('/locations', {
           type: 'POST'
           data: {
@@ -777,7 +778,6 @@ $ ->
         $('.huntNav').removeClass('active')
         currentTab.addClass('active')
         newEntry = JST['templates/hunt_master_display']({ data: data, clue: data.loc.length })
-        console.log data
         $('.huntDisplay').prepend(newEntry)
         # Adding participant list
         $('.part').append(entry)
