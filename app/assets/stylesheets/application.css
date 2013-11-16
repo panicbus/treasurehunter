@@ -107,6 +107,10 @@ body {
   margin-top: 20px;
 }
 
+.huntList h3 {
+  padding-left: 25px;
+}
+
 .subtitle {
   font-size: 24px;
   letter-spacing: 2px;
