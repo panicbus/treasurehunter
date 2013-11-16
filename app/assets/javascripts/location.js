@@ -65,15 +65,15 @@ function makeMap(thisHuntData, role, prog){
                         markerArray[i].setIcon(treasure)
                     }
                   }
-              document.getElementById('clickedLocInfo').innerHTML = windowContent[this.myIndex];
+              // document.getElementById('clickedLocInfo').innerHTML = windowContent[this.myIndex];
               // };
-              // if(infowindow) {
-              //     infowindow.close();
-              // }
-            //   infowindow = new google.maps.InfoWindow({
-            //   content: windowContent[this.myIndex]
-            //   });
-            // infowindow.open(JLMap,this);
+              if(infowindow) {
+                  infowindow.close();
+              }
+              infowindow = new google.maps.InfoWindow({
+              content: windowContent[this.myIndex]
+              });
+            infowindow.open(JLMap,this);
             });
 
 
