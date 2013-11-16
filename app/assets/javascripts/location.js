@@ -65,15 +65,15 @@ function makeMap(thisHuntData, role, prog){
                         markerArray[i].setIcon(treasure)
                     }
                   }
-              document.getElementById('clickedLocInfo').innerHTML = windowContent[this.myIndex];
+              // document.getElementById('clickedLocInfo').innerHTML = windowContent[this.myIndex];
               // };
-              // if(infowindow) {
-              //     infowindow.close();
-              // }
-            //   infowindow = new google.maps.InfoWindow({
-            //   content: windowContent[this.myIndex]
-            //   });
-            // infowindow.open(JLMap,this);
+              if(infowindow) {
+                  infowindow.close();
+              }
+              infowindow = new google.maps.InfoWindow({
+              content: windowContent[this.myIndex]
+              });
+            infowindow.open(JLMap,this);
             });
 
 
@@ -90,7 +90,6 @@ function makeMap(thisHuntData, role, prog){
 function initialize() {
  navigator.geolocation.getCurrentPosition(function(position){
     currentPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-  var image = 'star_red_24.png';
   var mapOptions = {
     zoom: 16,
     mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -108,7 +107,7 @@ function initialize() {
              google.maps.event.trigger(map, "resize");
              map.setCenter(center);
            });
-
+var star = 'star_red_24.png';
 //adds marker to current location
   function markCurrentLocation () {
     document.getElementById('address').value='';
@@ -122,7 +121,7 @@ function initialize() {
             map: map,
             draggable: true,
             title: 'This is your current location',
-            icon: treasure
+            icon: star
         });
       google.maps.event.addDomListener(marker, 'dragend', markerMoved);
     });
@@ -142,7 +141,7 @@ function initialize() {
             map: map,
             position: currentPos,
             draggable: true,
-            // icon: image
+            icon: star
         });
         } else {
           alert('Geocode was not successful for the following reason: ' + status);
