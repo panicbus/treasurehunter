@@ -1,5 +1,5 @@
 class HuntUser < ActiveRecord::Base
-  attr_accessible :hunt_id, :progress, :role, :user_id
+  attr_accessible :hunt_id, :progress, :role, :user_id, :game_status
 
   belongs_to :hunt
   belongs_to :user

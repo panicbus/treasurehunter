@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131113195335) do
+ActiveRecord::Schema.define(:version => 20131115192443) do
 
   create_table "clues", :force => true do |t|
     t.text     "question"
@@ -34,8 +34,9 @@ ActiveRecord::Schema.define(:version => 20131113195335) do
     t.integer  "hunt_id"
     t.integer  "user_id"
     t.string   "progress"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.boolean  "game_status", :default => true
   end
 
   create_table "hunts", :force => true do |t|

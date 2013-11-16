@@ -53,7 +53,10 @@ currentHint = ''
 currentClues = ''
 currentAnswer = ''
 currentClue = ''
+currentNumber = ''
 status = false
+checkLocation = ''
+huntInfo = ''
 
 # Function for checking the hunters distance from the clue location
 getDistance = (currentLat, currentLong, crd) ->
@@ -69,16 +72,25 @@ success = (pos) ->
   # console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
   dist = getDistance(currentLat, currentLong, crd)
-  if dist < 1000 # 0.009144
-    $('.answer').removeClass('display')
-    # phone_number = {phone_number: '4154076529', body: 'test'}
-    # console.log currentHint
-    console.log status
+  console.log huntInfo
+  myDate = new Date()
+  finish = new Date("#{huntInfo.end}")
+  console.log finish
+  console.log myDate
+  if myDate > finish
+    console.log true
+    clearInterval checkLocation
+  if dist < 100000 # 0.009144
+
     if status == false
+      console.log currentHint
+      form = JST['templates/answer_form']({})
+      $('.answerDiv').append(form)
       status = true
-      textcall = $.ajax("/send_texts/+14154076529/#{currentHint}", {
+      textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
           method: 'GET'
         })
+
 
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
@@ -126,10 +138,30 @@ $ ->
       $('.huntMasterView').addClass('display')
       $('.huntView').removeClass('display')
       $('.huntTabs').data('id', hunt_id)
+      $.get("/hunts/#{hunt_id}").done (data) ->
+        myDate = new Date()
+        huntDate = new Date("#{data.date}")
+        currentNumber = data.current.phone
+        prog = parseInt(data.current.progress)
+        huntInfo = data
+        clueLocation(data, prog)
+
+        getCluesInfo(currentClues.clues)
+        if huntDate < myDate && data.current.progress >= 1 && data.current.game_status
+          getPosition()
+          # Checking the user's current location
+          # Setting a timer to check the positon every 15 secs
+          checkLocation = setInterval getPosition, 5000
     else
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
       $('.huntMasterTabs').data('id', hunt_id)
+      # Make the ajax call to get the hunt information
+      # Display the hunt information after the ajax call is successful
+      $.get("/hunts/#{id}").done (data) ->
+        myDate = new Date()
+        huntDate = new Date("#{data.date}")
+        currentNumber = data.current.phone
 
   # When "Add hunt" button is clicked it will display the huntmaster view (hunt details and locations)
   $('.addHunt').click ->
@@ -149,10 +181,14 @@ $ ->
       $('.mapView').addClass('display')
     if !($('.mapDisplay').hasClass('display'))
       $('.mapDisplay').addClass('display')
+    if !($('.answerDiv').hasClass('display'))
+      $('.answerDiv').addClass('display')
     $('.indexView').removeClass('display')
     $('.huntMasterDisplay').empty()
     $('.huntDisplay').empty()
     $('#coordinates ul').empty()
+    status = false
+    clearInterval(checkLocation)
 
   #**** Huntmaster View ****
   #display hunt info
@@ -299,15 +335,17 @@ $ ->
         initialize()
       # If there isnt a hunt id
       else
-        alert('Sorry! You need to save a hunt before you can add locations.')
+        $('.huntMasterDisplay').append('<h3>Sorry! You need to save a hunt before you can add locations.</h3>')
     # If hunt locations is clicked
     else
-      $('.huntMasterDisplay').empty()
-      if !($('.mapView').hasClass('display'))
-        $('.mapView').addClass('display')
-      id = $('.huntMasterTabs').data('id')
-      getLocations(id)
-
+      if $('.huntMasterTabs').data('id')
+        $('.huntMasterDisplay').empty()
+        if !($('.mapView').hasClass('display'))
+          $('.mapView').addClass('display')
+        id = $('.huntMasterTabs').data('id')
+        getLocations(id)
+      else
+        $('.huntMasterDisplay').append('<h3>Sorry! You need to save a hunt before you can add locations.</h3>')
 
   # Adding a location to a hunt
   $('.addLocation').submit ->
@@ -398,20 +436,16 @@ $ ->
   $('.huntTabs').on 'click', '.huntNav', ->
     # Grab the current tab to use in the callback function
     currentTab = $(this)
-    console.log crd
+    if !($('.answer').hasClass('display'))
+      $('.answer').addClass('display')
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
 
     # Make the ajax call to get the hunt information
     # Display the hunt information after the ajax call is successful
     $.get("/hunts/#{id}").done (data) ->
-      console.log data
       myDate = new Date()
       huntDate = new Date("#{data.date}")
-      if huntDate < myDate && "#{data.current.progress}" >= 1
-        # Checking the user's current location
-        # Setting a timer to check the positon every 15 secs
-        checkLocation = setInterval getPosition, 15000
 
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
@@ -439,7 +473,7 @@ $ ->
         myDate = new Date()
         huntDate = new Date("#{data.date}")
         if huntDate < myDate && "#{data.current.progress}" < 1
-          $('.huntDisplay').append('<button class="start">Start</button>')
+          $('.huntDisplay').prepend('<button class="start">Start</button>')
 
         $('.start').click ->
           call = $.ajax("/hunt_users/#{id}", {
@@ -466,6 +500,7 @@ $ ->
         # Displaying the current clue
         $('.huntDisplay').prepend("<h4>Clue #{data.current.progress} of #{data.loc.length}</h4><br>
           <p>#{currentClue}</p><br>")
+        $('.answer').removeClass('display')
         # When answer is submitted, checking to see if hunter is correct
         $('.answer').submit ->
           event.preventDefault()
@@ -476,17 +511,34 @@ $ ->
             # If its the last location, the player wins, and it clear the check location function interval and text the hunters that someone won
             if prog == data.loc.length
               clearInterval(checkLocation)
+              body = "Hooray! Congratulations to #{data.current.name}! for winning the game! Thanks everyone for playing!"
+              _.each data.name, (d) ->
+                if d.phone != currentNumber
+                  textcall = $.ajax("/send_texts/+1#{d.phone}/#{body}", {
+                    method: 'GET'
+                  })
+              $('.answer').addClass('display')
+              $('.huntDisplay').empty()
+              $('.huntDisplay').append("<h3>Conratulations, #{data.current.name}, you have won!!</h3>")
+              $.ajax("/hunt_users/#{id}", {
+                method: 'PUT',
+                data: {
+                  progress: {
+                    game_status: false
+                  }
+                }
+              })
             # If not the last location, then the users progress is saved
             else
               prog += 1
               call = $.ajax("/hunt_users/#{id}", {
                 method: 'PUT',
                 data: {
-                  progress: "#{prog}"
+                  progress: {
+                    progress: "#{prog}"
+                  }
                 }
               })
-
-              call.done (new_data) ->
               # Updating the next clue location
               clueLocation(data, prog)
               # Updating the current clue, hint and answer
@@ -496,7 +548,7 @@ $ ->
               # Displaying the proper clue
               $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
               $('.huntDisplay p').text("#{currentClue}")
-              $('#answer').val('')
+              $('.answerDiv').empty()
 
 
       else if currentTab.hasClass('huntMap')

@@ -23,6 +23,7 @@ function makeMap(thisHuntData, role, prog){
     else maxShowMarker = thisHuntData.loc.length;
   };
   setMaxShowMarker();
+
   JLcenter = new google.maps.LatLng(thisHuntData.loc[0].lat, thisHuntData.loc[0].long);
   JLmapTypeId = google.maps.MapTypeId.ROADMAP
     JLmapOptions = {

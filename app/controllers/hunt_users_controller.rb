@@ -27,11 +27,8 @@ class HuntUsersController < ApplicationController
     @hunt_user = HuntUser.where(:hunt_id => params[:id], :user_id => current_user.id)
 
     @hunt_user.each do |hu|
-      hu.update_attributes(progress: params[:progress])
+      hu.update_attributes(params[:progress])
     end
-    # respond_to do |format|
-    #   format
-    # end
     render text: 'ok'
   end
 end
