@@ -777,6 +777,7 @@ $ ->
         $('.huntNav').removeClass('active')
         currentTab.addClass('active')
         newEntry = JST['templates/hunt_master_display']({ data: data, clue: data.loc.length })
+        console.log data
         $('.huntDisplay').prepend(newEntry)
         # Adding participant list
         $('.part').append(entry)

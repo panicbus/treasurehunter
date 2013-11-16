@@ -1,10 +1,10 @@
 <ul class='details'>
   <h2 style="letter-spacing: 10px">Hunt Details</h2>
-  <li><h3>Hunt Title:  </h3><p><%= @data.title %></p></li>
-  <li><h3>Hunt Description:  </h3><p><%= @data.description %></p></li>
-  <li><h3>Hunt Prize:  </h3><p><%= @data.prize %></p></li>
-  <li><h3>Start on:  </h3><p><%= @data.date %></p></li>
-  <li><h3>Start Location:  </h3><p><%= @data.start_location %></p></li>
-  <li><h3>Number of Clues:  </h3><p><%= @clue %></p></li>
+  <li><h3>Hunt Title:  </h3><p style="padding-left: 18px"><%= @data.title %></p></li>
+  <li><h3>Hunt Description:  </h3><p style="padding-left: 18px"><%= @data.description %></p></li>
+  <li><h3>Hunt Prize:  </h3><p style="padding-left: 18px"><%= @data.prize %></p></li>
+  <li><h3>Start on:  </h3><p style="padding-left: 18px"><%= @data.date %></p></li>
+  <li><h3>Start Location:  </h3><p style="padding-left: 18px"><%= @data.start_location %></p></li>
+  <li><h3>Number of Clues:  </h3><p style="padding-left: 18px"><%= @clue %></p></li>
   <li><h3>Participants:  </h3><ul class='part'></ul></li>
 </ul>
