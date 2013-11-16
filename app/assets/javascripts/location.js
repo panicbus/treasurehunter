@@ -122,7 +122,7 @@ function initialize() {
             map: map,
             draggable: true,
             title: 'This is your current location',
-            icon: image
+            icon: treasure
         });
       google.maps.event.addDomListener(marker, 'dragend', markerMoved);
     });

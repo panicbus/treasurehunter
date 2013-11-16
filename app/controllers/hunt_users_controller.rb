@@ -15,7 +15,12 @@ class HuntUsersController < ApplicationController
   def store_hunter
     user = User.find(params[:id])
     hunt = Hunt.find(params[:hunt_id])
-    hunt_user = HuntUser.create(role: 'hunter', progress: 0, hunt_id: hunt.id, user_id: user.id)
+    invalid = HuntUser.where(hunt_id: params[:hunt_id], user_id: params[:id])
+    p ('*') * 100
+    p invalid
+    if invalid == []
+      hunt_user = HuntUser.create(role: 'hunter', progress: 0, hunt_id: hunt.id, user_id: user.id)
+    end
     if signed_in?(user)
       redirect_to hunts_path
     else

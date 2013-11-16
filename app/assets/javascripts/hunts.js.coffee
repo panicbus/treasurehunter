@@ -186,10 +186,12 @@ $ ->
           $('.huntDisplay').prepend('<button class="start">Start</button>')
 
         $('.start').click ->
-          call = $.ajax("/hunt_users/#{id}", {
+          call = $.ajax("/hunt_users/#{huntInfo.id}", {
               method: 'PUT',
               data: {
-                progress: '1'
+                progress: {
+                    progress: '1'
+                  }
               }
             })
           call.done (start_data) ->
@@ -222,10 +224,14 @@ $ ->
     entry = JST['templates/new_hunt']({})
     $('.huntMasterDisplay').prepend(entry)
     allUsers = []
+    currentUsername = ''
     $.ajax('/users', {
         method: 'GET'
       }).done (data) ->
         allUsers = data
+        _.each allUsers, (u) ->
+          if u.current
+            currentUsername = u.username
 
 
     # when button is clicked display the form to add participants
@@ -235,6 +241,7 @@ $ ->
       entry = JST['templates/add_participants']({})
       $('.hunter_list').prepend(entry)
 
+
       # populate the hunter_list in the create form
       $('.addParticipants').click ->
         event.preventDefault()
@@ -243,13 +250,21 @@ $ ->
         $('.errors').empty()
         newPlayer = $('#participant_form').val()
         us = false
+        cu = ''
 
         _.each allUsers, (u) ->
+          console.log newPlayer
+          console.log u.username
           if newPlayer == u.username
-            us = true
 
+            us = true
+          if newPlayer == currentUsername
+            cu = 'currentUser'
         if us == false
           $('.errors').append('<p>Not a valid user. Please try a new name.</p>')
+          return
+        else if cu == 'currentUser'
+          $('.errors').append("<p>You can't join your own hunt. Please try a new name.</p>")
           return
         else
           $('.errors').empty()
@@ -621,6 +636,8 @@ $ ->
     question = $('#clueQuestion').val()
     answer = $('#clueAnswer').val()
     hint = $('#clueHint').val()
+    console.log lat
+    console.log long
     # if all the felds arent filled in, an error is flashed
     if !(lat && long && name && question && answer && hint)
       $('#coordinates ul').empty()
