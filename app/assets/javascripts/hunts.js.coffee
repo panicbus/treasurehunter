@@ -80,16 +80,34 @@ success = (pos) ->
   if myDate > finish
     console.log true
     clearInterval checkLocation
-  if dist < 100000 # 0.009144
-
-    if status == false
-      console.log currentHint
-      form = JST['templates/answer_form']({})
-      $('.answerDiv').append(form)
-      status = true
-      textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
+    body = "Sorry! Game time has expired and no one won. Thanks for playing!"
+    _.each huntInfo.name, (d) ->
+      if d.phone != currentNumber
+        $.ajax("/send_texts/+1#{d.phone}/#{body}", {
           method: 'GET'
         })
+    $('.answerDiv').empty()
+    $('.huntDisplay').empty()
+    $('.huntDisplay').append("<h3>#{body}</h3>")
+    $.ajax("/hunt_users/#{huntInfo.id}", {
+      method: 'PUT',
+      data: {
+        progress: {
+          game_status: false
+        }
+      }
+    })
+  else
+    if dist < 100000 # 0.009144
+
+      if status == false
+        console.log currentHint
+        form = JST['templates/answer_form']({})
+        $('.answerDiv').append(form)
+        status = true
+        textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
+            method: 'GET'
+          })
 
 
 error = (err) ->
@@ -513,7 +531,7 @@ $ ->
             # If its the last location, the player wins, and it clear the check location function interval and text the hunters that someone won
             if prog == data.loc.length
               clearInterval(checkLocation)
-              body = "Hooray! Congratulations to #{data.current.name}! for winning the game! Thanks everyone for playing!"
+              body = "Hooray! Congratulations to #{data.current.name} for winning the game! Thanks everyone for playing!"
               _.each data.name, (d) ->
                 if d.phone != currentNumber
                   textcall = $.ajax("/send_texts/+1#{d.phone}/#{body}", {
