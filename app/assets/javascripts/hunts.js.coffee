@@ -73,7 +73,7 @@ success = (pos) ->
   console.log('More or less ' + crd.accuracy + ' meters.')
 
   dist = getDistance(currentLat, currentLong, crd)
-  console.log dist
+  console.log 'Distance: ' + dist
   console.log status
   myDate = new Date()
   finish = new Date("#{huntInfo.end}")
