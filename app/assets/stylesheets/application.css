@@ -31,10 +31,10 @@ body {
 }
 
 .banner_background {
-  background-image: url(old_map.jpg);
+  background-image: url(treasure.png);
   background-position: center;
   background-repeat: no-repeat;
-  background-size: auto;
+  background-size: cover;
   margin: 0 0 20px 0;
   z-index: -1;
 }
@@ -59,15 +59,19 @@ body {
   margin: 0;
   padding: 0;
   /*background-image: url(Maps.jpg);*/
-  background-attachment: fixed;
+/*  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%
+  background-size: 100% */
 }
 
 body::after {
   content: "";
-  background: url(Maps.jpg);
+  /*background: url(paper.jpg);*/
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+   background-size: 100%;
   opacity: 0.5;
   top: 0;
   left: 0;
@@ -99,7 +103,6 @@ li:hover {
   display: inline-table;
 }
 
-
 .huntTitle  {
   font-family: 'Finger Paint';
   font-size: 50px;
@@ -129,11 +132,11 @@ li:hover {
   /* dot start is the start button when starting a hunt*/
 .resizedTextbox{
   width: 300px;
-  height: 22px;
-  font-size: 15px;
+  height: 26px;
+  font-size: 16px;
   /*border-radius: 3px;*/
   margin-bottom: 10px;
-  padding-bottom: 4px;
+  padding: 5px;
 }
 
  .resizedButton, #resizedButton, .start {
@@ -243,6 +246,10 @@ li:hover {
 .huntDisplay {
   height: 100%;
   width: 100%;
+  font-size: 30px;
+  padding: 0 25px 0 25px;
+  clear: both;
+
 }
 
   /*TABS*/
@@ -250,7 +257,7 @@ li:hover {
   clear: both;
   width: 99%;
   /*height: 55px; XXXXXXXXXXXXXX */
-  padding: 0px 0 0 0;
+  padding: 0px 0 0 10px;
   position: fixed;
   bottom: 0;
   background: white;
@@ -336,7 +343,7 @@ li:hover {
 }
 
  /*responsive queries*/
-@media (min-width: 100px) and (max-width: 599px) {
+@media (min-width: 100px) and (max-width: 659px) {
 
   .huntTabs li, .huntMasterTabs li {
     font-size: 15px;
@@ -351,8 +358,13 @@ li:hover {
 
   .huntTitle {
     font-family: 'Finger Paint';
-    font-size: 40px;
-    letter-spacing: 4px;
+    font-size: 35px;
+    /*letter-spacing: 3px;*/
+    margin: 4px 0 5px 0;
+  }
+
+  .subtitle {
+    font-size: 18px;
     margin-top: 5px;
   }
 
