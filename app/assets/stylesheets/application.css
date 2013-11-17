@@ -42,11 +42,22 @@ body {
   font-family: 'Raleway';
   margin: 0;
   padding: 0;
-/*  background-image: url(grunge20-406x494.jpg);
+  /*background-image: url(Maps.jpg);*/
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 100%*/
+  background-size: 100%
+}
+body::after {
+  content: "";
+  background: url(Maps.jpg);
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 li {
@@ -180,8 +191,7 @@ li:hover {
 .outerMapFoo{
   /*position: relative;*/
   width: 100%;
-  background-color: green;
-}
+  }
 
 #map-foo {
   width: 100%;
@@ -271,8 +281,8 @@ margin-right: auto;*/
   /*margin-top: 11px;*/
   /*background: linear-gradient(#A3A3A3, #EDEDED);*/
   width: 80%;
-  height: 60%;
-  margin-bottom: 100px;
+  height: 80%;
+  margin-bottom: 10px;
 }
 
   /* aligning this, JENNIE, to the left edge of the banner*/

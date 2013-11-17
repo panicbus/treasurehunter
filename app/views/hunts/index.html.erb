@@ -8,7 +8,7 @@
 
   <div class='indexView'>
 
-      <button id='hm_gateway' class='addHunt'>Be a HuntMaster, Create a Hunt</button>
+      <button id='hm_gateway' title='This will return you to the "Create a Hunt" form' class='addHunt'>Be a HuntMaster, Create a Hunt</button>
 
       <div class='huntList'>
         <ul class'huntlistul'>
@@ -21,7 +21,7 @@
   <!-- Huntmaster View Page -->
   <div class='huntMasterView display'>
 
-    <button class='goBack'>Back to the Hunts List</button>
+    <button class='goBack' title='Return to hunt list to view existing hunts and create a new one'>Back to the Hunts List</button>
 
     <!-- Show location details in separate div -->
     <div class = 'selectedClue' id = 'clickedLocInfo'></div>
@@ -35,9 +35,9 @@
       <p>Enter an address AT or VERY NEAR the new Treasure Chest</p>
 
       <input type="text" id="address" class="resizedTextbox" placholder="Enter address to search">
-      <input type="button" id="searchButton" class="resizedTextbox resizedButton" value="Search for this address">
+      <input type="button" id="searchButton" class="resizedTextbox resizedButton" title='Use this if you know the address, landmark or intersection of the treasure location' value="Search for this address">
       <p>OR</p>
-      <input type="button" id="currentLocButton" class="resizedTextbox" value = "Click to use your exact current location">
+      <input type="button" id="currentLocButton" class="resizedTextbox" title="Select this button if you want to place a treasure at or near you right now" value = "Click to use your exact current location">
 
       <div id="coordinates">
         <form class='addLocation'>
@@ -59,9 +59,10 @@
     <div class='bottomSpacer'></div>
     <nav>
       <ul class='huntMasterTabs'>
-        <li class='huntMasterDetails huntMasterNav'><p>Hunt Details</p></li>
-        <li class='huntMasterClues huntMasterNav'><p>Add Locations</p></li>
-        <li class='huntMasterLocations huntMasterNav'><p>Hunt Locations</p></li>
+        <li class='huntMasterDetails huntMasterNav' title='Shows date, time and starting location info'><p>Hunt Details</p></li>
+        <li class='huntMasterClues huntMasterNav' title='Provide location and clue to add a new treasure to this hunt'><p>Add Locations</p></li>
+        <li class='huntMasterLocations huntMasterNav' title="View a map showing the treasures you have found thus far"><p>Hunt Locations</p></li>
+        <li class='huntLeader huntNav' title="Keep track of where the other hunters are!"><p>Leaderboard</p></li>
       </ul>
     </nav>
   </div> <!-- end huntMasterView -->
