@@ -1,4 +1,4 @@
 <form class='answer display'>
-  <input type='text' id='answer' name='answer' placeholder='Check your answer...' />
-  <input type='submit' />
+  <input type='text' id='answer' name='answer' class='resizedTextbox' placeholder='Check your answer...' />
+  <input class='resizedButton' type='submit' />
 </form>

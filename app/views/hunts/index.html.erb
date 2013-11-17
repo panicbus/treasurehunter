@@ -31,23 +31,23 @@
     </div> <!-- end huntMasterDisplay -->
 
     <div class='mapView display'>
-      <h2>Create a New Hunt Location</h2>
-      <p>Enter an address at or near the new hunt location</p>
+      <h2>Create a New Treasure Chest</h2>
+      <p>Enter an address AT or VERY NEAR the new Treasure Chest</p>
 
-      <input type="text" id="address" class="resizedTextbox" style='width: 600px' placholder="Enter address to search">
-      <input type="button" id="searchButton" class="resizedTextbox" value="Search for this address">
+      <input type="text" id="address" class="resizedTextbox" placholder="Enter address to search">
+      <input type="button" id="searchButton" class="resizedTextbox resizedButton" value="Search for this address">
       <p>OR</p>
-      <input type="button" id="currentLocButton" class="resizedTextbox" value = "Click here for current location">
+      <input type="button" id="currentLocButton" class="resizedTextbox" value = "Click to use your exact current location">
 
       <div id="coordinates">
         <form class='addLocation'>
           <input type='hidden' id='location_lat' class="resizedTextbox" placeholder='Latitude' />
           <input type='hidden' id='location_long' class="resizedTextbox" placeholder='Longitude' />
-          <input type='text' id='location_name' class="resizedTextbox" placeholder='Location name' />
-          <textarea id='clueQuestion' class="resizedTextbox" placeholder='Add a location clue...' ></textarea>
-          <input type='text' id='clueAnswer' class="resizedTextbox" placeholder='Add an answer...' />
-          <input type='text' id='clueHint' class="resizedTextbox" placeholder='Add a proximity hint...' />
-          <input type='submit' />
+          <input type='text' id='location_name' class="resizedTextbox" placeholder='Treasure Chest name' />
+          <textarea style='margin-bottom: -10px' id='clueQuestion' class="resizedTextbox" placeholder='Add a Treasure Chest clue...' ></textarea>
+          <input type='text' id='clueAnswer' class="resizedTextbox" placeholder='Add the clue answer...' />
+          <input type='text' id='clueHint' class="resizedTextbox" placeholder='Add a final hint to locate the Treasure...' />
+          <input class='resizedButton' type='submit' />
         </form>
         <ul></ul>
       </div> <!-- end coordinates -->
