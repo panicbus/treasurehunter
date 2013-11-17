@@ -101,7 +101,7 @@ success = (pos) ->
       }
     })
   else
-    if dist <  0.159144 # 100000
+    if dist <  11.159144 # 100000
 
       if status == false
         console.log currentHint
