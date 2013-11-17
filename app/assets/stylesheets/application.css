@@ -27,7 +27,7 @@ body {
 
 .banner_color p {
   opacity: 1;
-  z-index: 1;
+  z-index: -1;
 }
 
 .banner_background {
@@ -58,9 +58,7 @@ body {
   font-family: 'Raleway';
   margin: 0;
   padding: 0;
-<<<<<<< HEAD
   /*background-image: url(Maps.jpg);*/
-
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
@@ -251,15 +249,15 @@ li:hover {
 .huntTabs, .huntMasterTabs {
   clear: both;
   width: 99%;
-  /*height: 55px;*/
-  padding: 0px 0 0 1.5%;
+  /*height: 55px; XXXXXXXXXXXXXX */
+  padding: 0px 0 0 0;
   position: fixed;
   bottom: 0;
   background: white;
   margin-bottom: 0;
 }
 
-.huntMasterDetails.active, .huntMasterClues.active, .huntMasterLocations.active, .huntDetails.active, .huntClues.active, .huntMap.active, .huntLeader.active {
+.huntMasterDetails.active, .huntMasterClues.active, .huntMasterLocations.active, .huntMasterLeader.active, .huntDetails.active, .huntClues.active, .huntMap.active, .huntLeader.active {
   background: #454d59;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.4);
   border-right: 1px solid rgba(0, 0, 0, 0.2);
@@ -277,7 +275,7 @@ li:hover {
   cursor: pointer;
 }
 
-.huntDetails, .huntClues, .huntMap, .huntLeader {
+.huntDetails, .huntClues, .huntMap, .huntLeader, .huntMasterDetails, .huntMasterClues, .huntMasterLocations, .huntMasterLeader {
   padding: 0 7px 6% 19px;
   margin: 4px;
   /*border-radius: 4px;*/
@@ -294,7 +292,7 @@ li:hover {
   margin: 3px;
   /*border-radius: 4px;*/
   border-right: 1px solid rgba(0, 0, 0, 0.2);
-  width: 30%;
+  width: 22%;
   background: #404853;
   background: linear-gradient(#FEFFC4, #FADE6C);
   text-align: right;
@@ -303,7 +301,7 @@ li:hover {
 
 .huntDetails p, .huntClues p, .huntMap p, .huntLeader p, .huntMasterTabs p {
   font-size: 100%;
-  margin: 10px 5% 0 0;
+  margin: 10px 4% 0 0;
 }
 
 .huntDetails:hover, .huntClues:hover, .huntMap:hover, .huntLeader:hover, .huntMasterNav:hover {
