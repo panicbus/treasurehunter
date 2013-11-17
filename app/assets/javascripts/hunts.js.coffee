@@ -66,13 +66,14 @@ getDistance = (currentLat, currentLong, crd) ->
 # On a successful position check the current coordinates are stored and if distance is within the bounds of the clue location a text is sent to the user. also status is set to true to prevent texts from continually being sent
 success = (pos) ->
   crd = pos.coords
-  # console.log crd
-  # console.log('Your current position is:')
-  # console.log('Latitude : ' + crd.latitude)
-  # console.log('Longitude: ' + crd.longitude)
-  # console.log('More or less ' + crd.accuracy + ' meters.')
+  console.log crd
+  console.log('Your current position is:')
+  console.log('Latitude : ' + crd.latitude)
+  console.log('Longitude: ' + crd.longitude)
+  console.log('More or less ' + crd.accuracy + ' meters.')
 
   dist = getDistance(currentLat, currentLong, crd)
+  console.log 'Distance: ' + dist
   console.log status
   myDate = new Date()
   finish = new Date("#{huntInfo.end}")
@@ -100,7 +101,7 @@ success = (pos) ->
       }
     })
   else
-    if dist <  0.059144 # 100000
+    if dist <  11.159144 # 100000
 
       if status == false
         console.log currentHint
