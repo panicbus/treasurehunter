@@ -73,6 +73,7 @@ success = (pos) ->
   console.log('More or less ' + crd.accuracy + ' meters.')
 
   dist = getDistance(currentLat, currentLong, crd)
+  console.log dist
   console.log status
   myDate = new Date()
   finish = new Date("#{huntInfo.end}")
@@ -100,7 +101,7 @@ success = (pos) ->
       }
     })
   else
-    if dist <  0.059144 # 100000
+    if dist <  0.159144 # 100000
 
       if status == false
         console.log currentHint
