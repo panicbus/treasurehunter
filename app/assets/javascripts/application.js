@@ -15,3 +15,5 @@
 //= require jquery_ujs
 //= require underscore
 //= require_tree .
+
+$(".huntDetails").click(function() {$(this).toggleClass( "active")})

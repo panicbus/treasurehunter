@@ -1,5 +1,5 @@
 <form class='createHunt'>
-  <h2>Create a hunt!</h2>
+  <h2 style="letter-spacing: 10px">Create a hunt!</h2>
   Title: <br><input type='text' class='resizedTextbox' id='huntTitle'><br>
   Description: <br><input type='text' class='resizedTextbox' id='huntDescription'><br>
   Start Date: <br><input type='date' class='resizedTextbox' id='startDate'><br>

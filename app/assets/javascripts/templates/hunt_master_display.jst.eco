@@ -1,5 +1,5 @@
+<h2 style="letter-spacing: 10px; text-align: center">Hunt Details</h2>
 <ul class='details'>
-  <h2 style="letter-spacing: 10px">Hunt Details</h2>
   <li><h3>Hunt Title:  </h3><p style="padding-left: 18px"><%= @data.title %></p></li>
   <li><h3>Hunt Description:  </h3><p style="padding-left: 18px"><%= @data.description %></p></li>
   <li><h3>Hunt Prize:  </h3><p style="padding-left: 18px"><%= @data.prize %></p></li>

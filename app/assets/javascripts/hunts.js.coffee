@@ -17,7 +17,7 @@ getHunts = ->
         <strong>Start</strong>: #{h.date}<br>
         <br>
         </li>")
-    $('.huntList').prepend("<h3>Your hunts:</h3><br>")
+    $('.huntList').prepend("<h3 style='letter-spacing: 10px'>Upcoming Hunts:</h3><br>")
 
 
 
