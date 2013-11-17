@@ -43,11 +43,13 @@ body {
   margin: 0;
   padding: 0;
   /*background-image: url(Maps.jpg);*/
+
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100%
 }
+
 body::after {
   content: "";
   background: url(Maps.jpg);
