@@ -57,7 +57,7 @@ currentNumber = ''
 status = false
 checkLocation = ''
 huntInfo = ''
-count = 1
+
 # Function for checking the hunters distance from the clue location
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -71,6 +71,7 @@ success = (pos) ->
   console.log('Latitude : ' + crd.latitude)
   console.log('Longitude: ' + crd.longitude)
   console.log('More or less ' + crd.accuracy + ' meters.')
+  console.log currentLat
 
   dist = getDistance(currentLat, currentLong, crd)
   console.log 'Distance: ' + dist
@@ -114,7 +115,7 @@ success = (pos) ->
       status = true
     if $('.huntClues').hasClass('active')
       $('.answer').removeClass('display')
-  count += 1
+
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
@@ -151,6 +152,12 @@ createParticipant = (data) ->
   else
     return 'None'
 
+formatDate = (date) ->
+  s = date
+  a = s.split(/[^0-9]/)
+
+  d = new Date(a[0],a[1]-1,a[2],a[3])
+
 
 
 $ ->
@@ -170,7 +177,8 @@ $ ->
       $('.huntTabs').data('id', hunt_id)
       $.get("/hunts/#{hunt_id}").done (data) ->
         myDate = new Date()
-        huntDate = new Date("#{data.date}")
+        huntDate = formatDate("#{data.date}")
+
         currentNumber = data.current.phone
         prog = parseInt(data.current.progress)
         huntInfo = data
@@ -189,6 +197,8 @@ $ ->
         $('.part').append(createParticipant(huntInfo))
         myDate = new Date()
         huntDate = new Date("#{data.date}")
+
+
         if huntDate < myDate && "#{data.current.progress}" < 1
           $('.huntDisplay').prepend('<button class="start">Start</button>')
 
@@ -202,8 +212,10 @@ $ ->
               }
             })
           call.done (start_data) ->
+            prog = 1
+            clueLocation(huntInfo, prog)
             # Setting a timer to check the positon every 15 secs
-            checkLocation = setInterval getPosition, 15000
+            checkLocation = setInterval getPosition, 5000
           $(this).remove()
     else
       $('.huntView').addClass('display')
@@ -754,7 +766,7 @@ $ ->
     # Display the hunt information after the ajax call is successful
     $.get("/hunts/#{id}").done (data) ->
       myDate = new Date()
-      huntDate = new Date("#{data.date}")
+      huntDate = formatDate("#{data.date}")
 
       # Clear out any information that the hunt display is showing, so the new info can be shown
       $('.huntDisplay').empty()
@@ -782,7 +794,7 @@ $ ->
         # Adding participant list
         $('.part').append(entry)
         myDate = new Date()
-        huntDate = new Date("#{data.date}")
+        huntDate = formatDate("#{data.date}")
         if huntDate < myDate && "#{data.current.progress}" < 1
           $('.huntDisplay').prepend('<button class="start">Start</button>')
 
@@ -794,8 +806,10 @@ $ ->
               }
             })
           call.done (start_data) ->
+            prog = 1
+            clueLocation(huntInfo, prog)
             # Setting a timer to check the positon every 15 secs
-            checkLocation = setInterval getPosition, 15000
+            checkLocation = setInterval getPosition, 5000
           $(this).remove()
 
 
