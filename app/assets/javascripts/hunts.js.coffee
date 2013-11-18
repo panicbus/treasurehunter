@@ -115,6 +115,7 @@ error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
 getPosition = ->
+  console.log 'inside getPosition'
   navigator.geolocation.getCurrentPosition(success, error, options)
 
 
@@ -157,7 +158,8 @@ formatDate = (date) ->
 $ ->
   # Populating the index page with user-specific hunts
   getHunts()
-  # getPosition()
+  console.log 'Running get position'
+  getPosition()
 
 
   # When hunt is clicked it will display the proper view based on the user's role (hunter or huntmaster)
@@ -178,8 +180,8 @@ $ ->
         prog = parseInt(data.current.progress)
         huntInfo = data
         clueLocation(data, prog)
-
         getCluesInfo(currentClues.clues)
+        console.log game_status
         if huntDate < myDate && data.current.progress >= 1 && data.current.game_status
 
           # Checking the user's current location
