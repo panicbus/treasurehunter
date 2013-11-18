@@ -56,7 +56,7 @@ currentNumber = ''
 status = false
 checkLocation = ''
 huntInfo = ''
-
+count = 1
 # Function for checking the hunters distance from the clue location
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -106,10 +106,11 @@ success = (pos) ->
             method: 'GET'
           })
 
+
       status = true
     if $('.huntClues').hasClass('active')
       $('.answer').removeClass('display')
-
+  count += 1
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
@@ -191,6 +192,7 @@ $ ->
         $('.part').append(createParticipant(huntInfo))
         myDate = new Date()
         huntDate = formatDate("#{data.date}")
+
 
 
         if huntDate < myDate && "#{data.current.progress}" < 1
@@ -604,6 +606,7 @@ $ ->
     call.done (data) ->
       nextLoc = data.length + 1
       # Ajax call to save the location to the location db
+
       locationCall = $.ajax('/locations', {
           type: 'POST'
           data: {
