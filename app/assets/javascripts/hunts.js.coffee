@@ -9,7 +9,6 @@ getHunts = ->
     })
   # After call is successful, the hunts are added to the hunt list on the index page
   call.done (data) ->
-    # console.log data
     _.each data, (h) ->
       $('.huntList ul').prepend("<li data-role='#{h.role}' data-id='#{h.id}'>
         <strong>Title</strong>: #{h.title}<br>
@@ -77,11 +76,8 @@ success = (pos) ->
   console.log 'Distance: ' + dist
   console.log status
   myDate = new Date()
-  finish = new Date("#{huntInfo.end}")
-  # console.log finish
-  # console.log myDate
+  finish = formatDate("#{huntInfo.end}")
   if myDate > finish
-    # console.log true
     clearInterval checkLocation
     body = "Sorry! Game time has expired and no one won. Thanks for playing!"
     _.each huntInfo.name, (d) ->
@@ -104,13 +100,11 @@ success = (pos) ->
     if dist < 1 # 0.059144 # 100000
 
       if status == false
-        # console.log currentHint
         form = JST['templates/answer_form']({})
         $('.answerDiv').append(form)
         textcall = $.ajax("/send_texts/+1#{currentNumber}/#{currentHint}", {
             method: 'GET'
           })
-
 
       status = true
     if $('.huntClues').hasClass('active')
@@ -142,7 +136,6 @@ getCluesInfo = (current) ->
 
 # Creating a participant list
 createParticipant = (data) ->
-  # console.log data.name
   if data.name.length > 0
     entry = "<ul>"
     _.each data.name, (d) ->
@@ -173,6 +166,7 @@ $ ->
     hunt_id = $(this).data('id')
     if $(this).data('role') == 'hunter'
       $('.huntMasterView').addClass('display')
+      $('.huntDetails').addClass('active')
       $('.huntView').removeClass('display')
       $('.huntTabs').data('id', hunt_id)
       $.get("/hunts/#{hunt_id}").done (data) ->
@@ -186,7 +180,7 @@ $ ->
 
         getCluesInfo(currentClues.clues)
         if huntDate < myDate && data.current.progress >= 1 && data.current.game_status
-          getPosition()
+
           # Checking the user's current location
           # Setting a timer to check the positon every 15 secs
           checkLocation = setInterval getPosition, 5000
@@ -196,7 +190,7 @@ $ ->
         # Adding participant list
         $('.part').append(createParticipant(huntInfo))
         myDate = new Date()
-        huntDate = new Date("#{data.date}")
+        huntDate = formatDate("#{data.date}")
 
 
         if huntDate < myDate && "#{data.current.progress}" < 1
@@ -220,12 +214,14 @@ $ ->
     else
       $('.huntView').addClass('display')
       $('.huntMasterView').removeClass('display')
+      $('.huntMasterDetails').addClass('active')
       $('.huntMasterTabs').data('id', hunt_id)
       # Make the ajax call to get the hunt information
-      # Display the hunt information after the ajax call is successful
+      # Display the hunt information after the ajax call is successful`
       $.get("/hunts/#{hunt_id}").done (data) ->
         myDate = new Date()
-        huntDate = new Date("#{data.date}")
+        huntDate = formatDate("#{data.date}")
+        console.log data
         currentNumber = data.current.phone
 
         # Creating hunt details list and displaying it
@@ -264,7 +260,6 @@ $ ->
       # populate the hunter_list in the create form
       $('.addParticipants').click ->
         event.preventDefault()
-        # console.log allUsers
         # Grab the form value
         $('.errors').empty()
         newPlayer = $('#participant_form').val()
@@ -272,8 +267,6 @@ $ ->
         cu = ''
 
         _.each allUsers, (u) ->
-          # console.log newPlayer
-          # console.log u.username
           if newPlayer == u.username
 
             us = true
@@ -300,57 +293,14 @@ $ ->
 
     $('.createHunt').submit ->
       event.preventDefault()
-      # Grabbing form values
-      $('.errors').empty()
-      errors = []
-      if $('#huntTitle').val()
-        title = $('#huntTitle').val()
-      else
-        errors.push 'Please enter a title.'
-      if $('#startLocation').val()
-        start_location = $('#startLocation').val()
-      else
-        errors.push 'Please enter a start location.'
-      if $('#startTime').val()
-        start_time = $('#startTime').val()
-      else
-        errors.push 'Please enter a start time'
-      if $('#startDate').val()
-        start_date = $('#startDate').val()
-      else
-        errors.push 'Please enter a start date.'
-      if start_time && start_date
-        newStart = new Date(start_time + ' ' + start_date)
-        now = new Date()
-        # console.log now
-        # console.log newStart
-        if newStart < now
-          errors.push 'Please enter a future start date and time.'
-      if $('#endTime').val()
-        end_time = $('#endTime').val()
-      else
-        errors.push 'Please enter an end time.'
-      if $('#endDate').val()
-        end_date = $('#endDate').val()
-      else
-        errors.push 'Please enter an end date.'
-      if end_time && end_date
-        newEnd = new Date(end_time + ' ' + end_date)
-        now = new Date()
-        if newEnd < now
-          errors.push 'Please enter a future end date and time.'
-        if start_time && start_date
-          newStart = new Date(start_time + ' ' + start_date)
-          if newEnd < newStart && newStart > now
-            errors.push 'Please enter an end date and time that is later than the start date and time.'
-      if $('#huntDescription').val()
-        description = $('#huntDescription').val()
-      else
-        errors.push 'Please enter a description.'
+      title = $('#huntTitle').val()
+      start_location = $('#startLocation').val()
+      start_time = $('#startTime').val()
+      start_date = $('#startDate').val()
+      end_time = $('#endTime').val()
+      end_date = $('#endDate').val()
+      description = $('#huntDescription').val()
       players = $('.hunter_list li')
-      if errors
-        _.each errors, (e) ->
-          $('.errors').prepend("<li>#{e}</li>")
       prize = $('#huntPrize').val()
 
 
@@ -365,6 +315,11 @@ $ ->
         date: start_date + ' ' + start_time
         end: end_date + ' ' + end_time
       }
+      if hunt.title == '' || hunt.description == '' || hunt.date == '' || hunt.start_location == '' || hunt.end == ''
+        $('.incomplete').remove()
+        $('.huntMasterDisplay').prepend('<p class="incomplete">Sorry, all fields need to be filled out. Please try again!</p>')
+        return
+
       # Ajax call to save the hunt
       call = $.ajax('/hunts', {
           method: 'POST',
@@ -412,7 +367,7 @@ $ ->
           })
         # Removing the create hunt form
         $('.createHunt').remove()
-
+        $('.incomplete').remove()
         # Creating hunt details list and displaying it
         newEntry = JST['templates/hunt_master_display']({ data: data, clue: 0 })
         $('.huntMasterDisplay').prepend(newEntry)
@@ -437,6 +392,7 @@ $ ->
       $('.mapDisplay').addClass('display')
     if !($('.answerDiv').hasClass('display'))
       $('.answerDiv').addClass('display')
+    $('.answer').remove()
     $('.huntNav').removeClass('active')
     $('.huntMasterNav').removeClass('active')
     $('.indexView').removeClass('display')
@@ -494,58 +450,20 @@ $ ->
 
         $('.createHunt').submit ->
           event.preventDefault()
-          # Grabbing form values
-          $('.errors').empty()
-          errors = []
-          if $('#huntTitle').val()
-            title = $('#huntTitle').val()
-          else
-            errors.push 'Please enter a title.'
-          if $('#startLocation').val()
-            start_location = $('#startLocation').val()
-          else
-            errors.push 'Please enter a start location.'
-          if $('#startTime').val()
-            start_time = $('#startTime').val()
-          else
-            errors.push 'Please enter a start time'
-          if $('#startDate').val()
-            start_date = $('#startDate').val()
-          else
-            errors.push 'Please enter a start date.'
-          if start_time && start_date
-            newStart = new Date(start_time + ' ' + start_date)
-            now = new Date()
-            # console.log now
-            # console.log newStart
-            if newStart < now
-              errors.push 'Please enter a future start date and time.'
-          if $('#endTime').val()
-            end_time = $('#endTime').val()
-          else
-            errors.push 'Please enter an end time.'
-          if $('#endDate').val()
-            end_date = $('#endDate').val()
-          else
-            errors.push 'Please enter an end date.'
-          if end_time && end_date
-            newEnd = new Date(end_time + ' ' + end_date)
-            now = new Date()
-            if newEnd < now
-              errors.push 'Please enter a future end date and time.'
-            if start_time && start_date
-              newStart = new Date(start_time + ' ' + start_date)
-              if newEnd < newStart && newStart > now
-                errors.push 'Please enter an end date and time that is later than the start date and time.'
-          if $('#huntDescription').val()
-            description = $('#huntDescription').val()
-          else
-            errors.push 'Please enter a description.'
-          if errors
-            _.each errors, (e) ->
-              $('.errors').prepend("<li>#{e}</li>")
+          title = $('#huntTitle').val()
+          start_location = $('#startLocation').val()
+          start_time = $('#startTime').val()
+          start_date = $('#startDate').val()
+          end_time = $('#endTime').val()
+          end_date = $('#endDate').val()
+          description = $('#huntDescription').val()
           prize = $('#huntPrize').val()
           players = $('.hunter_list li')
+          if hunt.title == '' || hunt.description == '' || hunt.date == '' || hunt.start_location == '' || hunt.end == ''
+            $('.incomplete').remove()
+            $('.huntMasterDisplay').prepend('<p class="incomplete">Sorry, all fields need to be filled out. Please try again!</p>')
+            return
+
           # Creating an object to pass into the create hunt ajax call
           hunt = {
             title: title,
@@ -564,6 +482,7 @@ $ ->
             })
 
           call.done (data) ->
+            console.log data
             _.each players, (p) ->
               # Ajax call to get the user id that corresponds to the partipants username
               userCall = $.ajax("/user/#{p.textContent}", {
@@ -602,7 +521,7 @@ $ ->
               })
             # Removing the create hunt form
             $('.createHunt').remove()
-
+            $('.incomplete').remove()
             # Creating hunt details list and displaying it
             newEntry = JST['templates/hunt_master_display']({ data: data, clue: 0 })
             $('.huntMasterDisplay').prepend(newEntry)
@@ -666,8 +585,7 @@ $ ->
     question = $('#clueQuestion').val()
     answer = $('#clueAnswer').val()
     hint = $('#clueHint').val()
-    # console.log lat
-    # console.log long
+
     # if all the felds arent filled in, an error is flashed
     if !(lat && long && name && question && answer && hint)
       $('#coordinates ul').empty()
@@ -686,8 +604,6 @@ $ ->
     call.done (data) ->
       nextLoc = data.length + 1
       # Ajax call to save the location to the location db
-      # console.log lat
-      # console.log long
       locationCall = $.ajax('/locations', {
           type: 'POST'
           data: {
@@ -759,6 +675,7 @@ $ ->
     currentTab = $(this)
     if !($('.answer').hasClass('display'))
       $('.answer').addClass('display')
+
     # Grab the id of the hunt for the ajax call
     id = $(this).parent().data('id')
 
@@ -816,6 +733,7 @@ $ ->
       else if currentTab.hasClass('huntClues')
         $('.huntNav').removeClass('active')
         currentTab.addClass('active')
+        $('.answerDiv').removeClass('display')
         # Setting the current clue, answer, and hint based on the current hunters progress
         prog = parseInt(data.current.progress)
 
@@ -829,12 +747,14 @@ $ ->
           <p>#{currentClue}</p><br>")
         $('.answer').removeClass('display')
         # When answer is submitted, checking to see if hunter is correct
-        $('.answer').submit ->
+        $('.answerDiv').on 'submit', '.answer',  ->
           event.preventDefault()
-          ans = $('#answer').val()
+          ans = $('#answer').val().toLowerCase()
+          console.log ans
+          console.log currentAnswer.toLowerCase()
 
           # if ans = the correct answer, progress needs to be updated to the db and the next clue needs to be revealed
-          if ans == currentAnswer
+          if ans == currentAnswer.toLowerCase()
             # If its the last location, the player wins, and it clear the check location function interval and text the hunters that someone won
             if prog == data.loc.length
               clearInterval(checkLocation)
@@ -847,6 +767,7 @@ $ ->
               $('.answer').addClass('display')
               $('.huntDisplay').empty()
               $('.huntDisplay').append("<h3>Conratulations, #{data.current.name}, you have won!!</h3>")
+              console.log 'Im activated'
               $.ajax("/hunt_users/#{id}", {
                 method: 'PUT',
                 data: {
@@ -873,9 +794,14 @@ $ ->
               # Reset satus, so player will recieve texts for the next location
               status = false
               # Displaying the proper clue
+              $('.wrong').remove()
               $('.huntDisplay h4').text("Clue #{prog} of #{data.loc.length}")
               $('.huntDisplay p').text("#{currentClue}")
               $('.answerDiv').empty()
+          else
+            $('.answer').val('')
+            $('.wrong').remove()
+            $('.huntDisplay').append('<p class="wrong">Sorry! Your answer is incorrect!</p>')
 
 
       else if currentTab.hasClass('huntMap')

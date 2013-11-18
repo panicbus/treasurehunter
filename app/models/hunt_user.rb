@@ -4,8 +4,7 @@ class HuntUser < ActiveRecord::Base
   belongs_to :hunt
   belongs_to :user
 
-  validate :hunt_id, presence: true
-  validate :user_id, presence: true
-  validate :role, presence: true
-  validate :progress, presence: true
+  validates :hunt_id, presence: true
+  validates :user_id, presence: true
+  validates :role, presence: true
 end
