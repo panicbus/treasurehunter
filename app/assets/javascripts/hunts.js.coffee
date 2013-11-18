@@ -57,7 +57,7 @@ currentNumber = ''
 status = false
 checkLocation = ''
 huntInfo = ''
-
+count = 1
 # Function for checking the hunters distance from the clue location
 getDistance = (currentLat, currentLong, crd) ->
   R = 6371
@@ -101,7 +101,6 @@ success = (pos) ->
       }
     })
   else
-
     if dist < 1 # 0.059144 # 100000
 
       if status == false
@@ -116,7 +115,7 @@ success = (pos) ->
       status = true
     if $('.huntClues').hasClass('active')
       $('.answer').removeClass('display')
-
+  count += 1
 error = (err) ->
   console.warn('ERROR(' + err.code + '): ' + err.message)
 # Checks the user's current position
