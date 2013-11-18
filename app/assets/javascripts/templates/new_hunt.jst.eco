@@ -10,5 +10,5 @@
   Prize: <br><input type='text' class='resizedTextbox' id='huntPrize'><br>
   <button class='add_participants resizedButton'>Add Participants</button>
   <ul class='hunter_list'></ul>
-  <input type='submit' class='resizedButton' value='Save Hunt'>
+  <input type='submit' class='resizedButton' value='Save this Hunt!'>
 </form>
