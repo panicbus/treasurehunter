@@ -16,4 +16,4 @@
 //= require underscore
 //= require_tree .
 
-$(".huntDetails").click(function() {$(this).toggleClass( "active")})
+// $(".huntDetails").click(function() {$(this).toggleClass( "active")})

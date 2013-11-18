@@ -79,8 +79,11 @@ class HuntsController < ApplicationController
   end
 
   def create
+
+
     @hunt = Hunt.create(params[:hunt])
     @hunt[:current_user] = current_user.id
+
     render json: @hunt
   end
 
